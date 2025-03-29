@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SayPostAuthService", "SayPostAuthService", "{3CBD37B3-55AC-478D-A34B-B9B3B62F8AE0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SayPostMainService", "SayPostMainService", "{F2EB987A-9C6B-47FE-A48C-D0FE1405260A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SayPostNotificationService", "SayPostNotificationService", "{9318B903-614A-4679-8854-A8DE322416AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Api", "SayPostAuthService\src\SayPostAuthService.Api\SayPostAuthService.Api.csproj", "{586F1533-695E-410D-AC27-4F14A8340386}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E84CE21D-07AD-4B38-B6EF-E749AE336DAA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F9F840B3-96BA-4BB9-9F71-D3F71B86B589}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{39D3031C-B050-4739-8E2C-FF12CD44DCE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostMainService.Api", "SayPostMainService\src\SayPostMainService.Api\SayPostMainService.Api.csproj", "{214C6642-4DE7-4272-9DAF-AA0E6697E81A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Api", "SayPostNotificationService\src\SayPostNotificationService.Api\SayPostNotificationService.Api.csproj", "{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E84CE21D-07AD-4B38-B6EF-E749AE336DAA} = {3CBD37B3-55AC-478D-A34B-B9B3B62F8AE0}
+		{586F1533-695E-410D-AC27-4F14A8340386} = {E84CE21D-07AD-4B38-B6EF-E749AE336DAA}
+		{F9F840B3-96BA-4BB9-9F71-D3F71B86B589} = {F2EB987A-9C6B-47FE-A48C-D0FE1405260A}
+		{39D3031C-B050-4739-8E2C-FF12CD44DCE7} = {9318B903-614A-4679-8854-A8DE322416AD}
+		{214C6642-4DE7-4272-9DAF-AA0E6697E81A} = {F9F840B3-96BA-4BB9-9F71-D3F71B86B589}
+		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{586F1533-695E-410D-AC27-4F14A8340386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{586F1533-695E-410D-AC27-4F14A8340386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{586F1533-695E-410D-AC27-4F14A8340386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{586F1533-695E-410D-AC27-4F14A8340386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214C6642-4DE7-4272-9DAF-AA0E6697E81A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214C6642-4DE7-4272-9DAF-AA0E6697E81A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214C6642-4DE7-4272-9DAF-AA0E6697E81A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214C6642-4DE7-4272-9DAF-AA0E6697E81A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
