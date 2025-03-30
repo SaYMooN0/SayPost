@@ -8,6 +8,6 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <ProjectReference Include="..\SayPostNotificationService.Infrastructure\SayPostNotificationService.Infrastructure.csproj"/>
     </ItemGroup>
-
 </Project>

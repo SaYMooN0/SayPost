@@ -1,0 +1,21 @@
+using SharedKernel.common.domain.ids;
+
+namespace SharedKernel.common.domain.entity;
+
+public abstract class Entity<IdType> where IdType : IEntityId
+{
+    public IdType Id { get; }
+    protected Entity(IdType id) => Id = id;
+
+    public override bool Equals(object? other) {
+        if (other is null || other.GetType() != GetType()) {
+            return false;
+        }
+
+        Entity<IdType> otherEntity = (Entity<IdType>)other;
+        return Id.Equals(otherEntity.Id);
+    }
+
+    public override int GetHashCode() =>
+        Id.GetHashCode();
+}

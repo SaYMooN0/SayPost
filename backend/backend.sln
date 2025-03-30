@@ -18,6 +18,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostMainService.Api", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Api", "SayPostNotificationService\src\SayPostNotificationService.Api\SayPostNotificationService.Api.csproj", "{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{50211603-F783-4811-8A74-72B3F2F3BADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureConfigurationShared", "InfrastructureConfigurationShared\InfrastructureConfigurationShared.csproj", "{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Domain", "SayPostAuthService\src\SayPostAuthService.Domain\SayPostAuthService.Domain.csproj", "{4435C345-7C60-427D-9A13-42EEF103CB51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Application", "SayPostAuthService\src\SayPostAuthService.Application\SayPostAuthService.Application.csproj", "{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Infrastructure", "SayPostAuthService\src\SayPostAuthService.Infrastructure\SayPostAuthService.Infrastructure.csproj", "{FF3510D8-8F56-47F2-AFA9-B678AE1FD933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostMainService.Domain", "SayPostMainService\src\SayPostMainService.Domain\SayPostMainService.Domain.csproj", "{6000F78E-FA9C-4D7B-BEFD-092BCD491845}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostMainService.Application", "SayPostMainService\src\SayPostMainService.Application\SayPostMainService.Application.csproj", "{C7121193-DA13-4E63-9CE9-FC01B404ACF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostMainService.Infrastructure", "SayPostMainService\src\SayPostMainService.Infrastructure\SayPostMainService.Infrastructure.csproj", "{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Application", "SayPostNotificationService\src\SayPostNotificationService.Application\SayPostNotificationService.Application.csproj", "{C36A248A-4AE8-4DD0-A134-FFB43582C202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Domain", "SayPostNotificationService\src\SayPostNotificationService.Domain\SayPostNotificationService.Domain.csproj", "{CA610521-6D36-4DC0-A663-0D10F4965DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Infrastructure", "SayPostNotificationService\src\SayPostNotificationService.Infrastructure\SayPostNotificationService.Infrastructure.csproj", "{A87702F0-94BB-46D4-8F3D-369B46CC6316}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +52,15 @@ Global
 		{39D3031C-B050-4739-8E2C-FF12CD44DCE7} = {9318B903-614A-4679-8854-A8DE322416AD}
 		{214C6642-4DE7-4272-9DAF-AA0E6697E81A} = {F9F840B3-96BA-4BB9-9F71-D3F71B86B589}
 		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
+		{4435C345-7C60-427D-9A13-42EEF103CB51} = {E84CE21D-07AD-4B38-B6EF-E749AE336DAA}
+		{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC} = {E84CE21D-07AD-4B38-B6EF-E749AE336DAA}
+		{FF3510D8-8F56-47F2-AFA9-B678AE1FD933} = {E84CE21D-07AD-4B38-B6EF-E749AE336DAA}
+		{6000F78E-FA9C-4D7B-BEFD-092BCD491845} = {F9F840B3-96BA-4BB9-9F71-D3F71B86B589}
+		{C7121193-DA13-4E63-9CE9-FC01B404ACF4} = {F9F840B3-96BA-4BB9-9F71-D3F71B86B589}
+		{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE} = {F9F840B3-96BA-4BB9-9F71-D3F71B86B589}
+		{C36A248A-4AE8-4DD0-A134-FFB43582C202} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
+		{CA610521-6D36-4DC0-A663-0D10F4965DEC} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
+		{A87702F0-94BB-46D4-8F3D-369B46CC6316} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{586F1533-695E-410D-AC27-4F14A8340386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +75,49 @@ Global
 		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE2D5DC9-CA20-45D1-B201-C214ED824BE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50211603-F783-4811-8A74-72B3F2F3BADD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50211603-F783-4811-8A74-72B3F2F3BADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50211603-F783-4811-8A74-72B3F2F3BADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50211603-F783-4811-8A74-72B3F2F3BADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4435C345-7C60-427D-9A13-42EEF103CB51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4435C345-7C60-427D-9A13-42EEF103CB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4435C345-7C60-427D-9A13-42EEF103CB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4435C345-7C60-427D-9A13-42EEF103CB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF3510D8-8F56-47F2-AFA9-B678AE1FD933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF3510D8-8F56-47F2-AFA9-B678AE1FD933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF3510D8-8F56-47F2-AFA9-B678AE1FD933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF3510D8-8F56-47F2-AFA9-B678AE1FD933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6000F78E-FA9C-4D7B-BEFD-092BCD491845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6000F78E-FA9C-4D7B-BEFD-092BCD491845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6000F78E-FA9C-4D7B-BEFD-092BCD491845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6000F78E-FA9C-4D7B-BEFD-092BCD491845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7121193-DA13-4E63-9CE9-FC01B404ACF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7121193-DA13-4E63-9CE9-FC01B404ACF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7121193-DA13-4E63-9CE9-FC01B404ACF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7121193-DA13-4E63-9CE9-FC01B404ACF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ED9BC3F-7DD7-430B-9D97-E5ED17833BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C36A248A-4AE8-4DD0-A134-FFB43582C202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C36A248A-4AE8-4DD0-A134-FFB43582C202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C36A248A-4AE8-4DD0-A134-FFB43582C202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C36A248A-4AE8-4DD0-A134-FFB43582C202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA610521-6D36-4DC0-A663-0D10F4965DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA610521-6D36-4DC0-A663-0D10F4965DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA610521-6D36-4DC0-A663-0D10F4965DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA610521-6D36-4DC0-A663-0D10F4965DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A87702F0-94BB-46D4-8F3D-369B46CC6316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A87702F0-94BB-46D4-8F3D-369B46CC6316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A87702F0-94BB-46D4-8F3D-369B46CC6316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A87702F0-94BB-46D4-8F3D-369B46CC6316}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
