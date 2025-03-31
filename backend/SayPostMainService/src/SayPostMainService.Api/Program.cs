@@ -1,3 +1,5 @@
+using SharedKernel.common.errs;
+
 namespace SayPostMainService.Api;
 
 public class Program
@@ -23,9 +25,17 @@ public class Program
         app.UseAuthorization();
 
         app
-            .MapGet("/", (HttpContext _) => "main service")
+            .MapGet("/greet", (HttpContext _) => new { Msg = "main service" })
             .WithName("greet");
-
+        app
+            .MapGet("/test-err-with-extra", (HttpContext _) => Results.BadRequest(new[] {
+                    new ErrWithExtraData("Validation failed", new Dictionary<string, object> {
+                            ["just some field"] = "error",
+                            ["int field"] = 123
+                        }, details: "Smth is invalid"
+                    )
+                }
+            ));
         app.Run();
     }
 }

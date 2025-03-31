@@ -50,7 +50,7 @@ export class AuthStoreData {
 		this._lastFetched = new Date(1970, 0, 0);
 	}
 }
-export const authStoreData = $state(
+const authStoreData = $state(
 	new AuthStoreData("", "", "", new Date(1970, 0, 0))
 );
 
@@ -73,7 +73,7 @@ async function fetchAuthData(): Promise<void> {
 	}
 }
 
-async function getAuthData(): Promise<AuthStoreData> {
+export async function getAuthData(): Promise<AuthStoreData> {
 	let lastFetched = authStoreData.LastFetched;
 	const now = new Date();
 	const two_minutes = 2 * 60 * 1000;

@@ -24,7 +24,7 @@ public class Program
 
 
         app
-            .MapGet("/", (HttpContext _) => "auth service")
+            .MapGet("/greet", (HttpContext _) =>new{ Msg= "auth service"})
             .WithName("greet");
 
         app.Run();

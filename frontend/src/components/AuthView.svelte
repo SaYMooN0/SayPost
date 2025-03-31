@@ -1,5 +1,5 @@
 <script lang="ts">
-    import getAuthData from "../ts/stores/authStore";
+    import { getAuthData } from "../stores/auth-store.svelte";
 
     let { loading, authenticated, unauthenticated } = $props();
 </script>
