@@ -14,7 +14,6 @@
         display: flex;
         flex-direction: column;
         width: 100vw;
-        background-color: darksalmon;
     }
     
 </style>

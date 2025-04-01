@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.common.errs;
+﻿namespace SharedKernel.common.errs.utils;
 
 public class ErrCausedException : Exception
 {

@@ -1,4 +1,6 @@
-﻿namespace SharedKernel.common.errs;
+﻿using SharedKernel.common.errs.utils;
+
+namespace SharedKernel.common.errs;
 
 public class ErrOrNothing
 {

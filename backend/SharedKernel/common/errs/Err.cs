@@ -1,6 +1,10 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SharedKernel.common.errs;
+
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "derivedErrType")]
+[JsonDerivedType(typeof(ErrWithExtraData), typeDiscriminator: "errWithExtraData")]
 
 public class Err
 {
@@ -32,34 +36,27 @@ public class Err
 
         return sb.ToString();
     }
-
-    
-    public static class ErrFactory
-    {
-        public static Err NotImplemented(string message = "Not Implemented", string details = "") =>
-            new(message, ErrCodes.NotImplemented, details);
-
-        public static Err NotFound(string message = "Not Found", string details = "") =>
-            new(message, ErrCodes.NotFound, details);
-
-        public static Err Unauthorized(string message = "Unauthorized Access", string details = "") =>
-            new(message, ErrCodes.UnauthorizedAccess, details);
-
-        public static Err InvalidData(string message = "Invalid Data", string details = "") =>
-            new(message, ErrCodes.InvalidData, details);
-
-        public static Err NoAccess(string message = "Access is denied", string details = "") =>
-            new(message, ErrCodes.NoAccess, details);
-    }
-
     public static class ErrCodes
     {
         public const ushort Unspecified = 0;
         public const ushort NotImplemented = 1;
 
-        public const ushort NotFound = 1001;
-        public const ushort UnauthorizedAccess = 1002;
-        public const ushort InvalidData = 1003;
-        public const ushort NoAccess = 1004;
+        // Validation
+        public const ushort InvalidData = 1101;
+        public const ushort NoValue = 1102;
+        public const ushort IncorrectFormat = 1103;
+        public const ushort ValueOutOfRange = 1104;
+
+        // Business logic
+        public const ushort Conflict = 1201;
+        public const ushort LimitExceeded = 1203;
+        public const ushort NotFound = 1204;
+
+        // Auth
+        public const ushort AuthRequired = 1301;
+        public const ushort NoAccess = 1302;
+        public const ushort Forbidden = 1303;
+        
+        
     }
 }

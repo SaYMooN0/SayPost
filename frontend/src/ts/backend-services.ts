@@ -22,11 +22,26 @@ class BackendService {
             //checking if response is of json type to parse errs
             if (response.headers.get("content-type")?.includes("application/json")) { 
                 const json = await response.json();
-                const errArray: Err[] = json.map((e: any) =>
-                    "extraData" in e
-                        ? new ErrWithExtraData(e.message, e.code, e.details, e.extraData)
-                        : new Err(e.message, e.code, e.details)
-                );
+                
+                if (!Array.isArray(json.errors)) {
+                    return {
+                        isSuccess: false,
+                        errors: [new Err("Invalid error format", -1, "Expected 'errors' array in response")]
+                    };
+                }
+
+                const errArray: Err[] = json.errors.map((e: any) => {
+                    if ("derivedErrType" in e) {
+                        switch (e.derivedErrType) {
+                            case "errWithExtraData":
+                                return new ErrWithExtraData(e.message, e.extraData, e.code, e.details);
+                            default:
+                                throw new Error("Unknown error type: " + e.derivedErrType);
+                        }
+                    } else {
+                        return new Err(e.message, e.code, e.details);
+                    }
+                });
                 return { isSuccess: false, errors: errArray };
             } else {
                 return {
@@ -38,7 +53,7 @@ class BackendService {
         } catch (e: any) {
             return {
                 isSuccess: false,
-                errors: [new Err("Unknown error", -1, "Network error: " + e.message)]
+                errors: [new Err("Unknown error", -1, "Error: " + e.message)]
             };
         }
     }

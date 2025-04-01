@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.common.errs;
+﻿namespace SharedKernel.common.errs.utils;
 
 public static class ErrExtensions
 {
@@ -16,4 +16,5 @@ public static class ErrExtensions
         err is ErrWithExtraData errWithExtraData
             ? new ErrWithExtraData($"{prefix}: {err.Message}", errWithExtraData.ExtraData, err.Code, err.Details)
             : new Err($"{prefix}: {err.Message}", err.Code, err.Details);
+    
 }

@@ -8,8 +8,9 @@
 </a>
 
 <style>
-    a{
-        background-color: violet;
+    a {
+        display: flex;
+        align-items: center;
     }
     a > :global(svg) {
         height: 32px;

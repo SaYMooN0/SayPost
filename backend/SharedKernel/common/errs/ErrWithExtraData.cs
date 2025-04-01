@@ -1,5 +1,4 @@
 ﻿namespace SharedKernel.common.errs;
-
 public class ErrWithExtraData : Err
 {
     public ErrWithExtraData(

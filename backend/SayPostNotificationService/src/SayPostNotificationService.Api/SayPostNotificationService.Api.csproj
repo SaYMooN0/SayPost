@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <ProjectReference Include="..\..\..\ApiShared\ApiShared.csproj" />
         <ProjectReference Include="..\SayPostNotificationService.Infrastructure\SayPostNotificationService.Infrastructure.csproj"/>
     </ItemGroup>
 </Project>

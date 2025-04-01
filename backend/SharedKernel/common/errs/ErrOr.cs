@@ -44,7 +44,7 @@ public class ErrOr<T>
         return false;
     }
 
-    public T GetSuccess() {
+    public T AsSuccess() {
         if (_isSuccess) {
             return _success!;
         }
@@ -52,7 +52,7 @@ public class ErrOr<T>
         throw new InvalidOperationException("No success value available");
     }
 
-    public Err GetErr() {
+    public Err AsErr() {
         if (!_isSuccess) {
             return _error!;
         }
