@@ -6,7 +6,7 @@ public class ErrList
 {
     private readonly List<Err> _errList;
 
-    public ErrList() => _errList = new List<Err>();
+    public ErrList() => _errList = [];
 
     public ErrList(Err err) => _errList = [err];
 
@@ -25,7 +25,6 @@ public class ErrList
     }
 
     public bool Any() => _errList.Count > 0;
-    public bool Any(Func<Err, bool> predicate) => _errList.Any(predicate);
     public int Count() => _errList.Count;
 
     public Err[] ToArray() => _errList.ToArray();
@@ -46,6 +45,5 @@ public class ErrList
 
         return sb.ToString();
     }
-
-    public static implicit operator ErrList(Err err) => new ErrList(err);
+    public static implicit operator ErrList(Err err) => new(err);
 }
