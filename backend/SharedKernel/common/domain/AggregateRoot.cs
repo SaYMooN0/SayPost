@@ -6,8 +6,8 @@ namespace SharedKernel.common.domain;
 
 public abstract class AggregateRoot<IdType> : Entity<IdType> where IdType : IEntityId
 {
-    protected AggregateRoot(IdType id) : base(id) { }
-    
+    protected AggregateRoot() : base() { }
+
     protected readonly List<IDomainEvent> _domainEvents = new();
 
     public IImmutableList<IDomainEvent> GetDomainEventsCopy() => _domainEvents.ToImmutableList();

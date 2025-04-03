@@ -4,8 +4,8 @@ namespace SharedKernel.common.domain.entity;
 
 public abstract class Entity<IdType> where IdType : IEntityId
 {
-    public IdType Id { get; }
-    protected Entity(IdType id) => Id = id;
+    public IdType Id { get; protected init; }
+    protected Entity() { }
 
     public override bool Equals(object? other) {
         if (other is null || other.GetType() != GetType()) {

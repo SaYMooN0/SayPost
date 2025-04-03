@@ -39,3 +39,8 @@ PublishScripts/
 !**/[Pp]ackages/build/
 *.nuget.props
 *.nuget.targets
+
+
+# Loki & Grafana volumes
+loki-storage/
+grafana-storage/

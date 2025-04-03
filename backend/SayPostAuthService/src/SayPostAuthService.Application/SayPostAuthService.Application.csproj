@@ -10,4 +10,8 @@
       <ProjectReference Include="..\SayPostAuthService.Domain\SayPostAuthService.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UnconfirmedAppUsers\commands\" />
+    </ItemGroup>
+
 </Project>
