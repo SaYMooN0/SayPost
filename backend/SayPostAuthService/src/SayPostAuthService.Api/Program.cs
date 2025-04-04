@@ -1,32 +1,37 @@
+using ApiShared;
+using SayPostAuthService.Api.endpoints;
+using SayPostAuthService.Application;
+using SayPostAuthService.Infrastructure;
+
 namespace SayPostAuthService.Api;
 
 public class Program
 {
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddAuthorization();
-
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
-
+        builder.Services
+            .AddAuthTokenConfig(builder.Configuration)
+            .AddApplication(builder.Configuration)
+            .AddInfrastructure(builder.Configuration);
         var app = builder.Build();
+        app.AddInfrastructureMiddleware();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment()) {
             app.MapOpenApi();
         }
 
+        app.AddExceptionHandlingMiddleware();
         app.UseHttpsRedirection();
 
-        app.UseAuthorization();
 
-
-        app
-            .MapGet("/greet", (HttpContext _) =>new{ Msg= "auth service"})
-            .WithName("greet");
+        MapHandlers(app);
 
         app.Run();
     }
+    
+    private static void MapHandlers(WebApplication app) {
+        app.MapRootHandlers();
+    }
+    
 }

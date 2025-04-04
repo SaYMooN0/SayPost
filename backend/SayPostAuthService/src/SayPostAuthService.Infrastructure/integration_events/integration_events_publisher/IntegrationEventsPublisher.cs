@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using SharedKernel.Configs;
+using SharedKernel.configs;
 using SharedKernel.integration_events;
 
 namespace SayPostAuthService.Infrastructure.integration_events.integration_events_publisher;

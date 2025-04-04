@@ -1,4 +1,4 @@
-﻿namespace SharedKernel.Configs;
+﻿namespace SharedKernel.configs;
 
 public class MessageBrokerConfig
 {

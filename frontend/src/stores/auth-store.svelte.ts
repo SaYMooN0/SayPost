@@ -1,24 +1,18 @@
 import { StringUtils } from "../ts/string-utils";
 
 export class AuthStoreData {
-	private _email: string | null;
 	private _username: string | null;
 	private _userId: string | null;
 	private _lastFetched: Date | null;
 	constructor(
-		email: string | null,
 		username: string | null,
 		userId: string | null,
 		lastFetched: Date | null
 	) {
-		this._email = email;
 		this._username = username;
 		this._userId = userId;
 		this._lastFetched = lastFetched;
 
-	}
-	public get Email(): string | null {
-		return this._email;
 	}
 	public get Username(): string | null {
 		return this._username;
@@ -32,26 +26,23 @@ export class AuthStoreData {
 
 	public isAuthenticated(): boolean {
 		return !StringUtils.isNullOrWhiteSpace(this.Username) &&
-			!StringUtils.isNullOrWhiteSpace(this.UserId) &&
-			!StringUtils.isNullOrWhiteSpace(this.Email);
+			!StringUtils.isNullOrWhiteSpace(this.UserId);
 	}
 	update(
-		email: string | null, username: string | null, userId: string | null
+		username: string | null, userId: string | null
 	) {
-		this._email = email;
 		this._username = username;
 		this._userId = userId;
 		this._lastFetched = new Date();
 	}
 	setEmpty() {
-		this._email = null;
 		this._username = null;
 		this._userId = null;
 		this._lastFetched = new Date(1970, 0, 0);
 	}
 }
 const authStoreData = $state(
-	new AuthStoreData("", "", "", new Date(1970, 0, 0))
+	new AuthStoreData("", "", new Date(1970, 0, 0))
 );
 
 
@@ -62,9 +53,7 @@ async function fetchAuthData(): Promise<void> {
 		if (response.status === 200) {
 			const data = await response.json();
 
-			authStoreData.update(
-				data.email, data.username, data.userId
-			);
+			authStoreData.update(data.username, data.userId);
 		} else {
 			authStoreData.setEmpty();
 		}

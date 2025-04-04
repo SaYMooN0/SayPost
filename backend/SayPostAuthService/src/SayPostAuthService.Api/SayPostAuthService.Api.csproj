@@ -15,8 +15,4 @@
       <ProjectReference Include="..\SayPostAuthService.Infrastructure\SayPostAuthService.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="endpoints\" />
-    </ItemGroup>
-
 </Project>

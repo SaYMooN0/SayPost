@@ -14,6 +14,7 @@ public class ErrListOr<T>
         _errList = errList;
         _successValue = default!;
     }
+
     private ErrListOr(T value) {
         _successValue = value;
         _errList = new ErrList();
@@ -45,6 +46,7 @@ public class ErrListOr<T>
     }
 
     public ErrList AsErrs() => _errList;
+
     public T AsSuccess() {
         if (IsSuccess()) {
             return _successValue;
@@ -52,8 +54,11 @@ public class ErrListOr<T>
 
         throw new InvalidOperationException("No success value available.");
     }
+
     public TResult Match<TResult>(Func<T, TResult> successFunc, Func<ErrList, TResult> errorFunc) =>
         IsSuccess() ? successFunc(_successValue) : errorFunc(_errList);
-    public static implicit operator ErrListOr<T>(ErrList errList) => new ErrListOr<T>(errList);
-    public static implicit operator ErrListOr<T>(T successValue) => new ErrListOr<T>(successValue);
+
+    public static implicit operator ErrListOr<T>(ErrList errList) => new(errList);
+    public static implicit operator ErrListOr<T>(T successValue) => new(successValue);
+    public static implicit operator ErrListOr<T>(Err singleErr) => new(new ErrList(singleErr));
 }

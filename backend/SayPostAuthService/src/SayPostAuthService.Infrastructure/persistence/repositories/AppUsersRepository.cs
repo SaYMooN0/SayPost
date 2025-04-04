@@ -2,6 +2,7 @@
 using SayPostAuthService.Domain.app_user_aggregate;
 using SayPostAuthService.Domain.common;
 using SayPostAuthService.Domain.common.interfaces.repositories;
+using SharedKernel.common.domain.ids;
 
 namespace SayPostAuthService.Infrastructure.persistence.repositories;
 
@@ -26,4 +27,9 @@ internal class AppUsersRepository : IAppUsersRepository
         await _db.AppUsers
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email == email);
+
+    public async Task<AppUser?> GetByIdAsNoTracking(AppUserId id) => await
+        _db.AppUsers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
 }

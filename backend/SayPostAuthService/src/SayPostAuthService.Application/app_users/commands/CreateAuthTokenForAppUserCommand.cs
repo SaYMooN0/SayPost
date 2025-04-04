@@ -10,7 +10,7 @@ namespace SayPostAuthService.Application.app_users.commands;
 
 public record class CreateAuthTokenForAppUserCommand(Email Email, string Password) : ICommand<ErrOr<string>>;
 
-public class CreateAuthTokenForAppUserCommandHandler : ICommandHandler<CreateAuthTokenForAppUserCommand, ErrOr<string>>
+internal class CreateAuthTokenForAppUserCommandHandler : ICommandHandler<CreateAuthTokenForAppUserCommand, ErrOr<string>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;

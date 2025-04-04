@@ -1,4 +1,5 @@
 ﻿using ApiShared;
+using SayPostAuthService.Domain.common;
 using SharedKernel.common.errs.utils;
 
 namespace SayPostAuthService.Api.contracts;
@@ -10,7 +11,7 @@ internal class LoginUserRequest : IRequestWithValidationNeeded
 
     public RequestValidationResult Validate() {
         if (string.IsNullOrWhiteSpace(Email)) {
-            ErrFactory.NoValue("Email is required");
+            return ErrFactory.NoValue("Email is required");
         }
 
         if (!Domain.common.Email.IsStringValidEmail(Email)) {
@@ -23,4 +24,6 @@ internal class LoginUserRequest : IRequestWithValidationNeeded
 
         return RequestValidationResult.Success;
     }
+
+    public Email ParsedEmail => Domain.common.Email.Create(Email).AsSuccess();
 }

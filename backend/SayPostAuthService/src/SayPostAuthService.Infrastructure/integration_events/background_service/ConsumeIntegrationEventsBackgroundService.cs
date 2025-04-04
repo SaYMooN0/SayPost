@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using SharedKernel.Configs;
+using SharedKernel.configs;
 using SharedKernel.integration_events;
 
 namespace SayPostAuthService.Infrastructure.integration_events.background_service;

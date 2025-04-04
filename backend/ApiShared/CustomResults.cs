@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SharedKernel.common.errs;
+using SharedKernel.common.errs.utils;
 
 namespace ApiShared;
 
@@ -36,4 +37,9 @@ public class CustomResults
 
     public static IResult FromErrListOr<T>(ErrListOr<T> errListOrValue, Func<T, IResult> successFunc) =>
         errListOrValue.Match(successFunc, ErrorResponse);
+
+    public static IResult AuthRequired() => ErrorResponse(ErrFactory.AuthRequired());
+
+    public static IResult Created(object responseObject) =>
+        Results.Json(responseObject, statusCode: StatusCodes.Status201Created);
 }

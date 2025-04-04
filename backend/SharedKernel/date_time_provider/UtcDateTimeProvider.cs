@@ -1,6 +1,4 @@
 ﻿
-using SharedKernel.interfaces;
-
 namespace SharedKernel.date_time_provider;
 
 public class UtcDateTimeProvider : IDateTimeProvider
