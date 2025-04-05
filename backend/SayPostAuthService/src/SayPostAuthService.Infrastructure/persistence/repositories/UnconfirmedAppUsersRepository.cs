@@ -1,4 +1,5 @@
-﻿using SayPostAuthService.Domain.common;
+﻿using Microsoft.EntityFrameworkCore;
+using SayPostAuthService.Domain.common;
 using SayPostAuthService.Domain.common.interfaces.repositories;
 using SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
 
@@ -13,13 +14,20 @@ internal class UnconfirmedAppUsersRepository : IUnconfirmedAppUsersRepository
     }
 
 
-    public Task<UnconfirmedAppUser?> GetByEmail(Email email) => 
+    public async Task<UnconfirmedAppUser?> GetByEmail(Email email) =>
+        await _db.UnconfirmedAppUsers.FirstOrDefaultAsync(u => u.Email == email);
 
-    public Task<UnconfirmedAppUser?> GetById(UnconfirmedAppUserId userId) => 
 
-    public Task AddNew(UnconfirmedAppUser unconfirmedAppUser) => ;
+    public async Task<UnconfirmedAppUser?> GetById(UnconfirmedAppUserId userId) =>
+        await _db.UnconfirmedAppUsers.FindAsync(userId);
 
-    public Task OverrideExistingWithEmail(UnconfirmedAppUser unconfirmedAppUser) =>;
+    public async Task AddNew(UnconfirmedAppUser unconfirmedAppUser) {
+        await _db.UnconfirmedAppUsers.AddAsync(unconfirmedAppUser);
+        await _db.SaveChangesAsync();
+    }
 
-    public Task RemoveById(UnconfirmedAppUserId userId) => ;
+    public async Task Update(UnconfirmedAppUser unconfirmedUser) {
+        _db.UnconfirmedAppUsers.Update(unconfirmedUser);
+        await _db.SaveChangesAsync();
+    }
 }

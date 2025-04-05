@@ -10,9 +10,10 @@ namespace SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
 public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
 {
     private UnconfirmedAppUser() { }
-    private string PasswordHash { get; }
+    private string PasswordHash { get; set; }
     public Email Email { get; }
     public string ConfirmationCode { get; }
+
     private UnconfirmedAppUser(UnconfirmedAppUserId id, string passwordHash, Email email, string confirmationCode) {
         Id = id;
         PasswordHash = passwordHash;
@@ -21,16 +22,10 @@ public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
     }
 
     public static ErrListOr<UnconfirmedAppUser> CreateNew(
-        string email, string password, IPasswordHasher passwordHasher
+        Email email, string password, IPasswordHasher passwordHasher
     ) {
-        ErrList errList = new();
-
-        var emailResult = Email.Create(email);
-        errList.AddPossibleErr(emailResult);
-        errList.AddPossibleErr(PasswordRules.CheckForErr(password));
-
-        if (errList.Any()) {
-            return errList;
+        if (PasswordRules.CheckForErr(password).IsErr(out var err)) {
+            return err;
         }
 
         string passwordHash = passwordHasher.HashPassword(password);
@@ -38,7 +33,7 @@ public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
         return new UnconfirmedAppUser(
             UnconfirmedAppUserId.CreateNew(),
             passwordHash,
-            emailResult.AsSuccess(),
+            email,
             confirmationCode: Guid.NewGuid().ToString()
         );
     }
@@ -49,6 +44,15 @@ public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
         }
 
         _domainEvents.Add(new UserConfirmedEvent(Id, Email, PasswordHash));
+        return ErrOrNothing.Nothing;
+    }
+
+    public ErrOrNothing OverridePassword(string password, IPasswordHasher passwordHasher) {
+        if (PasswordRules.CheckForErr(password).IsErr(out var err)) {
+            return err;
+        }
+
+        this.PasswordHash = passwordHasher.HashPassword(password);
         return ErrOrNothing.Nothing;
     }
 }

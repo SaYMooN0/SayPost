@@ -8,7 +8,6 @@ public interface IUnconfirmedAppUsersRepository
     Task<UnconfirmedAppUser?> GetById(UnconfirmedAppUserId userId);
 
     Task AddNew(UnconfirmedAppUser unconfirmedAppUser);
-    Task OverrideExistingWithEmail(UnconfirmedAppUser unconfirmedAppUser);
 
-    Task RemoveById(UnconfirmedAppUserId userId);
+    Task Update(UnconfirmedAppUser unconfirmedUser);
 }

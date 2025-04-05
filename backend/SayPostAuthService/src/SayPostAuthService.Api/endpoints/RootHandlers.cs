@@ -13,7 +13,7 @@ namespace SayPostAuthService.Api.endpoints;
 internal static class RootHandlers
 {
     internal static IEndpointRouteBuilder MapRootHandlers(this IEndpointRouteBuilder endpoints) {
-        endpoints.MapPost("/ping-auth", HandlePingAuth);
+        endpoints.MapPost("/ping", HandlePingAuth);
         endpoints.MapPost("/register", Register)
             .WithRequestValidation<RegisterUserRequest>();
         endpoints.MapPost("/login", Login)
@@ -46,7 +46,7 @@ internal static class RootHandlers
         HttpContext httpContext, ISender mediator
     ) {
         RegisterUserRequest request = httpContext.GetValidatedRequest<RegisterUserRequest>();
-        CreateNewUnconfirmedAppUserCommand command = new(request.Email, request.Password);
+        CreateNewUnconfirmedAppUserCommand command = new(request.ParsedEmail, request.Password);
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrListOr(result, (userEmail) =>

@@ -1,4 +1,6 @@
-﻿using ApiShared;
+﻿using System.Runtime.CompilerServices;
+using ApiShared;
+using SayPostAuthService.Domain.common;
 using SayPostAuthService.Domain.rules;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
@@ -30,4 +32,6 @@ internal class RegisterUserRequest : IRequestWithValidationNeeded
 
         return RequestValidationResult.Success;
     }
+
+    public Email ParsedEmail => Domain.common.Email.Create(this.Email).AsSuccess();
 }

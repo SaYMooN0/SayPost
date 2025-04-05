@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SayPostAuthService.Domain.app_user_aggregate;
+using SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
 
@@ -11,7 +12,8 @@ public class AuthDbContext : DbContext
 {
     private readonly IPublisher _publisher;
 
-    public DbSet<AppUser> AppUsers { get; set; } = null!;
+    public DbSet<AppUser> AppUsers { get; init; } = null!;
+    public DbSet<UnconfirmedAppUser> UnconfirmedAppUsers { get; init; } = null!;
 
 
     public AuthDbContext(DbContextOptions<AuthDbContext> options, IPublisher publisher) : base(options) {

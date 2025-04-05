@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SayPostAuthService.Domain.common.interfaces;
 using SayPostAuthService.Domain.common.interfaces.repositories;
+using SayPostAuthService.Infrastructure.configs;
 using SayPostAuthService.Infrastructure.integration_events.background_service;
 using SayPostAuthService.Infrastructure.integration_events.integration_events_publisher;
 using SayPostAuthService.Infrastructure.persistence;
 using SayPostAuthService.Infrastructure.persistence.repositories;
+using SayPostAuthService.Infrastructure.services;
 using SharedKernel.configs;
 using SharedKernel.date_time_provider;
 
@@ -15,10 +18,20 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
         services
+            .AddAuthRelatedServices()
             .AddMessageBrokerIntegration(configuration)
             .AddPersistence(configuration)
+            .AddEmailService(configuration)
             .AddMediatR()
-            .AddDateTimeService();
+            .AddDateTimeService()
+            ;
+
+        return services;
+    }
+
+    private static IServiceCollection AddAuthRelatedServices(this IServiceCollection services) {
+        services.AddSingleton<IPasswordHasher>(new PasswordHasher());
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }
@@ -39,13 +52,19 @@ public static class DependencyInjection
     }
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration) {
-        string dbConnectionString = configuration.GetConnectionString("TestCreationServiceDb")
+        string dbConnectionString = configuration.GetConnectionString("AuthServiceDb")
                                     ?? throw new Exception("Database connection string is not provided.");
         services.AddDbContext<AuthDbContext>(options => options.UseNpgsql(dbConnectionString));
 
         services.AddScoped<IAppUsersRepository, AppUsersRepository>();
         services.AddScoped<IUnconfirmedAppUsersRepository, UnconfirmedAppUsersRepository>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration) {
+        services.Configure<EmailServiceConfig>(options => configuration.GetSection("EmailServiceConfig").Bind(options));
+        services.AddTransient<IEmailService, EmailService>();
         return services;
     }
 
