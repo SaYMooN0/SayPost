@@ -6,9 +6,9 @@ using RabbitMQ.Client;
 using SharedKernel.configs;
 using SharedKernel.integration_events;
 
-namespace SayPostAuthService.Infrastructure.integration_events.integration_events_publisher;
+namespace InfrastructureShared.integration_events.integration_events_publisher;
 
-internal class IntegrationEventsPublisher : IIntegrationEventsPublisher
+public class IntegrationEventsPublisher : IIntegrationEventsPublisher
 {
     private readonly MessageBrokerConfig _brokerConfig;
     private readonly ILogger<IntegrationEventsPublisher> _logger;

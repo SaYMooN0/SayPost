@@ -1,4 +1,4 @@
-﻿using SayPostAuthService.Infrastructure.integration_events.integration_events_publisher;
+﻿using InfrastructureShared.integration_events.integration_events_publisher;
 
 namespace SayPostAuthService.Infrastructure.integration_events;
 

@@ -1,5 +1,11 @@
 <script lang="ts">
-    let { children, href, text } = $props();
+    import type { Snippet } from "svelte";
+
+    let {
+        children,
+        href,
+        text,
+    }: { children: Snippet; href: string; text: string } = $props();
 </script>
 
 <a data-sveltekit-preload-data="tap" {href}>

@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InfrastructureShared.integration_events.background_service;
+using InfrastructureShared.integration_events.integration_events_publisher;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SayPostAuthService.Domain.common.interfaces;
 using SayPostAuthService.Domain.common.interfaces.repositories;
 using SayPostAuthService.Infrastructure.configs;
-using SayPostAuthService.Infrastructure.integration_events.background_service;
-using SayPostAuthService.Infrastructure.integration_events.integration_events_publisher;
 using SayPostAuthService.Infrastructure.persistence;
 using SayPostAuthService.Infrastructure.persistence.repositories;
 using SayPostAuthService.Infrastructure.services;

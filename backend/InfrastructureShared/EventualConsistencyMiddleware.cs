@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using SayPostAuthService.Infrastructure.persistence;
+using Microsoft.EntityFrameworkCore;
 
-namespace SayPostAuthService.Infrastructure.middleware.eventual_consistency_middleware;
+namespace InfrastructureShared;
 
-internal class EventualConsistencyMiddleware
+public class EventualConsistencyMiddleware<T> where T : DbContext
 {
 
     private readonly RequestDelegate _next;
@@ -13,7 +13,7 @@ internal class EventualConsistencyMiddleware
         _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, IPublisher publisher, AuthDbContext dbContext) {
+    public async Task InvokeAsync(HttpContext context, IPublisher publisher, T dbContext) {
         var transaction = await dbContext.Database.BeginTransactionAsync();
         context.Response.OnCompleted(async () => {
             try {

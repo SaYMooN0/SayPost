@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedKernel", "SharedKernel\SharedKernel.csproj", "{50211603-F783-4811-8A74-72B3F2F3BADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureConfigurationShared", "InfrastructureConfigurationShared\InfrastructureConfigurationShared.csproj", "{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Domain", "SayPostAuthService\src\SayPostAuthService.Domain\SayPostAuthService.Domain.csproj", "{4435C345-7C60-427D-9A13-42EEF103CB51}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostAuthService.Application", "SayPostAuthService\src\SayPostAuthService.Application\SayPostAuthService.Application.csproj", "{EB597E9C-1C74-4E7B-ABE2-6F156B0505CC}"
@@ -41,6 +39,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostNotificationService.Infrastructure", "SayPostNotificationService\src\SayPostNotificationService.Infrastructure\SayPostNotificationService.Infrastructure.csproj", "{A87702F0-94BB-46D4-8F3D-369B46CC6316}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiShared", "ApiShared\ApiShared.csproj", "{2C78ACA9-068C-4C93-9916-966122916541}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureShared", "InfrastructureShared\InfrastructureShared.csproj", "{3FED53A5-DFA8-447C-AD29-B42D33086167}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,10 +81,6 @@ Global
 		{50211603-F783-4811-8A74-72B3F2F3BADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50211603-F783-4811-8A74-72B3F2F3BADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50211603-F783-4811-8A74-72B3F2F3BADD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE3EEE8E-CE69-4E07-AA55-F9F00C8F4386}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4435C345-7C60-427D-9A13-42EEF103CB51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4435C345-7C60-427D-9A13-42EEF103CB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4435C345-7C60-427D-9A13-42EEF103CB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -125,5 +121,9 @@ Global
 		{2C78ACA9-068C-4C93-9916-966122916541}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C78ACA9-068C-4C93-9916-966122916541}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C78ACA9-068C-4C93-9916-966122916541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

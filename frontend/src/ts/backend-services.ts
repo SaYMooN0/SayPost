@@ -51,6 +51,7 @@ class BackendService {
             }
 
         } catch (e: any) {
+            console.log(e);
             return {
                 isSuccess: false,
                 errors: [new Err("Unknown error", -1, "Error: " + e.message)]

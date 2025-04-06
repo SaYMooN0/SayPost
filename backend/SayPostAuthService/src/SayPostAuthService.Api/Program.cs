@@ -9,6 +9,18 @@ public class Program
 {
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowFrontend", policy =>
+            {
+                policy.WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+        
         builder.Services.AddOpenApi();
         builder.Services
             .AddAuthTokenConfig(builder.Configuration)
@@ -21,17 +33,18 @@ public class Program
             app.MapOpenApi();
         }
 
+        
         app.AddExceptionHandlingMiddleware();
-        app.UseHttpsRedirection();
-
-
+        if (!app.Environment.IsDevelopment()) {
+            app.UseHttpsRedirection();
+        }
         MapHandlers(app);
-
+        
+        app.UseCors("AllowFrontend");
         app.Run();
     }
-    
+
     private static void MapHandlers(WebApplication app) {
         app.MapRootHandlers();
     }
-    
 }

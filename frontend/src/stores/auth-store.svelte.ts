@@ -48,8 +48,7 @@ const authStoreData = $state(
 
 async function fetchAuthData(): Promise<void> {
 	try {
-		const response = await fetch("/api/auth/ping");
-		console.log(response);
+		const response = await fetch("/api/auth/ping", { method: "POST" });
 		if (response.status === 200) {
 			const data = await response.json();
 

@@ -10,9 +10,9 @@ using RabbitMQ.Client.Events;
 using SharedKernel.configs;
 using SharedKernel.integration_events;
 
-namespace SayPostAuthService.Infrastructure.integration_events.background_service;
+namespace InfrastructureShared.integration_events.background_service;
 
-internal class ConsumeIntegrationEventsBackgroundService : IHostedService
+public class ConsumeIntegrationEventsBackgroundService : IHostedService
 {
     private readonly ILogger<ConsumeIntegrationEventsBackgroundService> _logger;
     private readonly MessageBrokerConfig _messageBrokerConfig;

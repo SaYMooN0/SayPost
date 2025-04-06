@@ -2,7 +2,14 @@
     import AuthView from "../components/AuthView.svelte";
     import { AuthStoreData } from "../stores/auth-store.svelte";
     import LayoutHeaderLink from "./LayoutHeaderLink.svelte";
+    import LayoutProfileViewNotifications from "./LayoutProfileViewNotifications.svelte";
     import LayoutSearchBar from "./LayoutSearchBar.svelte";
+
+    type LayoutHeaderProps = {
+        openLogin: () => void;
+        openSignUp: () => void;
+    };
+    let { openLogin, openSignUp }: LayoutHeaderProps = $props();
 </script>
 
 <div class="layout-header-container">
@@ -88,7 +95,6 @@
     </div>
     <LayoutSearchBar />
     <div class="header-right-part">
-        <div class="notifications-btn">Notifications</div>
         <AuthView {loading} {authenticated} {unauthenticated} />
     </div>
 </div>
@@ -97,10 +103,14 @@
     <div class="profile-view-loader">Loading</div>
 {/snippet}
 {#snippet authenticated(authData: AuthStoreData)}
+    <LayoutProfileViewNotifications />
     <h1>{authData.Username}</h1>
 {/snippet}
 {#snippet unauthenticated()}
-    <h1>Unauth</h1>
+    <div class="auth-btns-container">
+        <button class="login-btn" onclick={openLogin}>Login</button>
+        <button class="signup-btn" onclick={openSignUp}>Sign Up</button>
+    </div>
 {/snippet}
 
 <style>
