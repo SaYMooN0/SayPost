@@ -11,6 +11,7 @@ using SayPostAuthService.Infrastructure.persistence.repositories;
 using SayPostAuthService.Infrastructure.services;
 using SharedKernel.configs;
 using SharedKernel.date_time_provider;
+using SayPostAuthService.Application.configs;
 
 namespace SayPostAuthService.Infrastructure;
 
@@ -24,6 +25,7 @@ public static class DependencyInjection
             .AddEmailService(configuration)
             .AddMediatR()
             .AddDateTimeService()
+            .AddFrontedConfigs(configuration)
             ;
 
         return services;
@@ -70,6 +72,20 @@ public static class DependencyInjection
 
     private static IServiceCollection AddDateTimeService(this IServiceCollection services) {
         services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
+        return services;
+    }
+    internal static IServiceCollection AddFrontedConfigs(
+        this IServiceCollection services, IConfiguration configuration
+    ) {
+        string frontendUrl = configuration["FrontendUrl"] ??
+                             throw new Exception("FrontendUrl is not provided");
+        string confirmRegistrationUrl = configuration["ConfirmRegistrationUrl"] ??
+                                        throw new Exception("ConfirmRegistrationUrl is not provided");
+
+        FrontendConfig frontendConfig = new(url: frontendUrl, confirmRegistrationUrl: confirmRegistrationUrl);
+        services.AddSingleton(frontendConfig);
+
+
         return services;
     }
 }

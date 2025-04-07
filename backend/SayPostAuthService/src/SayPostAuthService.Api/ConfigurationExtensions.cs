@@ -1,21 +1,29 @@
-﻿using SayPostAuthService.Application.configs;
+﻿using Serilog;
+using Serilog.Core;
+using Serilog.Events;
+using Serilog.Sinks.OpenTelemetry;
 
 namespace SayPostAuthService.Api;
 
 internal static class ConfigurationExtensions
 {
-    internal static IServiceCollection AddConfigurations(
-        this IServiceCollection services, IConfiguration configuration
-    ) {
-        string frontendUrl = configuration["FrontendUrl"] ??
-                             throw new Exception("FrontendUrl is not provided");
-        string confirmRegistrationUrl = configuration["ConfirmRegistrationUrl"] ??
-                                        throw new Exception("ConfirmRegistrationUrl is not provided");
+    internal static void ConfigureSerilog(IConfiguration configuration)
+    {
+        var serviceName = configuration["ServiceName"]
+                          ?? throw new ArgumentNullException("ServiceName is not provided");
 
-        FrontendConfig frontendConfig = new(url: frontendUrl, confirmRegistrationUrl: confirmRegistrationUrl);
-        services.AddSingleton(frontendConfig);
-
-
-        return services;
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Verbose()
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = "http://localhost:4317";
+                options.Protocol = OtlpProtocol.Grpc;
+                options.RestrictedToMinimumLevel = LogEventLevel.Verbose;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = serviceName
+                };
+            })
+            .CreateLogger();
     }
 }

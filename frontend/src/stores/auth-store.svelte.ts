@@ -51,7 +51,6 @@ async function fetchAuthData(): Promise<void> {
 		const response = await fetch("/api/auth/ping", { method: "POST" });
 		if (response.status === 200) {
 			const data = await response.json();
-
 			authStoreData.update(data.username, data.userId);
 		} else {
 			authStoreData.setEmpty();
