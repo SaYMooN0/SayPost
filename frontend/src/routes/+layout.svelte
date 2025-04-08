@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import LayoutAuthDialog from "./LayoutAuthDialog.svelte";
-    import LayoutHeader from "./LayoutHeader.svelte";
+    import LayoutAuthDialog from "./layout_components/LayoutAuthDialog.svelte";
+    import LayoutHeader from "./layout_components/LayoutHeader.svelte";
 
     let { children }: { children: Snippet } = $props();
     let authDialog = $state<ReturnType<typeof LayoutAuthDialog>>();
@@ -20,25 +20,25 @@
     :root {
         --accent-main: #6648f1;
         --accent-hov: #4e35f2;
-
         --text-main: #121222;
-
         --back-main: #f5f5f5;
-
-        --err-red: #ef421a;
+        --err-red: #dc2003;
         --err-red-back: #f5dcdc;
-
         --warning-yellow: #f2bc46;
         --warning-yellow-back: #f8e9d3;
-
-        --grey: #8b8ba7;
+        --grey: #6f6b88;
     }
 
-    body {
-        margin: 0;
+    :global(body) {
         padding: 0;
+        margin: 0;
         background-color: var(--back-main);
     }
+
+    :global(*) {
+        font-family: Rubik, sans-serif;
+    }
+
     .page {
         display: flex;
         flex-direction: column;

@@ -1,6 +1,6 @@
 ﻿using InfrastructureShared.integration_events.integration_events_publisher;
 
-namespace SayPostAuthService.Infrastructure.integration_events;
+namespace InfrastructureShared.integration_events;
 
 internal class DomainToIntegrationEventsHandler 
 // and all other domain events that need to be published as integration events

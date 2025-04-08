@@ -67,6 +67,7 @@ export async function getAuthData(): Promise<AuthStoreData> {
 
 	if (!lastFetched || (now.getTime() - lastFetched.getTime() > two_minutes)) {
 		await fetchAuthData();
+
 	}
 
 	return authStoreData;
