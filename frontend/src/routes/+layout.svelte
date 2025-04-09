@@ -3,7 +3,7 @@
     import LayoutAuthDialog from "./layout_components/LayoutAuthDialog.svelte";
     import LayoutHeader from "./layout_components/LayoutHeader.svelte";
 
-    let { children }: { children: Snippet } = $props();
+    const { children } = $props<{ children: Snippet }>();
     let authDialog = $state<ReturnType<typeof LayoutAuthDialog>>();
 </script>
 
@@ -22,11 +22,12 @@
         --accent-hov: #4e35f2;
         --text-main: #121222;
         --back-main: #f5f5f5;
+        --back-second: #ece7f3;
         --err-red: #dc2003;
         --err-red-back: #f5dcdc;
         --warning-yellow: #f2bc46;
         --warning-yellow-back: #f8e9d3;
-        --grey: #6f6b88;
+        --gray: #6f6b88;
     }
 
     :global(body) {
@@ -40,8 +41,10 @@
     }
 
     .page {
-        display: flex;
-        flex-direction: column;
         width: 100vw;
+    }
+
+    :global(.unselectable) {
+        user-select: none;
     }
 </style>

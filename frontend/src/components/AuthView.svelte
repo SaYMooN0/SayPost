@@ -1,15 +1,24 @@
 <script lang="ts">
-    import { getAuthData } from "../stores/auth-store.svelte";
+    import type { Snippet } from "svelte";
+    import { AuthStoreData, getAuthData } from "../stores/auth-store.svelte";
 
-    let { loading, authenticated, unauthenticated }  = $props();
+    const {
+        loading = null,
+        authenticated = null,
+        unauthenticated = null,
+    } = $props<{
+        loading?: Snippet;
+        authenticated?: Snippet<[AuthStoreData]>;
+        unauthenticated?: Snippet;
+    }>();
 </script>
 
 {#await getAuthData()}
-    {@render loading()}
+    {@render loading?.()}
 {:then authData}
     {#if authData !== null && authData.isAuthenticated()}
-        {@render authenticated(authData)}
+        {@render authenticated?.(authData)}
     {:else}
-        {@render unauthenticated()}
+        {@render unauthenticated?.()}
     {/if}
 {/await}
