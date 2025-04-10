@@ -28,6 +28,7 @@
         --warning-yellow: #f2bc46;
         --warning-yellow-back: #f8e9d3;
         --gray: #6f6b88;
+
     }
 
     :global(body) {
@@ -35,7 +36,7 @@
         margin: 0;
         background-color: var(--back-main);
     }
-
+    
     :global(*) {
         font-family: Rubik, sans-serif;
     }

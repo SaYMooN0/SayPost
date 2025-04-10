@@ -1,8 +1,12 @@
 <script lang="ts">
     import { tick, type Snippet } from "svelte";
+    import { StringUtils } from "../../ts/string-utils";
 
-    let { dialogId, children }: { dialogId: string; children: Snippet } =
-        $props();
+    const { dialogId = StringUtils.rndStrWithPref("dialog-"), children } =
+        $props<{
+            dialogId?: string;
+            children: Snippet;
+        }>();
 
     let show = $state<boolean>(false);
     let dialogElement: HTMLDialogElement;
@@ -17,7 +21,6 @@
         dialogElement.close();
     }
 </script>
-
 
 {#if show}
     <dialog
@@ -41,5 +44,6 @@
         padding: 0;
         outline: none;
         border: none;
+        background: none;
     }
 </style>

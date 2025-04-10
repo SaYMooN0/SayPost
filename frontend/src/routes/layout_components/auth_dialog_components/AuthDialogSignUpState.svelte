@@ -1,12 +1,61 @@
 <script lang="ts">
+    import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
+    import { ApiAuth } from "../../../ts/backend-services";
+    import { Err } from "../../../ts/common/errs/err";
+    import { StringUtils } from "../../../ts/string-utils";
     import AuthDialogGrayLink from "./AuthDialogGrayLink.svelte";
     import AuthDialogInput from "./AuthDialogInput.svelte";
-    const { changeStateToLogin } = $props<{ changeStateToLogin: () => void }>();
+
+    const { changeStateToLogin, changeStateToEmailSent } = $props<{
+        changeStateToLogin: () => void;
+        changeStateToEmailSent: (value: string) => void;
+    }>();
+
     let email = $state<string>("");
     let password = $state<string>("");
     let confirmPassword = $state<string>("");
+    let errList = $state<Err[]>([]);
+
     async function signupPressed() {
-        console.log(email, password, confirmPassword);
+        errList = [];
+        if (StringUtils.isNullOrWhiteSpace(email)) {
+            errList.push(
+                new Err(
+                    "Email is required",
+                    null,
+                    "Fill the email input field",
+                ),
+            );
+        } else if (!email.includes("@")) {
+            errList.push(
+                new Err("Invalid email", null, "Email must contain '@'"),
+            );
+        }
+        if (StringUtils.isNullOrWhiteSpace(password)) {
+            errList.push(new Err("Password is required"));
+        }
+        if (StringUtils.isNullOrWhiteSpace(confirmPassword)) {
+            errList.push(new Err("Confirm Password is required"));
+        } else if (password !== confirmPassword) {
+            errList.push(
+                new Err(
+                    "Passwords don't match",
+                    null,
+                    "'Password' and 'Confirm Password' fields must match",
+                ),
+            );
+        }
+        if (errList.length > 0) {
+            return;
+        }
+        const response = ApiAuth.jsonFetch<{ email: string }>(
+            "/api/auth/register",
+            ApiAuth.requestJsonPostOptions({
+                email,
+                password,
+                confirmPassword,
+            }),
+        );
     }
 </script>
 
@@ -114,8 +163,8 @@
         />
     </svg>
 </AuthDialogInput>
+<DefaultErrBlock {errList} />
 <span></span>
-
 <AuthDialogGrayLink
     text={"I already have an account"}
     onClick={() => changeStateToLogin()}

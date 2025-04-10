@@ -1,3 +1,5 @@
+import { StringUtils } from "../../string-utils";
+
 export class Err {
     protected _message: string;
     protected _code: number | null;
@@ -7,6 +9,7 @@ export class Err {
         this._code = code;
         this._details = details;
     }
+    
     public get Message(): string {
         return this._message;
     }
@@ -15,6 +18,9 @@ export class Err {
     }
     public get Details(): string | null {
         return this._details;
+    }
+    public HasSomethingExceptMessage(): boolean {
+        return this._code != null || !StringUtils.isNullOrWhiteSpace(this._details);
     }
 
 }

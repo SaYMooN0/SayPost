@@ -2,8 +2,10 @@
     import type { Snippet } from "svelte";
     import BaseDialog from "./BaseDialog.svelte";
 
-    let { dialogId, children }: { dialogId: string; children: Snippet } =
-        $props();
+    const { dialogId = null, children } = $props<{
+        dialogId?: string;
+        children: Snippet;
+    }>();
 
     export async function open() {
         await dialogElement.open();
@@ -53,7 +55,7 @@
         border: none;
         border-radius: 0.25rem;
         background: transparent;
-        background-color: var(--grey);
+        background-color: var(--gray);
         color: var(--back-main);
         cursor: pointer;
         box-sizing: border-box;

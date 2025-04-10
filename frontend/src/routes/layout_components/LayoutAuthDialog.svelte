@@ -1,6 +1,7 @@
 <script lang="ts">
     import BaseDialogWithCloseButton from "../../components/dialogs/BaseDialogWithCloseButton.svelte";
     import { getAuthData } from "../../stores/auth-store.svelte";
+    import AuthDialogEmailSentState from "./auth_dialog_components/AuthDialogEmailSentState.svelte";
     import AuthDialogLoggedInState from "./auth_dialog_components/AuthDialogLoggedInState.svelte";
     import AuthDialogLoginState from "./auth_dialog_components/AuthDialogLoginState.svelte";
     import AuthDialogSignUpState from "./auth_dialog_components/AuthDialogSignUpState.svelte";
@@ -9,6 +10,7 @@
         SignUp,
         Login,
         LoggedIn,
+        EmailSent,
     }
     let contentState: DialogState = $state(DialogState.SignUp);
     export function close() {
@@ -31,13 +33,21 @@
         dialogElement.open();
     }
     let dialogElement: BaseDialogWithCloseButton;
+    let email=$state<string>("");
 </script>
 
 <BaseDialogWithCloseButton bind:this={dialogElement} dialogId={"auth-dialog"}>
     {#if contentState === DialogState.SignUp}
         <AuthDialogSignUpState
             changeStateToLogin={() => (contentState = DialogState.Login)}
+            changeStateToEmailSent={(value) => {
+                contentState = DialogState.EmailSent;
+                console.log(value);
+                email = value;
+            }}
         />
+    {:else if contentState === DialogState.EmailSent}
+        <AuthDialogEmailSentState {email} />
     {:else if contentState === DialogState.Login}
         <AuthDialogLoginState
             changeStateToSignUp={() => (contentState = DialogState.SignUp)}
@@ -52,8 +62,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 25rem;
-        height: 28rem;
+        width: 28rem;
+        min-height: 30rem;
         padding: 0.125rem 1rem;
         border-radius: 0.75rem;
         background-color: var(--back-main);
@@ -69,6 +79,7 @@
         font-size: 2.25rem;
         font-weight: 600;
         align-self: center;
+        text-align: center;
     }
 
     :global(#auth-dialog .dialog-main-btn) {
@@ -84,11 +95,13 @@
         outline: none;
         box-sizing: border-box;
     }
+
     :global(#auth-dialog .dialog-main-btn:focus) {
         width: 9.5rem;
         background-color: var(--accent-hov);
-        box-shadow: rgba(40, 33, 49, 0.5) 0px 1px 4px;
+        box-shadow: rgb(40 33 49 / 50%) 0 1px 4px;
     }
+
     :global(#auth-dialog .dialog-main-btn:hover) {
         width: 10rem;
         background-color: var(--accent-hov);
@@ -96,5 +109,9 @@
 
     :global(#auth-dialog .dialog-main-btn:active) {
         transform: scale(0.96);
+    }
+
+    :global(#auth-dialog .err-block) {
+        margin: 0.5rem 0;
     }
 </style>

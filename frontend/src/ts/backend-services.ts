@@ -10,19 +10,25 @@ class BackendService {
     constructor(baseUrl: string) {
         this._baseUrl = baseUrl;
     }
-    public async jsonFetch<T>(url: string, options?: RequestInit): Promise<ResponseResult<T>> {
+    public requestJsonPostOptions(data: any): RequestInit {
+        return {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: { ...data }
+        }
+    }
+    public async jsonFetch<T>(url: string, options: RequestInit): Promise<ResponseResult<T>> {
         try {
             const response = await fetch(this._baseUrl + url, options);
-
             if (response.ok) {
                 const result = (await response.json()) as T;
                 return { isSuccess: true, data: result };
             }
 
             //checking if response is of json type to parse errs
-            if (response.headers.get("content-type")?.includes("application/json")) { 
+            if (response.headers.get("content-type")?.includes("application/json")) {
                 const json = await response.json();
-                
+
                 if (!Array.isArray(json.errors)) {
                     return {
                         isSuccess: false,
