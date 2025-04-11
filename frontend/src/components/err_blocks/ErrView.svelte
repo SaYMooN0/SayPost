@@ -9,7 +9,6 @@
 
     function toggleDetails() {
         showAdditional = !showAdditional;
-        console.log(iconElement);
         if (iconElement) {
             iconElement.classList.remove("rotate-down", "rotate-up");
             iconElement.classList.add(
@@ -70,7 +69,8 @@
         color: var(--err-red);
         font-size: 1rem;
         font-weight: 450;
-        word-break: break-word;
+        word-break: normal;
+        overflow-wrap: anywhere;
     }
 
     .err-message > svg {

@@ -9,7 +9,7 @@
         width: fit-content;
         padding: 0.125rem 0.75rem;
         margin-top: 0.25rem;
-        border-radius: 0.35rem;
+        border-radius: 0.375rem;
         background-color: transparent;
         color: var(--gray);
         font-size: 1rem;

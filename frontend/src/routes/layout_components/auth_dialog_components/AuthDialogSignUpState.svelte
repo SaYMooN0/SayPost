@@ -6,12 +6,16 @@
     import AuthDialogGrayLink from "./AuthDialogGrayLink.svelte";
     import AuthDialogInput from "./AuthDialogInput.svelte";
 
-    const { changeStateToLogin, changeStateToEmailSent } = $props<{
+    let {
+        email = $bindable(),
+        changeStateToLogin,
+        changeStateToEmailSent,
+    } = $props<{
+        email: string;
         changeStateToLogin: () => void;
-        changeStateToEmailSent: (value: string) => void;
+        changeStateToEmailSent: () => void;
     }>();
 
-    let email = $state<string>("");
     let password = $state<string>("");
     let confirmPassword = $state<string>("");
     let errList = $state<Err[]>([]);
@@ -48,14 +52,19 @@
         if (errList.length > 0) {
             return;
         }
-        const response = ApiAuth.jsonFetch<{ email: string }>(
-            "/api/auth/register",
+        const response = await ApiAuth.fetchJsonResponse<{ email: string }>(
+            "/register",
             ApiAuth.requestJsonPostOptions({
                 email,
                 password,
                 confirmPassword,
             }),
         );
+        if (response.isSuccess) {
+            changeStateToEmailSent(response.data.email);
+        } else {
+            errList = response.errors;
+        }
     }
 </script>
 

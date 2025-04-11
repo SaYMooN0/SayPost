@@ -99,12 +99,6 @@
     </div>
 </div>
 
-{#snippet loading()}
-    <div class="profile-view-loader">
-        Loading
-        <CubeLoader />
-    </div>
-{/snippet}
 {#snippet authenticated(authData: AuthStoreData)}
     <LayoutNotificationsBlock />
     <h1>{authData.Username}</h1>
@@ -153,18 +147,6 @@
     .layout-logo-container svg {
         height: 100%;
         color: var(--accent-main);
-    }
-
-    .profile-view-loader {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        width: 100%;
-        height: var(--layout-header-height);
-        color: var(--accent-main);
-        font-size: var(--header-font-size);
-        box-sizing: border-box;
     }
 
     .auth-btns-container {

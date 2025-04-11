@@ -19,8 +19,8 @@ public class AppUser : AggregateRoot<AppUserId>
         PasswordHash = passwordHash;
     }
 
-    public static AppUser CreateNew(Email email, string password, IPasswordHasher passwordHasher) {
-        AppUser user = new(AppUserId.CreateNew(), email, passwordHasher.HashPassword(password), "SayPostUser");
+    public static AppUser CreateNew(Email email, string passwordHash) {
+        AppUser user = new(AppUserId.CreateNew(), email, passwordHash, "SayPostUser");
         user._domainEvents.Add(new NewAppUserCreatedEvent(user.Id));
         return user;
     }

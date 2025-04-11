@@ -8,7 +8,7 @@ public class FrontendConfig
     public string ConfirmRegistrationUrl { get; init; }
 
     public string GenerateConfirmationLink(UnconfirmedAppUser userToConfirm) =>
-        $"/{ConfirmRegistrationUrl}/{userToConfirm.Id}/{userToConfirm.ConfirmationCode}";
+        $"{ConfirmRegistrationUrl}/{userToConfirm.Id}/{userToConfirm.ConfirmationCode}";
 
     public FrontendConfig(string url, string confirmRegistrationUrl) {
         Url = url;

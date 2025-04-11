@@ -1,12 +1,12 @@
-<div class="container">
+<div class="loader-container">
     <div class="cube"><div class="cube-inner"></div></div>
     <div class="cube"><div class="cube-inner"></div></div>
     <div class="cube"><div class="cube-inner"></div></div>
 </div>
 
 <style>
-    .container {
-        --uib-size: 45px;
+    .loader-container {
+        --uib-size: 3rem;
         --uib-color: var(--accent-main);
         --uib-speed: 1.75s;
 

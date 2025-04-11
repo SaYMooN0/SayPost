@@ -2,14 +2,14 @@ import { StringUtils } from "../../string-utils";
 
 export class Err {
     protected _message: string;
-    protected _code: number | null;
+    protected _code: number;
     protected _details: string | null;
     public constructor(message: string, code: number | null = null, details: string | null = null) {
         this._message = message;
-        this._code = code;
+        this._code = code ?? 0;
         this._details = details;
     }
-    
+
     public get Message(): string {
         return this._message;
     }
@@ -20,7 +20,7 @@ export class Err {
         return this._details;
     }
     public HasSomethingExceptMessage(): boolean {
-        return this._code != null || !StringUtils.isNullOrWhiteSpace(this._details);
+        return this._code != 0 || !StringUtils.isNullOrWhiteSpace(this._details);
     }
 
 }

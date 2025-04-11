@@ -40,7 +40,7 @@ public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
 
     public ErrOrNothing Confirm(string confirmationCode) {
         if (confirmationCode != this.ConfirmationCode) {
-            return new Err(message: "Unable to confirm user. Incorrect confirmation string was provided");
+            return new Err(message: "Unable to confirm user. Incorrect confirmation data was provided");
         }
 
         _domainEvents.Add(new UserConfirmedEvent(Id, Email, PasswordHash));

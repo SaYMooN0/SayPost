@@ -1,13 +1,48 @@
 <script lang="ts">
+    import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
+    import { ApiAuth } from "../../../ts/backend-services";
+    import { Err } from "../../../ts/common/errs/err";
+    import { StringUtils } from "../../../ts/string-utils";
     import AuthDialogGrayLink from "./AuthDialogGrayLink.svelte";
     import AuthDialogInput from "./AuthDialogInput.svelte";
-    const { changeStateToSignUp } = $props<{
+    let { email = $bindable(), changeStateToSignUp } = $props<{
+        email: string;
         changeStateToSignUp: () => void;
     }>();
-    let email = $state<string>("");
     let password = $state<string>("");
+    let errList = $state<Err[]>([]);
+
     async function loginPressed() {
-        console.log(email, password);
+        errList = [];
+        if (StringUtils.isNullOrWhiteSpace(email)) {
+            errList.push(
+                new Err(
+                    "Email is required",
+                    null,
+                    "Fill the email input field",
+                ),
+            );
+        } else if (!email.includes("@")) {
+            errList.push(
+                new Err("Invalid email", null, "Email must contain '@'"),
+            );
+        }
+        if (StringUtils.isNullOrWhiteSpace(password)) {
+            errList.push(
+                new Err(
+                    "Password is required",
+                    null,
+                    "Fill the password field",
+                ),
+            );
+        }
+        if (errList.length > 0) {
+            return;
+        }
+        const response = ApiAuth.fetchJsonResponse<{ email: string }>(
+            "/login",
+            ApiAuth.requestJsonPostOptions({ email, password }),
+        );
     }
 </script>
 
@@ -73,6 +108,7 @@
         />
     </svg>
 </AuthDialogInput>
+<DefaultErrBlock {errList} />
 <span></span>
 <AuthDialogGrayLink
     text={"I have forgotten my password"}

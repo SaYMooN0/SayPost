@@ -5,13 +5,13 @@
     let {
         type = "text",
         fieldName,
-        children,
         value = $bindable(),
+        children,
     } = $props<{
         type?: string;
         fieldName: string;
-        children: Snippet;
         value: string;
+        children: Snippet;
     }>();
     let inputName = StringUtils.rndStr(8);
 </script>
@@ -34,7 +34,7 @@
 <style>
     .input-field {
         position: relative;
-        width: 20rem;
+        width: 22rem;
         margin: 0.5rem 0;
     }
 

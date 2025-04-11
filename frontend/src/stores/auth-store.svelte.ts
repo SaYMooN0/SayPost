@@ -66,7 +66,6 @@ export async function getAuthData(): Promise<AuthStoreData> {
 	const two_minutes = 2 * 60 * 1000;
 
 	if (!lastFetched || (now.getTime() - lastFetched.getTime() > two_minutes)) {
-		console.log("fetching auth data");
 		await fetchAuthData();
 
 	}

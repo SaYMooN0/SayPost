@@ -10,4 +10,5 @@ public interface IUnconfirmedAppUsersRepository
     Task AddNew(UnconfirmedAppUser unconfirmedAppUser);
 
     Task Update(UnconfirmedAppUser unconfirmedUser);
+    Task RemoveById(UnconfirmedAppUserId userId);
 }

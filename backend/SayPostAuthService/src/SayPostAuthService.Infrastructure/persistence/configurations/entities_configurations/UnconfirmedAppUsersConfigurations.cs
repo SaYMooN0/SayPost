@@ -19,5 +19,8 @@ public class UnconfirmedAppUsersConfigurations : IEntityTypeConfiguration<Unconf
         builder
             .Property(x => x.Email)
             .HasConversion<EmailConverter>();
+
+        builder
+            .Property(x => x.ConfirmationCode);
     }
 }

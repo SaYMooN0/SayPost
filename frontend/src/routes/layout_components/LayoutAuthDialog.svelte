@@ -33,23 +33,22 @@
         dialogElement.open();
     }
     let dialogElement: BaseDialogWithCloseButton;
-    let email=$state<string>("");
+    let email = $state<string>("");
 </script>
 
 <BaseDialogWithCloseButton bind:this={dialogElement} dialogId={"auth-dialog"}>
     {#if contentState === DialogState.SignUp}
         <AuthDialogSignUpState
+            bind:email
             changeStateToLogin={() => (contentState = DialogState.Login)}
-            changeStateToEmailSent={(value) => {
-                contentState = DialogState.EmailSent;
-                console.log(value);
-                email = value;
-            }}
+            changeStateToEmailSent={() =>
+                (contentState = DialogState.EmailSent)}
         />
     {:else if contentState === DialogState.EmailSent}
         <AuthDialogEmailSentState {email} />
     {:else if contentState === DialogState.Login}
         <AuthDialogLoginState
+            bind:email
             changeStateToSignUp={() => (contentState = DialogState.SignUp)}
         />
     {:else if contentState === DialogState.LoggedIn}
