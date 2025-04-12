@@ -1,8 +1,7 @@
-﻿using SayPostAuthService.Domain.app_user_aggregate;
+﻿using MediatR;
+using SayPostAuthService.Domain.app_user_aggregate;
 using SayPostAuthService.Domain.common;
-using SayPostAuthService.Domain.common.interfaces;
 using SayPostAuthService.Domain.common.interfaces.repositories;
-using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
@@ -10,10 +9,10 @@ using SharedKernel.common.errs.utils;
 namespace SayPostAuthService.Application.app_users.queries;
 
 public record class GetUsernameAndEmailForAppUserQuery(AppUserId UserId) :
-    IQuery<ErrOr<(string Username, Email Email)>>;
+    IRequest<ErrOr<(string Username, Email Email)>>;
 
 internal class GetUsernameAndEmailForAppUserQueryHandler
-    : IQueryHandler<GetUsernameAndEmailForAppUserQuery, ErrOr<(string Username, Email Email)>>
+    : IRequestHandler<GetUsernameAndEmailForAppUserQuery, ErrOr<(string Username, Email Email)>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
 

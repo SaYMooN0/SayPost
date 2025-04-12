@@ -31,13 +31,8 @@ internal class UnconfirmedAppUsersRepository : IUnconfirmedAppUsersRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task RemoveById(UnconfirmedAppUserId userId) {
-        var userToDelete = _db.UnconfirmedAppUsers.Find(userId);
-        if (userToDelete is null) {
-            return;
-        }
-
-        _db.UnconfirmedAppUsers.Remove(userToDelete);
+    public async Task Remove(UnconfirmedAppUser user) {
+        _db.UnconfirmedAppUsers.Remove(user);
         await _db.SaveChangesAsync();
     }
 }

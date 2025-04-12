@@ -1,8 +1,8 @@
 ﻿using MediatR;
+using SayPostAuthService.Domain.app_user_aggregate;
 using SayPostAuthService.Domain.common;
 using SayPostAuthService.Domain.common.interfaces.repositories;
 using SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
-using SharedKernel.common.domain;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 
@@ -11,14 +11,19 @@ namespace SayPostAuthService.Application.unconfirmed_app_users.commands;
 public record class ConfirmUserRegistrationCommand(
     UnconfirmedAppUserId UnconfirmedUserId,
     string ConfirmationString
-) : ICommand<ErrOrNothing>;
+) : IRequest<ErrOrNothing>;
 
-internal class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUserRegistrationCommand, ErrOrNothing>
+internal class ConfirmUserRegistrationCommandHandler : IRequestHandler<ConfirmUserRegistrationCommand, ErrOrNothing>
 {
     private readonly IUnconfirmedAppUsersRepository _unconfirmedAppUsersRepository;
+    private readonly IAppUsersRepository _appUsersRepository;
 
-    public ConfirmUserRegistrationCommandHandler(IUnconfirmedAppUsersRepository unconfirmedAppUsersRepository) {
+    public ConfirmUserRegistrationCommandHandler(
+        IUnconfirmedAppUsersRepository unconfirmedAppUsersRepository,
+        IAppUsersRepository appUsersRepository
+    ) {
         _unconfirmedAppUsersRepository = unconfirmedAppUsersRepository;
+        _appUsersRepository = appUsersRepository;
     }
 
     public async Task<ErrOrNothing> Handle(
@@ -37,6 +42,10 @@ internal class ConfirmUserRegistrationCommandHandler : ICommandHandler<ConfirmUs
         if (confirmationRes.IsErr(out var err)) {
             return err;
         }
+
+        var appUser = AppUser.CreateNew(unconfirmedAppUser.Email, unconfirmedAppUser.PasswordHash);
+        await _unconfirmedAppUsersRepository.Remove(unconfirmedAppUser);
+        await _appUsersRepository.Add(appUser);
 
         return ErrOrNothing.Nothing;
     }

@@ -58,21 +58,19 @@ internal static class RootHandlers
         HttpContext httpContext, ISender mediator
     ) {
         ConfirmRegistrationRequest request = httpContext.GetValidatedRequest<ConfirmRegistrationRequest>();
-
         UnconfirmedAppUserId unconfirmedUserId = new(new(request.UserId));
+        
         ConfirmUserRegistrationCommand command = new(unconfirmedUserId, request.ConfirmationCode);
-        var err = await mediator.Send(command);
+        var result = await mediator.Send(command);
 
-        return CustomResults.FromErrOrNothing(
-            err,
-            () => Results.Ok()
-        );
+        return CustomResults.FromErrOrNothing(result, () => Results.Ok());
     }
 
     private static async Task<IResult> Login(
         HttpContext httpContext, ISender mediator
     ) {
         var request = httpContext.GetValidatedRequest<LoginUserRequest>();
+        
         CreateAuthTokenForAppUserCommand command = new(request.ParsedEmail, request.Password);
         var result = await mediator.Send(command);
 

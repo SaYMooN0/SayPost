@@ -17,6 +17,7 @@ public class AppUser : AggregateRoot<AppUserId>
         Id = id;
         Email = email;
         PasswordHash = passwordHash;
+        Username = username;    
     }
 
     public static AppUser CreateNew(Email email, string passwordHash) {

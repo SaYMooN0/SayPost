@@ -1,12 +1,13 @@
 import { StringUtils } from "../../string-utils";
 
+const UnspecifiedErrCode = 0;
 export class Err {
     protected _message: string;
     protected _code: number;
     protected _details: string | null;
     public constructor(message: string, code: number | null = null, details: string | null = null) {
         this._message = message;
-        this._code = code ?? 0;
+        this._code = code ?? UnspecifiedErrCode;
         this._details = details;
     }
 
@@ -19,10 +20,11 @@ export class Err {
     public get Details(): string | null {
         return this._details;
     }
+    public HasNonEmptyDetails(): boolean { return !StringUtils.isNullOrWhiteSpace(this._details); }
+    public HasSpecifiedCode(): boolean { return this._code != UnspecifiedErrCode; }
     public HasSomethingExceptMessage(): boolean {
-        return this._code != 0 || !StringUtils.isNullOrWhiteSpace(this._details);
+        return this.HasNonEmptyDetails() || this.HasSpecifiedCode();
     }
-
 }
 export class ErrWithExtraData extends Err {
     private _extraData: Record<string, any>;

@@ -1,19 +1,19 @@
-﻿using SayPostAuthService.Application.configs;
+﻿using MediatR;
+using SayPostAuthService.Application.configs;
 using SayPostAuthService.Domain.common;
 using SayPostAuthService.Domain.common.interfaces;
 using SayPostAuthService.Domain.common.interfaces.repositories;
 using SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
-using SharedKernel.common.domain;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 
 namespace SayPostAuthService.Application.unconfirmed_app_users.commands;
 
 public record class CreateNewUnconfirmedAppUserCommand(Email Email, string Password)
-    : ICommand<ErrListOr<Email>>;
+    : IRequest<ErrListOr<Email>>;
 
 internal class CreateNewUnconfirmedAppUserCommandHandler
-    : ICommandHandler<CreateNewUnconfirmedAppUserCommand, ErrListOr<Email>>
+    : IRequestHandler<CreateNewUnconfirmedAppUserCommand, ErrListOr<Email>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly IUnconfirmedAppUsersRepository _unconfirmedAppUsersRepository;

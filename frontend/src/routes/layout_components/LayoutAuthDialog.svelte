@@ -50,6 +50,7 @@
         <AuthDialogLoginState
             bind:email
             changeStateToSignUp={() => (contentState = DialogState.SignUp)}
+            closeDialog={() => close()}
         />
     {:else if contentState === DialogState.LoggedIn}
         <AuthDialogLoggedInState />

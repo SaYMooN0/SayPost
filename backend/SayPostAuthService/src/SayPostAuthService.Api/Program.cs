@@ -26,7 +26,6 @@ public class Program
 
         builder.Services.AddOpenApi();
         builder.Services
-            .AddAuthTokenConfig(builder.Configuration)
             .AddApplication(builder.Configuration)
             .AddInfrastructure(builder.Configuration);
 

@@ -15,10 +15,10 @@ internal class JwtTokenGenerator : IJwtTokenGenerator
     private readonly string _issuer;
     private readonly string _audience;
     private readonly TokenValidationParameters _tokenValidationParameters;
-    public JwtTokenGenerator(IOptions<JwtTokenConfig> options) {
-        _secretKey = options.Value.SecretKey;
-        _issuer = options.Value.Issuer;
-        _audience = options.Value.Audience;
+    public JwtTokenGenerator(JwtTokenConfig options) {
+        _secretKey = options.SecretKey;
+        _issuer = options.Issuer;
+        _audience = options.Audience;
 
         _tokenValidationParameters = new TokenValidationParameters {
             ValidateIssuer = true,

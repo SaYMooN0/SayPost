@@ -15,9 +15,12 @@ public class AppUsersConfigurations : IEntityTypeConfiguration<AppUser>
             .Property(x => x.Id)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
-        
+
         builder
             .Property(x => x.Email)
             .HasConversion<EmailConverter>();
+
+        builder
+            .Property(x => x.PasswordHash);
     }
 }

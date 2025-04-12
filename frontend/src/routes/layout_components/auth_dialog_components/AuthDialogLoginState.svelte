@@ -5,9 +5,14 @@
     import { StringUtils } from "../../../ts/string-utils";
     import AuthDialogGrayLink from "./AuthDialogGrayLink.svelte";
     import AuthDialogInput from "./AuthDialogInput.svelte";
-    let { email = $bindable(), changeStateToSignUp } = $props<{
+    let {
+        email = $bindable(),
+        changeStateToSignUp,
+        closeDialog,
+    } = $props<{
         email: string;
         changeStateToSignUp: () => void;
+        closeDialog: () => void;
     }>();
     let password = $state<string>("");
     let errList = $state<Err[]>([]);
@@ -39,10 +44,15 @@
         if (errList.length > 0) {
             return;
         }
-        const response = ApiAuth.fetchJsonResponse<{ email: string }>(
+        const response = await ApiAuth.fetchVoidResponse(
             "/login",
             ApiAuth.requestJsonPostOptions({ email, password }),
         );
+        if (response.isSuccess) {
+            closeDialog();
+        } else {
+            errList = response.errors;
+        }
     }
 </script>
 

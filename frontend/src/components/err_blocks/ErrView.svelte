@@ -39,14 +39,14 @@
             </svg>
         {/if}
     </div>
-    {#if err.Code}
-        <label class="err-additional {showAdditional ? '' : 'hidden'}">
-            Code: {err.Code}
-        </label>
-    {/if}
-    {#if !StringUtils.isNullOrWhiteSpace(err.Details)}
+    {#if err.HasNonEmptyDetails()}
         <label class="err-additional {showAdditional ? '' : 'hidden'}">
             Details: {err.Details}
+        </label>
+    {/if}
+    {#if err.HasSpecifiedCode()}
+        <label class="err-additional {showAdditional ? '' : 'hidden'}">
+            Code: {err.Code}
         </label>
     {/if}
 </div>

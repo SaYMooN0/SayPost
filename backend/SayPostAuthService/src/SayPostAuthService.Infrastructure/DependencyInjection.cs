@@ -19,7 +19,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration) {
         services
-            .AddAuthRelatedServices()
+            .AddAuthRelatedServices(configuration)
             .AddMessageBrokerIntegration(configuration)
             .AddPersistence(configuration)
             .AddEmailService(configuration)
@@ -31,7 +31,16 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddAuthRelatedServices(this IServiceCollection services) {
+    private static IServiceCollection AddAuthRelatedServices(
+        this IServiceCollection services, IConfiguration configuration
+    ) {
+        var jwtTokenConfig = configuration.GetSection("JwtTokenConfig").Get<JwtTokenConfig>();
+        if (jwtTokenConfig is null) {
+            throw new Exception("JWT token config not configured");
+        }
+
+        services.AddSingleton(jwtTokenConfig);
+
         services.AddSingleton<IPasswordHasher>(new PasswordHasher());
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
@@ -39,13 +48,16 @@ public static class DependencyInjection
     }
 
     private static IServiceCollection AddMediatR(this IServiceCollection services) {
-        services.AddMediatR(options => options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection)));
+        services.AddMediatR(options =>
+            options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection))
+        );
 
         return services;
     }
 
-    private static IServiceCollection AddMessageBrokerIntegration(this IServiceCollection services,
-        IConfiguration configuration) {
+    private static IServiceCollection AddMessageBrokerIntegration(
+        this IServiceCollection services, IConfiguration configuration
+    ) {
         services.Configure<MessageBrokerConfig>(options => configuration.GetSection("MessageBroker").Bind(options));
         services.AddSingleton<IIntegrationEventsPublisher, IntegrationEventsPublisher>();
         services.AddHostedService<ConsumeIntegrationEventsBackgroundService>();
@@ -74,6 +86,7 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, UtcDateTimeProvider>();
         return services;
     }
+
     internal static IServiceCollection AddFrontedConfigs(
         this IServiceCollection services, IConfiguration configuration
     ) {

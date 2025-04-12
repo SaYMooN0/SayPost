@@ -10,7 +10,7 @@ namespace SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
 public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
 {
     private UnconfirmedAppUser() { }
-    private string PasswordHash { get; set; }
+    public string PasswordHash { get; private set; }
     public Email Email { get; }
     public string ConfirmationCode { get; }
 
@@ -43,7 +43,6 @@ public class UnconfirmedAppUser : AggregateRoot<UnconfirmedAppUserId>
             return new Err(message: "Unable to confirm user. Incorrect confirmation data was provided");
         }
 
-        _domainEvents.Add(new UserConfirmedEvent(Id, Email, PasswordHash));
         return ErrOrNothing.Nothing;
     }
 
