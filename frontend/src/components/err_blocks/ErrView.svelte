@@ -40,12 +40,12 @@
         {/if}
     </div>
     {#if err.HasNonEmptyDetails()}
-        <label class="err-additional {showAdditional ? '' : 'hidden'}">
+        <label class="err-additional" class:hidden={!showAdditional}>
             Details: {err.Details}
         </label>
     {/if}
     {#if err.HasSpecifiedCode()}
-        <label class="err-additional {showAdditional ? '' : 'hidden'}">
+        <label class="err-additional" class:hidden={!showAdditional}>
             Code: {err.Code}
         </label>
     {/if}

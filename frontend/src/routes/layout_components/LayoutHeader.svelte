@@ -1,9 +1,8 @@
 <script lang="ts">
     import AuthView from "../../components/AuthView.svelte";
-    import CubeLoader from "../../components/loaders/CubeLoader.svelte";
     import { AuthStoreData } from "../../stores/auth-store.svelte";
+    import LayoutAccountBlock from "./header_components/LayoutAccountBlock.svelte";
     import LayoutHeaderLink from "./header_components/LayoutHeaderLink.svelte";
-    import LayoutNotificationsBlock from "./header_components/LayoutNotificationsBlock.svelte";
     import LayoutSearchBar from "./header_components/LayoutSearchBar.svelte";
 
     const { openLogin, openSignUp } = $props<{
@@ -100,8 +99,7 @@
 </div>
 
 {#snippet authenticated(authData: AuthStoreData)}
-    <LayoutNotificationsBlock />
-    <h1>{authData.Username}</h1>
+    <LayoutAccountBlock username={authData.Username ?? ""} />
 {/snippet}
 {#snippet unauthenticated()}
     <div class="auth-btns-container">

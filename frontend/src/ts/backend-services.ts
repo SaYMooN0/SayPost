@@ -22,7 +22,10 @@ class BackendService {
     }
     public async fetchJsonResponse<T>(url: string, options: RequestInit): Promise<ResponseResult<T>> {
         try {
-            const response = await fetch(this._baseUrl + url, options);
+            const response = await fetch(this._baseUrl + url, {
+                ...options,
+                credentials: 'include' 
+            });
             if (response.ok) {
                 const result = (await response.json()) as T;
                 return { isSuccess: true, data: result };
@@ -40,7 +43,10 @@ class BackendService {
     }
     public async fetchVoidResponse(url: string, options: RequestInit): Promise<ResponseVoidResult> {
         try {
-            const response = await fetch(this._baseUrl + url, options);
+            const response = await fetch(this._baseUrl + url, {
+                ...options,
+                credentials: 'include'
+            });
 
             if (response.ok) {
                 return { isSuccess: true };

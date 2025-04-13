@@ -2,6 +2,7 @@ using ApiShared;
 using SayPostAuthService.Api.endpoints;
 using SayPostAuthService.Application;
 using SayPostAuthService.Infrastructure;
+using SayPostAuthService.Infrastructure.persistence;
 using Serilog;
 
 namespace SayPostAuthService.Api;
@@ -38,7 +39,6 @@ public class Program
         else {
             app.UseHttpsRedirection();
         }
-
 
         app.AddExceptionHandlingMiddleware();
 

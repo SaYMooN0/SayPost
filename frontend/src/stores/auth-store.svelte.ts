@@ -1,3 +1,4 @@
+import { ApiAuth } from "../ts/backend-services";
 import { StringUtils } from "../ts/string-utils";
 
 export class AuthStoreData {
@@ -47,16 +48,15 @@ const authStoreData = $state(
 
 
 async function fetchAuthData(): Promise<void> {
-	try {
-		const response = await fetch("/api/auth/ping", { method: "POST" });
-		if (response.status === 200) {
-			const data = await response.json();
-			authStoreData.update(data.username, data.userId);
-		} else {
-			authStoreData.setEmpty();
-		}
-	} catch (error) {
+	const response = await ApiAuth.fetchJsonResponse<{ username: string, userId: string }>(
+		"/ping",
+		{ method: "POST" }
+	);
+	if (response.isSuccess) {
+		authStoreData.update(response.data.username, response.data.userId);
+	} else {
 		authStoreData.setEmpty();
+
 	}
 }
 

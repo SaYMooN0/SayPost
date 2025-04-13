@@ -45,7 +45,7 @@ internal static class RootHandlers
     private static async Task<IResult> Register(
         HttpContext httpContext, ISender mediator
     ) {
-        RegisterUserRequest request = httpContext.GetValidatedRequest<RegisterUserRequest>();
+        var request = httpContext.GetValidatedRequest<RegisterUserRequest>();
         CreateNewUnconfirmedAppUserCommand command = new(request.ParsedEmail, request.Password);
         var result = await mediator.Send(command);
 
@@ -57,7 +57,7 @@ internal static class RootHandlers
     private static async Task<IResult> ConfirmRegistration(
         HttpContext httpContext, ISender mediator
     ) {
-        ConfirmRegistrationRequest request = httpContext.GetValidatedRequest<ConfirmRegistrationRequest>();
+        var request = httpContext.GetValidatedRequest<ConfirmRegistrationRequest>();
         UnconfirmedAppUserId unconfirmedUserId = new(new(request.UserId));
         
         ConfirmUserRegistrationCommand command = new(unconfirmedUserId, request.ConfirmationCode);

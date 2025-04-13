@@ -34,8 +34,7 @@ public static class HttpContextExtensions
     }
 
     public static ErrOr<AppUserId> ParseUserIdFromJwtToken(this HttpContext httpContext, JwtTokenConfig jwtConfig) {
-        string? token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        if (string.IsNullOrEmpty(token)) {
+        if (!httpContext.Request.Cookies.TryGetValue("_token", out var token) || string.IsNullOrEmpty(token)) {
             return ErrFactory.AuthRequired(
                 "User is not authenticated",
                 details: "Log in to your account"
