@@ -3,9 +3,9 @@ using SharedKernel.common.domain.ids;
 
 namespace InfrastructureShared.persistence.value_converters;
 
-public class GuidBasedIdIdConverter<TId> : ValueConverter<TId, Guid> where TId : GuidBasedId
+public class GuidBasedIdConverter<TId> : ValueConverter<TId, Guid> where TId : GuidBasedId
 {
-    public GuidBasedIdIdConverter() : base(
+    public GuidBasedIdConverter() : base(
         id => id.Value,
         value => (TId)Activator.CreateInstance(typeof(TId), value)
     ) { }

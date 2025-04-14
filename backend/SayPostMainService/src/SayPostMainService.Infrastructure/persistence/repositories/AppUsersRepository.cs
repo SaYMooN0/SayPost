@@ -16,4 +16,9 @@ internal class AppUsersRepository : IAppUsersRepository
         await _db.AppUsers.AddAsync(appUser);
         await _db.SaveChangesAsync();
     }
+
+    public async Task Update(AppUser appUser) {
+        _db.AppUsers.Update(appUser);
+        await _db.SaveChangesAsync();
+    }
 }

@@ -12,7 +12,7 @@ public class Program
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
-        ConfigurationExtensions.ConfigureSerilog(builder.Configuration);
+        ApiShared.extensions.ConfigurationExtensions.ConfigureSerilog(builder.Configuration);
         builder.Host.UseSerilog();
 
         builder.Services.AddCors(options => {
@@ -44,6 +44,13 @@ public class Program
 
         MapHandlers(app);
 
+        using (var serviceScope = app.Services.CreateScope()) {
+            var db = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.SaveChanges();
+        }
+        
         app.UseCors("AllowFrontend");
         app.Run();
     }

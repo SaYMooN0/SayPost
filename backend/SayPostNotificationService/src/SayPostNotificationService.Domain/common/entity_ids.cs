@@ -1,0 +1,1 @@
+﻿namespace SayPostNotificationService.Domain.common;

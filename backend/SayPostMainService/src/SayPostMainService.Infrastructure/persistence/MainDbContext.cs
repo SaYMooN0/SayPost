@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SayPostMainService.Domain.app_user_aggregate;
+using SayPostMainService.Domain.draft_post_aggregate;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
 
@@ -11,6 +13,7 @@ public class MainDbContext : DbContext
     private readonly IPublisher _publisher;
 
     public DbSet<AppUser> AppUsers { get; init; } = null!;
+    public DbSet<DraftPost> DraftPosts { get; init; } = null!;
 
 
     public MainDbContext(DbContextOptions<MainDbContext> options, IPublisher publisher) : base(options) {

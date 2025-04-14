@@ -13,14 +13,17 @@ public class DraftPost : AggregateRoot<DraftPostId>
     public DraftPostContent Content { get; private set; }
     public DateTime StartedAt { get; }
     public DateTime LastModifiedAt { get; private set; }
+    private HashSet<PostTagId> Tags { get; }
 
-    private DraftPost(AppUserId authorId, DraftPostTitle title, DraftPostContent content, DateTime startedAt,
-        DateTime lastModifiedAt) {
+    private DraftPost(
+        AppUserId authorId, DraftPostTitle title, DraftPostContent content, DateTime startedAt, DateTime lastModifiedAt
+    ) {
         AuthorId = authorId;
         Title = title;
         Content = content;
         StartedAt = startedAt;
         LastModifiedAt = lastModifiedAt;
+        Tags = [];
     }
 
     public static DraftPost CreateNew(AppUserId authorId, IDateTimeProvider timeProvider) => new(

@@ -1,6 +1,9 @@
 using ApiShared;
-using SharedKernel.common.errs;
-using SharedKernel.common.errs.utils;
+using SayPostMainService.Api.endpoints;
+using SayPostMainService.Application;
+using SayPostMainService.Infrastructure;
+using SayPostMainService.Infrastructure.persistence;
+using Serilog;
 
 namespace SayPostMainService.Api;
 
@@ -9,52 +12,50 @@ public class Program
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-        builder.Services.AddAuthorization();
+        ApiShared.extensions.ConfigurationExtensions.ConfigureSerilog(builder.Configuration);
+        builder.Host.UseSerilog();
 
-        // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+        builder.Services.AddCors(options => {
+            options.AddPolicy("AllowFrontend", policy => {
+                policy
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
+
         builder.Services.AddOpenApi();
+        builder.Services
+            .AddApplication(builder.Configuration)
+            .AddInfrastructure(builder.Configuration);
 
         var app = builder.Build();
+        app.AddInfrastructureMiddleware();
 
-        // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment()) {
             app.MapOpenApi();
         }
+        else {
+            app.UseHttpsRedirection();
+        }
 
-        app.UseHttpsRedirection();
+        app.AddExceptionHandlingMiddleware();
 
-        app.UseAuthorization();
-
-        app
-            .MapGet("/greet", (HttpContext _) => new { Msg = "main service" })
-            .WithName("greet");
-        app
-            .MapGet("/test", (HttpContext _) => Test());
+        MapHandlers(app);
+        
+        using (var serviceScope = app.Services.CreateScope()) {
+            var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.SaveChanges();
+        }
+        
+        app.UseCors("AllowFrontend");
         app.Run();
     }
 
-    public static IResult Test() {
-        ErrList res = new();
-        res.Add(new Err("Basic err"));
-        res.AddPossibleErr(ErrOr<string>.Error(new Err("possible basic err")));
-        res.AddPossibleErr(ErrOr<string>.Success("success string value"));
-
-        ErrWithExtraData errWithExtraData1 = new ErrWithExtraData(
-            "basic err with extra data", new() {
-                { "key1", "data" },
-                { "key2", new { Field1 = "value1" } }
-            }
-        );
-        ErrWithExtraData errWithExtraData2 = new ErrWithExtraData(
-            "possible err with extra data", new() {
-                { "key1", 123 },
-                { "key2", new List<string> { "value1", "value2" } }
-            }
-        );
-
-        res.AddPossibleErr(ErrOr<string>.Error(errWithExtraData1));
-        res.Add(errWithExtraData2);
-        return CustomResults.ErrorResponse(res);
+    private static void MapHandlers(WebApplication app) {
+        app.MapGroup("/draft-posts").MapDraftPostHandlers();
     }
 }
