@@ -1,4 +1,5 @@
 using ApiShared;
+using ApiShared.extensions;
 using SayPostAuthService.Api.endpoints;
 using SayPostAuthService.Application;
 using SayPostAuthService.Infrastructure;
@@ -12,8 +13,7 @@ public class Program
     public static void Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
 
-        ApiShared.extensions.ConfigurationExtensions.ConfigureSerilog(builder.Configuration);
-        builder.Host.UseSerilog();
+        builder.ConfigureLogging();
 
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowFrontend", policy => {
@@ -44,13 +44,6 @@ public class Program
 
         MapHandlers(app);
 
-        using (var serviceScope = app.Services.CreateScope()) {
-            var db = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-            db.SaveChanges();
-        }
-        
         app.UseCors("AllowFrontend");
         app.Run();
     }

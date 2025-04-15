@@ -27,11 +27,9 @@ public class MainDbContext : DbContext
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
-       
         var domainEvents = ChangeTracker.Entries()
-            .Where(e => e.Entity is AggregateRoot<IEntityId>)
-            .Select(e => (AggregateRoot<IEntityId>)e.Entity)
-            .SelectMany(ar => ar.PopAndClearDomainEvents())
+            .Where(e => e.Entity is IAggregateRoot)
+            .SelectMany(ar => (ar.Entity as IAggregateRoot).PopAndClearDomainEvents())
             .ToList();
         
         await PublishDomainEvents(domainEvents);

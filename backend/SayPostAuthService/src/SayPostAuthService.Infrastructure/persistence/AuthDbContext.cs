@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using SayPostAuthService.Domain.app_user_aggregate;
 using SayPostAuthService.Domain.unconfirmed_app_user_aggregate;
 using SharedKernel.common.domain;
-using SharedKernel.common.domain.ids;
 
 namespace SayPostAuthService.Infrastructure.persistence;
 
@@ -27,13 +26,11 @@ public class AuthDbContext : DbContext
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
-       
         var domainEvents = ChangeTracker.Entries()
-            .Where(e => e.Entity is AggregateRoot<IEntityId>)
-            .Select(e => (AggregateRoot<IEntityId>)e.Entity)
-            .SelectMany(ar => ar.PopAndClearDomainEvents())
+            .Where(e => e.Entity is IAggregateRoot)
+            .SelectMany(ar => (ar.Entity as IAggregateRoot).PopAndClearDomainEvents())
             .ToList();
-        
+
         await PublishDomainEvents(domainEvents);
         return await base.SaveChangesAsync(cancellationToken);
     }

@@ -17,17 +17,18 @@ public class ConsumeIntegrationEventsBackgroundService : IHostedService
     private readonly ILogger<ConsumeIntegrationEventsBackgroundService> _logger;
     private readonly MessageBrokerConfig _messageBrokerConfig;
     private readonly IServiceScopeFactory _serviceScopeFactory;
-    private IConnection connection;
-    private IChannel channel;
+
+    private IConnection _connection;
+    private IChannel _channel;
 
     public ConsumeIntegrationEventsBackgroundService(
         ILogger<ConsumeIntegrationEventsBackgroundService> logger,
-        IServiceScopeFactory serviceScopeFactory,
-        IOptions<MessageBrokerConfig> messageBrokerOptions
+        IOptions<MessageBrokerConfig> messageBrokerOptions,
+        IServiceScopeFactory serviceScopeFactory
     ) {
         _logger = logger;
-        _serviceScopeFactory = serviceScopeFactory;
         _messageBrokerConfig = messageBrokerOptions.Value;
+        _serviceScopeFactory = serviceScopeFactory;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken) {
@@ -39,15 +40,15 @@ public class ConsumeIntegrationEventsBackgroundService : IHostedService
             UserName = _messageBrokerConfig.UserName,
             Password = _messageBrokerConfig.Password
         };
-        connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
-        channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
+        _connection = await connectionFactory.CreateConnectionAsync(cancellationToken);
+        _channel = await _connection.CreateChannelAsync(cancellationToken: cancellationToken);
         await SetupMessageBrokerAsync(cancellationToken);
 
-        var consumer = new AsyncEventingBasicConsumer(channel);
+        var consumer = new AsyncEventingBasicConsumer(_channel);
         consumer.ReceivedAsync += async (sender, eventArgs) =>
             await HandleEventAsync(sender, eventArgs, cancellationToken);
-        
-        await channel.BasicConsumeAsync(
+
+        await _channel.BasicConsumeAsync(
             _messageBrokerConfig.QueueName
             , autoAck: false,
             consumer: consumer,
@@ -56,22 +57,22 @@ public class ConsumeIntegrationEventsBackgroundService : IHostedService
     }
 
     private async Task SetupMessageBrokerAsync(CancellationToken cancellationToken) {
-        await channel.ExchangeDeclareAsync(
+        await _channel.ExchangeDeclareAsync(
             _messageBrokerConfig.ExchangeName,
             ExchangeType.Fanout,
             durable: true,
             cancellationToken: cancellationToken
         );
 
-        var queueDeclareResult = await channel.QueueDeclareAsync(
+        var queueDeclareResult = await _channel.QueueDeclareAsync(
             queue: _messageBrokerConfig.QueueName,
-            durable: false,
+            durable: true,
             exclusive: false,
             autoDelete: false,
             cancellationToken: cancellationToken
         );
 
-        await channel.QueueBindAsync(
+        await _channel.QueueBindAsync(
             queue: _messageBrokerConfig.QueueName,
             exchange: _messageBrokerConfig.ExchangeName,
             routingKey: string.Empty,
@@ -79,8 +80,9 @@ public class ConsumeIntegrationEventsBackgroundService : IHostedService
         );
     }
 
-    private async Task HandleEventAsync(object sender, BasicDeliverEventArgs eventArgs,
-        CancellationToken cancellationToken) {
+    private async Task HandleEventAsync(
+        object sender, BasicDeliverEventArgs eventArgs, CancellationToken cancellationToken
+    ) {
         if (cancellationToken.IsCancellationRequested) {
             _logger.LogInformation("Cancellation requested, not consuming integration event");
             return;
@@ -108,22 +110,22 @@ public class ConsumeIntegrationEventsBackgroundService : IHostedService
             await publisher.Publish(integrationEvent, cancellationToken);
 
             _logger.LogInformation("Integration event published successfully. Sending ack to message broker.");
-            await channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false, cancellationToken);
+            await _channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false, cancellationToken);
         }
         catch (Exception e) {
             _logger.LogError(e, "Exception occurred while consuming integration event.");
-            await channel.BasicNackAsync(eventArgs.DeliveryTag, false, true, cancellationToken);
+            await _channel.BasicNackAsync(eventArgs.DeliveryTag, false, true, cancellationToken);
         }
     }
 
     public async Task StopAsync(CancellationToken cancellationToken) {
         try {
-            if (channel is not null && connection is not null) {
-                await channel.CloseAsync(cancellationToken);
-                channel.Dispose();
+            if (_channel is not null && _connection is not null) {
+                await _channel.CloseAsync(cancellationToken);
+                _channel.Dispose();
 
-                await connection.CloseAsync(cancellationToken);
-                connection.Dispose();
+                await _connection.CloseAsync(cancellationToken);
+                _connection.Dispose();
             }
         }
         catch (Exception e) {

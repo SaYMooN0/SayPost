@@ -1,4 +1,5 @@
-﻿using SharedKernel.common.domain.ids;
+﻿using System.Text.Json.Serialization;
+using SharedKernel.common.domain.ids;
 
 namespace SharedKernel.integration_events;
 

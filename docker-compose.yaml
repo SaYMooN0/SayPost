@@ -1,33 +1,18 @@
 services:
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+      - /var/log:/var/log
+    command: -config.file=/etc/promtail/config.yaml
+
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-storage:/var/lib/grafana
-    depends_on:
-      - loki
-
-  loki:
-    image: grafana/loki:2.9.1
-    ports:
-      - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
-    volumes:
-      - loki-storage:/loki
-
-  otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
-    command: ["--config=/etc/otel-collector-config.yaml"]
-    ports:
-      - "4317:4317"       # OTLP gRPC (for Serilog)
-      - "4318:4318"       # OTLP HTTP
-    volumes:
-      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
-
-volumes:
-  grafana-storage:
-  loki-storage:

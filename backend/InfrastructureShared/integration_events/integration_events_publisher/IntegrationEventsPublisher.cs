@@ -13,8 +13,12 @@ public class IntegrationEventsPublisher : IIntegrationEventsPublisher
     private readonly MessageBrokerConfig _brokerConfig;
     private readonly ILogger<IntegrationEventsPublisher> _logger;
 
-    public IntegrationEventsPublisher(IOptions<MessageBrokerConfig> messageBrokerOptions) {
+    public IntegrationEventsPublisher(
+        IOptions<MessageBrokerConfig> messageBrokerOptions,
+        ILogger<IntegrationEventsPublisher> logger
+    ) {
         _brokerConfig = messageBrokerOptions.Value;
+        _logger = logger;
     }
 
     public async Task PublishEvent(IIntegrationEvent integrationEvent) {
@@ -26,12 +30,17 @@ public class IntegrationEventsPublisher : IIntegrationEventsPublisher
                 Password = _brokerConfig.Password
             };
 
-            using var connection = await connectionFactory.CreateConnectionAsync();
-            using var channel = await connection.CreateChannelAsync();
+            await using var connection = await connectionFactory.CreateConnectionAsync();
+            await using var channel = await connection.CreateChannelAsync();
             var exchangeName = _brokerConfig.ExchangeName;
 
             await channel.ExchangeDeclareAsync(exchange: exchangeName, type: ExchangeType.Fanout, durable: true);
-            await channel.QueueDeclareAsync(queue: _brokerConfig.QueueName, durable: false, exclusive: false, autoDelete: false);
+            await channel.QueueDeclareAsync(
+                queue: _brokerConfig.QueueName,
+                durable: true,
+                exclusive: false,
+                autoDelete: false
+            );
             await channel.QueueBindAsync(
                 queue: _brokerConfig.QueueName,
                 exchange: exchangeName,
@@ -42,8 +51,10 @@ public class IntegrationEventsPublisher : IIntegrationEventsPublisher
             await channel.BasicPublishAsync(exchange: exchangeName, routingKey: string.Empty, body: body);
 
 
-            _logger.LogInformation($"Event of type {integrationEvent.GetType().Name} published to exchange {exchangeName}.");
-        } catch (Exception ex) {
+            _logger.LogInformation(
+                $"Event of type {integrationEvent.GetType().Name} published to exchange {exchangeName}.");
+        }
+        catch (Exception ex) {
             _logger.LogError($"Error occurred while publishing event: {ex.Message}");
             throw;
         }

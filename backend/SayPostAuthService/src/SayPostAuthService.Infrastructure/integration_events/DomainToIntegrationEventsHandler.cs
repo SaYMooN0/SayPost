@@ -1,6 +1,7 @@
 ﻿using InfrastructureShared.integration_events.integration_events_publisher;
 using MediatR;
 using SayPostAuthService.Domain.app_user_aggregate.events;
+using SharedKernel.common.domain.ids;
 using SharedKernel.integration_events;
 
 namespace SayPostAuthService.Infrastructure.integration_events;
@@ -17,6 +18,6 @@ internal class DomainToIntegrationEventsHandler  :
 
     public async Task Handle(NewAppUserCreatedEvent notification, CancellationToken cancellationToken) {
         var integrationEvent = new NewAppUserCreatedIntegrationEvent(notification.CreatedUserId);
-        await _integrationEventsPublisher.PublishEvent(integrationEvent);
+        await _integrationEventsPublisher.PublishEvent(integrationEvent);    
     }
 }

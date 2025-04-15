@@ -4,7 +4,7 @@ using SharedKernel.common.domain.ids;
 
 namespace SharedKernel.common.domain;
 
-public abstract class AggregateRoot<IdType> : Entity<IdType> where IdType : IEntityId
+public abstract class AggregateRoot<IdType> : Entity<IdType>, IAggregateRoot where IdType : IEntityId
 {
     protected AggregateRoot() : base() { }
 
@@ -18,4 +18,9 @@ public abstract class AggregateRoot<IdType> : Entity<IdType> where IdType : IEnt
 
         return copy;
     }
+}
+
+public interface IAggregateRoot
+{
+    public List<IDomainEvent> PopAndClearDomainEvents();
 }

@@ -8,9 +8,9 @@
         position: absolute;
         top: 30%;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
         gap:1rem;
         width: 100%;
         color: var(--accent-main);
