@@ -43,7 +43,6 @@ public class Program
         app.AddExceptionHandlingMiddleware();
 
         MapHandlers(app);
-        
         app.UseCors("AllowFrontend");
         app.Run();
     }

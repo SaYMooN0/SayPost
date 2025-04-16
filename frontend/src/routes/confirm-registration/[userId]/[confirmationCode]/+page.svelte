@@ -1,10 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state";
-    import { onMount } from "svelte";
     import CubeLoader from "../../../../components/loaders/CubeLoader.svelte";
     import { ApiAuth } from "../../../../ts/backend-services";
-    import ErrView from "../../../../components/err_blocks/ErrView.svelte";
-    import { StringUtils } from "../../../../ts/string-utils";
 
     let userId: string = page.params.userId;
     let confirmationCode: string = page.params.confirmationCode;

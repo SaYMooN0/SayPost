@@ -22,13 +22,13 @@ internal class GetUsernameAndEmailForAppUserQueryHandler
     }
 
     public async Task<ErrOr<(string Username, Email Email)>> Handle(
-        GetUsernameAndEmailForAppUserQuery command, CancellationToken cancellationToken
+        GetUsernameAndEmailForAppUserQuery request, CancellationToken cancellationToken
     ) {
-        AppUser? user = await _appUsersRepository.GetByIdAsNoTracking(command.UserId);
+        AppUser? user = await _appUsersRepository.GetByIdAsNoTracking(request.UserId);
         if (user is null) {
             return ErrFactory.NotFound(
                 "User not found",
-                details: $"App user with id {command.UserId} does not exist"
+                details: $"App user with id {request.UserId} does not exist"
             );
         }
 

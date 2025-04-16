@@ -1,9 +1,9 @@
 <script lang="ts">
     import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
+    import GrayLabelWithOnclick from "../../../components/GrayLabelWithOnclick.svelte";
     import { ApiAuth } from "../../../ts/backend-services";
     import { Err } from "../../../ts/common/errs/err";
     import { StringUtils } from "../../../ts/string-utils";
-    import AuthDialogGrayLink from "./AuthDialogGrayLink.svelte";
     import AuthDialogInput from "./AuthDialogInput.svelte";
     let {
         email = $bindable(),
@@ -120,13 +120,13 @@
 </AuthDialogInput>
 <DefaultErrBlock {errList} />
 <span></span>
-<AuthDialogGrayLink
+<GrayLabelWithOnclick
     text={"I have forgotten my password"}
     onClick={() => {
         console.log("forgot password");
     }}
 />
-<AuthDialogGrayLink
+<GrayLabelWithOnclick
     text="I don't have an account yet"
     onClick={() => changeStateToSignUp()}
 />

@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.draft_post_aggregate;
+using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Infrastructure.persistence.repositories;
 
@@ -21,4 +23,27 @@ internal class DraftPostsRepository : IDraftPostsRepository
         _db.DraftPosts.Update(draftPost);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<IReadOnlyCollection<DraftPost>> GetPostsByUserWithSortingAsNoTracking(
+        AppUserId userId,
+        DraftPostsSortOption sortOption
+    ) => await _db.DraftPosts
+        .Where(p => p.AuthorId == userId)
+        .OrderBySortOption(sortOption)
+        .ToArrayAsync();
+}
+
+file static class DraftPostsRepositoryExtensions
+{
+    public static IQueryable<DraftPost> OrderBySortOption(
+        this IQueryable<DraftPost> query, DraftPostsSortOption sortOption
+    ) => sortOption switch {
+        DraftPostsSortOption.Title => query.OrderBy(p => p.Title),
+        DraftPostsSortOption.LastModified => query.OrderByDescending(p => p.LastModifiedAt),
+        DraftPostsSortOption.LastCreated => query.OrderByDescending(p => p.CreatedAt),
+        DraftPostsSortOption.OldestCreated => query.OrderBy(p => p.CreatedAt),
+        _ => throw new ArgumentOutOfRangeException(
+            $"Unexpected {nameof(sortOption)} value: {sortOption} in the {nameof(OrderBySortOption)}"
+        )
+    };
 }

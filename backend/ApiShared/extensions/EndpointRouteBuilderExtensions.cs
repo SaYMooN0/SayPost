@@ -10,5 +10,7 @@ public static class EndpointRouteBuilderExtensions
         where T : class, IRequestWithValidationNeeded {
         return builder.AddEndpointFilter<RequestValidationRequiredEndpointFilter<T>>();
     }
-
+    public static RouteHandlerBuilder AuthenticationRequired(this RouteHandlerBuilder builder) {
+        return builder.AddEndpointFilter<AuthenticationRequiredEndpointFilter>();
+    }
 }

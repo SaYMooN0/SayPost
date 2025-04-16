@@ -17,6 +17,11 @@ public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
             .HasGuidBasedIdConversion();
 
         builder
+            .Property(x=>x.AuthorId)
+            .ValueGeneratedNever()
+            .HasGuidBasedIdConversion();
+        
+        builder
             .Property(x => x.Title)
             .HasConversion<DraftPostTitleConverter>();
 
