@@ -17,10 +17,10 @@ public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
             .HasGuidBasedIdConversion();
 
         builder
-            .Property(x=>x.AuthorId)
+            .Property(x => x.AuthorId)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
-        
+
         builder
             .Property(x => x.Title)
             .HasConversion<DraftPostTitleConverter>();
@@ -28,5 +28,12 @@ public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
         builder
             .Property(x => x.Content)
             .HasConversion<DraftPostContentConverter>();
+
+        builder
+            .Property(x => x.Tags)
+            .HasConversion(
+                converter: new PostTagIdHashSetConverter(),
+                valueComparer: new PostTagIdHashSetComparer()
+            );
     }
 }

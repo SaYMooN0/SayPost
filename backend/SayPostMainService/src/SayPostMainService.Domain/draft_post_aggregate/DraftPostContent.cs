@@ -7,23 +7,22 @@ namespace SayPostMainService.Domain.draft_post_aggregate;
 public class DraftPostContent : ValueObject
 {
     public const int MaxContentLength = 5096;
-    private DraftPostContent() { }
-    private string Value { get; set; }
+    private string Value { get; }
 
-    public static DraftPostContent CreateNew() => new() {
-        Value = "New post content"
-    };
-
-    public override string ToString() => Value;
-
-    public ErrOrNothing Update(string newValue) {
-        if (IsStringCorrectPostContent(newValue).IsErr(out var err)) {
-            return err;
+    private DraftPostContent(string value) {
+        if (IsStringCorrectPostContent(value).IsErr(out var err)) {
+            throw new ErrCausedException(err);
         }
 
-        Value = newValue;
-        return ErrOrNothing.Nothing;
+        Value = value;
     }
+
+    public static DraftPostContent CreateNew() => new("New post content");
+
+    public static ErrOr<DraftPostContent> CreateFromString(string value) =>
+        IsStringCorrectPostContent(value).IsErr(out var err) ? err : new DraftPostContent(value);
+
+    public override string ToString() => Value;
 
     public static ErrOrNothing IsStringCorrectPostContent(string value) {
         if (value.Length > MaxContentLength) {

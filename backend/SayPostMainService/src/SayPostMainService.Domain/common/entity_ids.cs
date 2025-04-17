@@ -21,7 +21,7 @@ public class PostTagId : IEntityId
     public static bool IsStringValidTag(string tag) => TagRegex.IsMatch(tag);
     private string Value { get; }
 
-    public PostTagId(string value) {
+    private PostTagId(string value) {
         if (!IsStringValidTag(value)) {
             throw new ErrCausedException(ErrFactory.InvalidData($"'{value}' is not a valid tag"));
         }

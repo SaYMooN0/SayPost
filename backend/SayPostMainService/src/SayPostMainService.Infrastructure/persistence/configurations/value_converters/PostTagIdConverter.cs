@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.draft_post_aggregate;
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.value_converters;
 
-public class DraftPostTitleConverter : ValueConverter<DraftPostTitle, string>
+public class PostTagIdConverter : ValueConverter<PostTagId, string>
 {
-    public DraftPostTitleConverter() : base(
+    public PostTagIdConverter() : base(
         id => id.ToString(),
-        value => DraftPostTitle.CreateFromString(value).AsSuccess()
+        value => PostTagId.Create(value).AsSuccess()
     ) { }
 }

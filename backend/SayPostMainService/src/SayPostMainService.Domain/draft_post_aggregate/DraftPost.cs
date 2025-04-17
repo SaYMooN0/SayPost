@@ -14,7 +14,7 @@ public class DraftPost : AggregateRoot<DraftPostId>
     public DraftPostContent Content { get; private set; }
     public DateTime CreatedAt { get; }
     public DateTime LastModifiedAt { get; private set; }
-    private HashSet<PostTagId> Tags { get; }
+    public HashSet<PostTagId> Tags { get; private set; }
 
     private DraftPost(
         AppUserId authorId, DraftPostTitle title, DraftPostContent content, DateTime createdAt, DateTime lastModifiedAt
@@ -37,5 +37,15 @@ public class DraftPost : AggregateRoot<DraftPostId>
         );
         post._domainEvents.Add(new NewDraftPostCreatedEvent(post.Id, post.AuthorId));
         return post;
+    }
+
+    public void UpdateTitle(DraftPostTitle newTitle, IDateTimeProvider timeProvider) {
+        Title = newTitle;
+        LastModifiedAt = timeProvider.Now;
+    }
+
+    public void UpdateContent(DraftPostContent newContent, IDateTimeProvider dateTimeProvider) {
+        Content = newContent;
+        LastModifiedAt = dateTimeProvider.Now;
     }
 }

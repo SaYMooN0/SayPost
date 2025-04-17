@@ -24,10 +24,11 @@ class BackendService {
         try {
             const response = await fetch(this._baseUrl + url, {
                 ...options,
-                credentials: 'include' 
+                credentials: 'include'
             });
             if (response.ok) {
-                const result = (await response.json()) as T;
+                let json = await response.json();
+                const result = json as T;
                 return { isSuccess: true, data: result };
             }
 

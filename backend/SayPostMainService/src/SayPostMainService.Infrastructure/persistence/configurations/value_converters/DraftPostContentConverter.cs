@@ -7,6 +7,6 @@ public class DraftPostContentConverter : ValueConverter<DraftPostContent, string
 {
     public DraftPostContentConverter() : base(
         id => id.ToString(),
-        value => DraftPostContent.CreateNew()
+        value => DraftPostContent.CreateFromString(value).AsSuccess()
     ) { }
 }

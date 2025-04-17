@@ -1,7 +1,7 @@
 <script lang="ts">
-    import type { DraftPost } from "../draftPosts";
+    import type { DraftPostFullInfo } from "../draftPosts";
 
-    let { post }: { post: DraftPost } = $props<{ post: DraftPost }>();
+    let { post }: { post: DraftPostFullInfo } = $props<{ post: DraftPostFullInfo }>();
 </script>
 
 <div class="draft-post-editing-view">

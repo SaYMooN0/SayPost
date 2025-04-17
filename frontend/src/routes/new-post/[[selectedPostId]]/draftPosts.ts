@@ -3,7 +3,7 @@ export type DraftPostMainInfo = {
     title: string;
     lastModified: Date;
 }
-export type DraftPost = {
+export type DraftPostFullInfo = {
     id: string;
     title: string;
     lastModified: Date;

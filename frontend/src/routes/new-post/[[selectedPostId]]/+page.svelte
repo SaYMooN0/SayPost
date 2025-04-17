@@ -30,7 +30,6 @@
             postsMainInfoFetchingErrs = response.errors;
             draftPostsMainInfo = [];
         }
-        console.log(response);
     }
     async function createNewPost() {
         console.log("new post");
@@ -52,9 +51,9 @@
         {:else if draftPostsMainInfo.length == 0}
             <NoDraftPosts refresh={fetchDraftPosts} {createNewPost} />
         {:else}
-        <p>
-            len : {draftPostsMainInfo}
-        </p>
+            <p>
+                len : {draftPostsMainInfo}
+            </p>
             <div class="page-content">
                 <div class="left-side">
                     <button class="new-post-btn">

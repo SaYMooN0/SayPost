@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.draft_post_aggregate;
 using SharedKernel.common.domain.ids;
@@ -31,6 +32,9 @@ internal class DraftPostsRepository : IDraftPostsRepository
         .Where(p => p.AuthorId == userId)
         .OrderBySortOption(sortOption)
         .ToArrayAsync();
+
+    public async Task<DraftPost?> GetById(DraftPostId draftPostId) =>
+        await _db.DraftPosts.FindAsync(draftPostId);
 }
 
 file static class DraftPostsRepositoryExtensions
