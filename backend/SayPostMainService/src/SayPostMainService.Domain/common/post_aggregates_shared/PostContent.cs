@@ -2,14 +2,14 @@ using SharedKernel.common.domain;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 
-namespace SayPostMainService.Domain.draft_post_aggregate;
+namespace SayPostMainService.Domain.common.post_aggregates_shared;
 
-public class DraftPostContent : ValueObject
+public class PostContent : ValueObject
 {
     public const int MaxContentLength = 5096;
     private string Value { get; }
 
-    private DraftPostContent(string value) {
+    private PostContent(string value) {
         if (IsStringCorrectPostContent(value).IsErr(out var err)) {
             throw new ErrCausedException(err);
         }
@@ -17,10 +17,10 @@ public class DraftPostContent : ValueObject
         Value = value;
     }
 
-    public static DraftPostContent CreateNew() => new("New post content");
+    public static PostContent CreateNew() => new("New post content");
 
-    public static ErrOr<DraftPostContent> CreateFromString(string value) =>
-        IsStringCorrectPostContent(value).IsErr(out var err) ? err : new DraftPostContent(value);
+    public static ErrOr<PostContent> CreateFromString(string value) =>
+        IsStringCorrectPostContent(value).IsErr(out var err) ? err : new PostContent(value);
 
     public override string ToString() => Value;
 

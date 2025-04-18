@@ -3,6 +3,8 @@ using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.draft_post_aggregate;
 using SharedKernel.common.domain.ids;
+using SharedKernel.common.errs;
+using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Infrastructure.persistence.repositories;
 
@@ -35,6 +37,15 @@ internal class DraftPostsRepository : IDraftPostsRepository
 
     public async Task<DraftPost?> GetById(DraftPostId draftPostId) =>
         await _db.DraftPosts.FindAsync(draftPostId);
+
+    public async Task<ErrOr<AppUserId>> GetPostAuthor(DraftPostId draftPostId) {
+        DraftPost? post = await GetById(draftPostId);
+        if (post is null) {
+            return ErrFactory.NotFound($"Draft post with id {draftPostId} does not exist");
+        }
+
+        return post.AuthorId;
+    }
 }
 
 file static class DraftPostsRepositoryExtensions

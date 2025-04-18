@@ -1,4 +1,5 @@
 using SayPostMainService.Domain.common;
+using SayPostMainService.Domain.common.post_aggregates_shared;
 using SayPostMainService.Domain.draft_post_aggregate.events;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
@@ -10,15 +11,18 @@ public class DraftPost : AggregateRoot<DraftPostId>
 {
     private DraftPost() { }
     public AppUserId AuthorId { get; }
-    public DraftPostTitle Title { get; private set; }
-    public DraftPostContent Content { get; private set; }
+    public PostTitle Title { get; private set; }
+    public PostContent Content { get; private set; }
     public DateTime CreatedAt { get; }
     public DateTime LastModifiedAt { get; private set; }
     public HashSet<PostTagId> Tags { get; private set; }
 
     private DraftPost(
-        AppUserId authorId, DraftPostTitle title, DraftPostContent content, DateTime createdAt, DateTime lastModifiedAt
+        DraftPostId id, AppUserId authorId,
+        PostTitle title, PostContent content,
+        DateTime createdAt, DateTime lastModifiedAt
     ) {
+        Id = id;
         AuthorId = authorId;
         Title = title;
         Content = content;
@@ -29,9 +33,10 @@ public class DraftPost : AggregateRoot<DraftPostId>
 
     public static DraftPost CreateNew(AppUserId authorId, IDateTimeProvider timeProvider) {
         DraftPost post = new(
+            id: DraftPostId.CreateNew(),
             authorId: authorId,
-            title: DraftPostTitle.CreateNew(),
-            content: DraftPostContent.CreateNew(),
+            title: PostTitle.CreateNew(),
+            content: PostContent.CreateNew(),
             createdAt: timeProvider.Now,
             lastModifiedAt: timeProvider.Now
         );
@@ -39,12 +44,12 @@ public class DraftPost : AggregateRoot<DraftPostId>
         return post;
     }
 
-    public void UpdateTitle(DraftPostTitle newTitle, IDateTimeProvider timeProvider) {
+    public void UpdateTitle(PostTitle newTitle, IDateTimeProvider timeProvider) {
         Title = newTitle;
         LastModifiedAt = timeProvider.Now;
     }
 
-    public void UpdateContent(DraftPostContent newContent, IDateTimeProvider dateTimeProvider) {
+    public void UpdateContent(PostContent newContent, IDateTimeProvider dateTimeProvider) {
         Content = newContent;
         LastModifiedAt = dateTimeProvider.Now;
     }

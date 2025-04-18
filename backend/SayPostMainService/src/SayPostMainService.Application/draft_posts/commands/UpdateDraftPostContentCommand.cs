@@ -1,6 +1,7 @@
 using MediatR;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
+using SayPostMainService.Domain.common.post_aggregates_shared;
 using SayPostMainService.Domain.draft_post_aggregate;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
@@ -8,11 +9,11 @@ using SharedKernel.date_time_provider;
 
 namespace SayPostMainService.Application.draft_posts.commands;
 
-public record class UpdateDraftPostContentCommand(DraftPostId DraftPostId, DraftPostContent NewContent) :
-    IRequest<ErrOr<DraftPostContent>>;
+public record class UpdateDraftPostContentCommand(DraftPostId DraftPostId, PostContent NewContent) :
+    IRequest<ErrOr<PostContent>>;
 
 internal class UpdateDraftPostContentCommandHandler
-    : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<DraftPostContent>>
+    : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<PostContent>>
 {
     private readonly IDraftPostsRepository _draftPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
@@ -25,7 +26,7 @@ internal class UpdateDraftPostContentCommandHandler
     }
 
 
-    public async Task<ErrOr<DraftPostContent>> Handle(
+    public async Task<ErrOr<PostContent>> Handle(
         UpdateDraftPostContentCommand request, CancellationToken cancellationToken
     ) {
         DraftPost? post = await _draftPostsRepository.GetById(request.DraftPostId);

@@ -5,8 +5,13 @@
     import PageAuthNeeded from "../../../components/PageAuthNeeded.svelte";
     import { ApiMain } from "../../../ts/backend-services";
     import { Err } from "../../../ts/common/errs/err";
+    import DraftPostsList from "./components/DraftPostsList.svelte";
     import NoDraftPosts from "./components/NoDraftPosts.svelte";
-    import { DraftPostsSortOption, type DraftPostMainInfo } from "./draftPosts";
+    import {
+        DraftPostsSortOption,
+        type DraftPostFullInfo,
+        type DraftPostMainInfo,
+    } from "./draftPosts";
 
     let selectedPostId: string | null = page.params.selectedPostId;
     let userId = $state<string>();
@@ -31,8 +36,19 @@
             draftPostsMainInfo = [];
         }
     }
-    async function createNewPost() {
-        console.log("new post");
+    async function createNewPost(): Promise<Err[] | void> {
+        const response = await ApiMain.fetchJsonResponse<{
+            draftPost: DraftPostFullInfo;
+        }>("/draft-posts/create", {
+            method: "POST",
+        });
+        if (response.isSuccess) {
+            console.log(response);
+            console.log(response.data);
+            console.log(response.data.draftPost);
+        } else {
+            return response.errors;
+        }
     }
 </script>
 
@@ -45,15 +61,12 @@
     {#await fetchDraftPosts() then _}
         {#if postsMainInfoFetchingErrs.length != 0}
             <div class="fetching-err">
-                <label>Error</label>
+                <label>Something went wrong...</label>
                 <DefaultErrBlock errList={postsMainInfoFetchingErrs} />
             </div>
         {:else if draftPostsMainInfo.length == 0}
             <NoDraftPosts refresh={fetchDraftPosts} {createNewPost} />
         {:else}
-            <p>
-                len : {draftPostsMainInfo}
-            </p>
             <div class="page-content">
                 <div class="left-side">
                     <button class="new-post-btn">
@@ -79,8 +92,10 @@
                         </svg>
                         Write new post
                     </button>
+                    <DraftPostsList posts={draftPostsMainInfo} />
                 </div>
                 <div class="post-to-edit">Selected post</div>
+                <div>{selectedPostId}</div>
             </div>
         {/if}
     {/await}

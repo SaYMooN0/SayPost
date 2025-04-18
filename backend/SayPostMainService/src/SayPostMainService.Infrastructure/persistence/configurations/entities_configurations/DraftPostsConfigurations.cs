@@ -23,11 +23,11 @@ public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
 
         builder
             .Property(x => x.Title)
-            .HasConversion<DraftPostTitleConverter>();
+            .HasConversion<PostTitleConverter>();
 
         builder
             .Property(x => x.Content)
-            .HasConversion<DraftPostContentConverter>();
+            .HasConversion<PostContentConverter>();
 
         builder
             .Property(x => x.Tags)

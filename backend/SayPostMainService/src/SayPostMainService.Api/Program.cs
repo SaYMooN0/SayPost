@@ -2,6 +2,7 @@ using ApiShared;
 using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
 using SayPostMainService.Application;
+using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
 using Serilog;
@@ -43,6 +44,15 @@ public class Program
         app.AddExceptionHandlingMiddleware();
 
         MapHandlers(app);
+
+        using (var serviceScope = app.Services.CreateScope()) {
+            var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.AppUsers.Add(new AppUser(new(new Guid("0196405c-0c03-7520-8da6-d17cdc334ba7"))));
+            db.SaveChanges();
+        }
+
         app.UseCors("AllowFrontend");
         app.Run();
     }
