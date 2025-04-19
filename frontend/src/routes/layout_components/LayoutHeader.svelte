@@ -105,8 +105,11 @@
 {/snippet}
 
 <style>
-    .layout-header-container {
+    :global(*){
         --layout-header-height: 3rem;
+    }
+
+    .layout-header-container {
         --header-font-size: 1.4rem;
 
         display: grid;

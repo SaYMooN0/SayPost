@@ -18,14 +18,14 @@ internal static class DraftPostHandlers
         endpoints.MapPost("/create", CreateDraftPost)
             .WithAuthenticationRequired();
 
-        endpoints.MapGet("/{postId}/", GetDraftPostFullInfo)
+        endpoints.MapGet("/{draftPostId}/", GetDraftPostFullInfo)
             .WithAuthenticationRequired()
             .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{postId}/updateTitle", UpdateDraftPostTitle)
+        endpoints.MapPatch("/{draftPostId}/updateTitle", UpdateDraftPostTitle)
             .WithAuthenticationRequired()
             .WithRequestValidation<UpdateDraftPostTitleRequest>()
             .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{postId}/updateContent", UpdateDraftPostContent)
+        endpoints.MapPatch("/{draftPostId}/updateContent", UpdateDraftPostContent)
             .WithAuthenticationRequired()
             .WithRequestValidation<UpdateDraftPostContentRequest>()
             .WithAccessToModifyDraftPostRequired();

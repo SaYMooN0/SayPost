@@ -39,12 +39,15 @@ internal class DraftPostsRepository : IDraftPostsRepository
         await _db.DraftPosts.FindAsync(draftPostId);
 
     public async Task<ErrOr<AppUserId>> GetPostAuthor(DraftPostId draftPostId) {
-        DraftPost? post = await GetById(draftPostId);
-        if (post is null) {
-            return ErrFactory.NotFound($"Draft post with id {draftPostId} does not exist");
+        DraftPost? draftPost = await GetById(draftPostId);
+        if (draftPost is null) {
+            return ErrFactory.NotFound(
+                "The draft post does not exist",
+                $"Draft post with id: {draftPostId} does not exist"
+            );
         }
 
-        return post.AuthorId;
+        return draftPost.AuthorId;
     }
 }
 

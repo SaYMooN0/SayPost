@@ -10,7 +10,7 @@ public static class HttpContextExtensions
         if (!Guid.TryParse(postIdString, out var guid)) {
             throw new ErrCausedException(ErrFactory.InvalidData(
                 "Invalid draft post id",
-                "Couldn't parse darft post id from route"
+                "Couldn't parse draft post id from route"
             ));
         }
 

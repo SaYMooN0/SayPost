@@ -22,6 +22,7 @@ public class Program
 
         app.UseAuthorization();
 
+      
         app
             .MapGet("/greet", (HttpContext _) =>new { Msg="notification service"})
             .WithName("greet");
