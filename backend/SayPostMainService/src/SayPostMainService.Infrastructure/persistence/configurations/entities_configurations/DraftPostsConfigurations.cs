@@ -35,5 +35,8 @@ public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
                 converter: new PostTagIdHashSetConverter(),
                 valueComparer: new PostTagIdHashSetComparer()
             );
+
+        builder
+            .Property(x => x.CreatedAt);
     }
 }

@@ -13,11 +13,21 @@
         openLogin={() => authDialog?.openLogin()}
         openSignUp={() => authDialog?.openSignUp()}
     />
-    {@render children()}
+    <div class="page-content">
+        {@render children()}
+    </div>
 </div>
 
 <style>
     .page {
         width: 100vw;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .page-content {
+        width: 80rem;
+        margin: 0 auto;
+        box-sizing: border-box;
     }
 </style>

@@ -3,15 +3,14 @@
     import LayoutNotificationsBlock from "./LayoutNotificationsBlock.svelte";
 
     let { username } = $props<{ username: string }>();
-    let isAccountContextMenuOpen = $state(false);
-    let buttonElement: any;
 
+    let isAccountContextMenuOpen = $state(false);
+    let buttonElement: HTMLElement;
     function handleClickOutside(event: any) {
         if (!buttonElement.contains(event.target)) {
             isAccountContextMenuOpen = false;
         }
     }
-
     onMount(() => {
         document.addEventListener("click", handleClickOutside);
         return () => {
@@ -107,8 +106,7 @@
         align-items: center;
         gap: 0.5rem;
         height: 100%;
-        padding: 0 0.5rem;
-        margin: 0 1rem 0 auto;
+        margin: 0 2rem 0 auto;
         box-sizing: border-box;
     }
 

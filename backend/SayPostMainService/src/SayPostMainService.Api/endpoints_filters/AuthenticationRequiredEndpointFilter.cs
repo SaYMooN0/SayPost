@@ -7,7 +7,6 @@ using SayPostMainService.Domain.common.interfaces.repositories;
 using SharedKernel.common.domain.ids;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
-using SharedKernel.configs;
 
 namespace SayPostMainService.Api.endpoints_filters;
 
@@ -21,8 +20,17 @@ internal class AccessToModifyDraftPostRequiredEndpointFilter : IEndpointFilter
 
     public async ValueTask<object?> InvokeAsync(EndpointFilterInvocationContext context, EndpointFilterDelegate next) {
         var httpContext = context.HttpContext;
+        
+        var postIdString = httpContext.Request.RouteValues["draftPostId"]?.ToString() ?? "";
+        if (!Guid.TryParse(postIdString, out var postGuid)) {
+            return CustomResults.ErrorResponse(ErrFactory.InvalidData(
+                "Invalid draft post id",
+                "Couldn't parse draft post id from route"
+            ));
+        }
+        
+        DraftPostId postId = new(postGuid);
         AppUserId currentUserId = httpContext.GetAuthenticatedUserId();
-        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
         ErrOr<AppUserId> postAuthorGetRes = await _draftPostsRepository.GetPostAuthor(postId);
         if (postAuthorGetRes.IsErr(out var err)) {

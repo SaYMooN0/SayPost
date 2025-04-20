@@ -7,11 +7,12 @@
     div {
         position: absolute;
         top: 30%;
+        left: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap:1rem;
+        gap: 1rem;
         width: 100%;
         color: var(--accent-main);
         font-size: 3rem;

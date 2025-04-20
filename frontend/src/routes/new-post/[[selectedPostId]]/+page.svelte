@@ -1,6 +1,7 @@
 <script lang="ts">
     import { goto, afterNavigate } from "$app/navigation";
     import { page } from "$app/state";
+    import { error } from "@sveltejs/kit";
     import AuthView from "../../../components/AuthView.svelte";
     import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
     import PageAuthNeeded from "../../../components/PageAuthNeeded.svelte";
@@ -9,6 +10,7 @@
     import { StringUtils } from "../../../ts/string-utils";
     import DraftPostEditingView from "./components/DraftPostEditingView.svelte";
     import DraftPostsList from "./components/DraftPostsList.svelte";
+    import DraftPostsListSortingLabel from "./components/DraftPostsListSortingLabel.svelte";
     import NoDraftPosts from "./components/NoDraftPosts.svelte";
     import NoPostSelected from "./components/NoPostSelected.svelte";
     import {
@@ -20,15 +22,14 @@
     let selectedPostId: string | null = $state(null);
     let draftPostCache: Map<string, DraftPostFullInfo> = new Map();
 
-    function setDraftPostFullInfo(post: DraftPostFullInfo) {
-        draftPostCache.set(post.id, post);
-    }
-
     let draftPostsMainInfo: DraftPostMainInfo[] = $state([]);
+    let draftPostsCount= $state(0);
+
     let postsMainInfoFetchingErrs: Err[] = $state([]);
     let draftPostsSortOption: DraftPostsSortOption = $state(
         DraftPostsSortOption.lastModified,
     );
+
     async function fetchDraftPosts() {
         const url = `/draft-posts?sortOption=${draftPostsSortOption}`;
         const response = await ApiMain.fetchJsonResponse<{
@@ -38,10 +39,14 @@
         });
         if (response.isSuccess) {
             draftPostsMainInfo = response.data.posts;
-            postsMainInfoFetchingErrs = [];
+            draftPostsCount = draftPostsMainInfo.length;
+            if(postsMainInfoFetchingErrs.length!=0){
+                postsMainInfoFetchingErrs = [];
+            }
         } else {
             postsMainInfoFetchingErrs = response.errors;
             draftPostsMainInfo = [];
+            draftPostsCount=0;
         }
     }
     async function createNewPost(): Promise<Err[] | void> {
@@ -64,6 +69,10 @@
     afterNavigate(() => {
         selectedPostId = page.params.selectedPostId;
     });
+    $effect(() => {
+		console.log("rerender-0:",draftPostsCount);
+		console.log("rerender-1:",postsMainInfoFetchingErrs.length);
+	});
 </script>
 
 {#snippet unauthenticated()}
@@ -78,7 +87,7 @@
                 <label>Something went wrong...</label>
                 <DefaultErrBlock errList={postsMainInfoFetchingErrs} />
             </div>
-        {:else if draftPostsMainInfo.length == 0}
+        {:else if draftPostsCount == 0}
             <NoDraftPosts refresh={fetchDraftPosts} {createNewPost} />
         {:else}
             <div class="page-content">
@@ -106,43 +115,9 @@
                         </svg>
                         Write new post
                     </button>
-                    <label class="sorting-label">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                        >
-                            <path
-                                d="M7 4V20"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                            <path
-                                d="M17 19L17 4"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                            <path
-                                d="M10 6.99998C10 6.99998 7.79053 4.00001 6.99998 4C6.20942 3.99999 4 7 4 7"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                            <path
-                                d="M20 17C20 17 17.7905 20 17 20C16.2094 20 14 17 14 17"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
-                        Your draft posts:
-                    </label>
+                    <DraftPostsListSortingLabel
+                        bind:sortOption={draftPostsSortOption}
+                    />
                     <DraftPostsList posts={draftPostsMainInfo} />
                 </div>
                 {#if StringUtils.isNullOrWhiteSpace(selectedPostId)}
@@ -152,7 +127,8 @@
                         <DraftPostEditingView
                             post={draftPostCache.get(selectedPostId || "")}
                             postId={selectedPostId || ""}
-                            {setDraftPostFullInfo}
+                            setDraftPostFullInfo={(post) =>
+                                draftPostCache.set(post.id, post)}
                         />
                     </div>
                 {/if}
@@ -198,7 +174,6 @@
         gap: 0.5rem;
         padding: 0.5rem;
         margin-top: 1rem;
-        margin-bottom: auto;
         border: 0.125rem solid var(--back-second);
         border-radius: 0.25rem;
         background-color: var(--back-second);
@@ -209,16 +184,5 @@
         height: 2rem;
     }
 
-    .sorting-label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        margin: 0.5rem 0;
-        box-sizing: border-box;
-    }
-
-    .sorting-label > svg {
-        height: 2rem;
-        background-color: var(--back-second);
-    }
+   
 </style>
