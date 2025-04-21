@@ -2,7 +2,7 @@
     import type {
         DraftPostMainInfo,
         DraftPostsSortOption,
-    } from "../draftPosts";
+    } from "../../draftPosts";
 
     let { posts }: { posts: DraftPostMainInfo[] } = $props<{
         posts: DraftPostMainInfo[];

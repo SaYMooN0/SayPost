@@ -1,45 +1,86 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import type { DraftPostFullInfo } from "../draftPosts";
-    import { ApiMain } from "../../../../ts/backend-services";
-    import type { Err } from "../../../../ts/common/errs/err";
+    import { Err } from "../../../../ts/common/errs/err";
+    import DefaultErrBlock from "../../../../components/err_blocks/DefaultErrBlock.svelte";
+    import PostTitleEditingView from "./post_editing_view_components/PostTitleEditingView.svelte";
 
-    export let post: DraftPostFullInfo | undefined;
-    export let postId: string;
-    export let setDraftPostFullInfo: (post: DraftPostFullInfo) => void;
-
-    let loading = false;
-    let error: Err[] = [];
-
-    onMount(async () => {
-        if (!post && postId) {
-            loading = true;
-            const response = await ApiMain.fetchJsonResponse<DraftPostFullInfo>(
-                `/draft-posts/${postId}`, {
-                    method: "GET"
-                }
-            );
-            if (response.isSuccess) {
-                post = response.data;
-                setDraftPostFullInfo(response.data);
-            } else {
-                error = response.errors;
-            }
-            loading = false;
-        }
+    let {
+        getPostData,
+        updateCache,
+    }: {
+        getPostData: () => Promise<DraftPostFullInfo | undefined | Err[]>;
+        updateCache: (newVal: DraftPostFullInfo) => void;
+    } = $props<{
+        getPostData: () => Promise<DraftPostFullInfo | undefined | Err[]>;
+        updateCache: (newVal: DraftPostFullInfo) => void;
+    }>();
+    let postData: DraftPostFullInfo = $state({
+        id: "",
+        title: "",
+        lastModified: new Date(),
+        content: "",
+        tags: [],
     });
+    let fetchingErrs = $state<Err[]>([]);
+    async function invokeGetPostData(): Promise<void> {
+        const res = await getPostData();
+        if (Array.isArray(res)) {
+            fetchingErrs = res;
+        } else if (res === undefined) {
+            fetchingErrs = [
+                new Err(
+                    "Something went during fetching the post data. Please try again later",
+                ),
+            ];
+        } else {
+            fetchingErrs = [];
+            postData = res;
+        }
+    }
+    function updateTitle(newTitle: string, newLastModified: Date) {
+        updateCache({
+            ...postData,
+            title: newTitle,
+            lastModified: newLastModified,
+        });
+    }
 </script>
 
-{#if loading}
-    <p>Loading post...</p>
-{:else if error.length}
-    <p>Failed to load post</p>
-{:else if post}
-    <div class="draft-post-editing-view">
-        <h1 class="post-title">{post.title}</h1>
-        <p>{post.content}</p>
-        <button>Edit post</button>
-    </div>
-{:else}
-    <p>Post not found</p>
-{/if}
+<div class="editing-view">
+    {#await invokeGetPostData() then _}
+        {#if fetchingErrs && fetchingErrs.length != 0}
+            <p class="error-p">An error has occurred</p>
+            <DefaultErrBlock errList={fetchingErrs} />
+        {:else}
+            <label class="last-modified">{postData.lastModified}</label>
+            <PostTitleEditingView
+                postId={postData.id}
+                title={postData.title}
+                updateParentValue={updateTitle}
+            />
+        {/if}
+    {/await}
+</div>
+
+<style>
+    .editing-view {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0 1rem;
+        box-sizing: border-box;
+    }
+
+    .error-p {
+        margin: 4rem 0 1rem 4rem;
+        font-size: 2rem;
+        font-weight: 500;
+    }
+
+    .editing-view > :global(.error-p + .err-block) {
+        width: fit-content;
+        min-width: 20rem;
+        max-width: 40rem !important;
+        margin-left: 4rem;
+    }
+</style>

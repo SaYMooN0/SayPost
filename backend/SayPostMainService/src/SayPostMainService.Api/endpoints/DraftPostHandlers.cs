@@ -21,11 +21,11 @@ internal static class DraftPostHandlers
         endpoints.MapGet("/{draftPostId}/", GetDraftPostFullInfo)
             .WithAuthenticationRequired()
             .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{draftPostId}/updateTitle", UpdateDraftPostTitle)
+        endpoints.MapPatch("/{draftPostId}/update-title", UpdateDraftPostTitle)
             .WithAuthenticationRequired()
             .WithRequestValidation<UpdateDraftPostTitleRequest>()
             .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{draftPostId}/updateContent", UpdateDraftPostContent)
+        endpoints.MapPatch("/{draftPostId}/update-content", UpdateDraftPostContent)
             .WithAuthenticationRequired()
             .WithRequestValidation<UpdateDraftPostContentRequest>()
             .WithAccessToModifyDraftPostRequired();
@@ -83,7 +83,10 @@ internal static class DraftPostHandlers
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
-            (newTitle) => Results.Json(new { NewPostTitle = newTitle.ToString() })
+            (newValues) => Results.Json(new {
+                NewTitle = newValues.NewTitle.ToString(),
+                NewLastModified = newValues.NewLastModified
+            })
         );
     }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { DraftPostsSortOption } from "../draftPosts";
+    import { DraftPostsSortOption } from "../../draftPosts";
 
     let { sortOption = $bindable() } = $props<{
         sortOption: DraftPostsSortOption;
@@ -133,7 +133,6 @@
     }
 
     .sorting-label:hover > svg {
-        border-color: var(--accent-main);
         border-color: var(--accent-hov);
     }
 
@@ -149,7 +148,7 @@
         z-index: 1000;
         display: none;
         width: 100%;
-        padding: 0.25rem 0.5rem;
+        padding: 0.25rem;
         border: 0.125rem solid var(--back-second);
         border-radius: 0.5rem;
         background: var(--back-main);
@@ -160,7 +159,6 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
     }
 
     .context-menu.open > * {
@@ -169,35 +167,41 @@
     }
 
     .sort-by-label {
+        margin-left: 1rem;
         font-size: 1rem;
         font-weight: 600;
     }
 
     .sort-option {
         display: grid;
-        grid-template-columns: 1fr auto;
         align-items: center;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
         transition: all 0.08s ease-in;
+        grid-template-columns: 1fr auto;
     }
 
     .sort-option > span {
         display: inline;
         width: 0.875rem;
         height: 0.875rem;
-        border-radius: 0.75rem;
         border: 0.125rem solid var(--back-second);
-        box-sizing: border-box;
+        border-radius: 0.75rem;
         background-color: var(--back-second);
         transition: inherit;
+        box-sizing: border-box;
     }
 
     .sort-option.chosen > span {
+        border-color: var(--accent-main);
         background-color: var(--accent-main);
-        border-color: var(--accent-main);
     }
-    .sort-option:hover{
-        border-color: var(--accent-main);
+
+    .sort-option:hover {
+        padding-left: 0.75rem;
+        background-color: var(--back-second);
     }
+
     .sort-option:hover > span {
         border-color: var(--accent-main);
     }
