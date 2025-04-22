@@ -3,6 +3,9 @@
     import { Err } from "../../../../ts/common/errs/err";
     import DefaultErrBlock from "../../../../components/err_blocks/DefaultErrBlock.svelte";
     import PostTitleEditingView from "./post_editing_view_components/PostTitleEditingView.svelte";
+    import { DateUtils } from "../../../../ts/common/utils/date-utils";
+    import PostTagsEditingView from "./post_editing_view_components/PostTagsEditingView.svelte";
+    import TagOperatingDisplay from "./post_editing_view_components/tags_editing_view_components/TagOperatingDisplay.svelte";
 
     let {
         getPostData,
@@ -17,7 +20,8 @@
     let postData: DraftPostFullInfo = $state({
         id: "",
         title: "",
-        lastModified: new Date(),
+        lastModifiedAt: new Date(),
+        createdAt: new Date(),
         content: "",
         tags: [],
     });
@@ -38,11 +42,14 @@
         }
     }
     function updateTitle(newTitle: string, newLastModified: Date) {
-        updateCache({
-            ...postData,
-            title: newTitle,
-            lastModified: newLastModified,
-        });
+        postData.lastModifiedAt = newLastModified;
+        postData.title = newTitle;
+        updateCache(postData);
+    }
+    function updateTags(newTags: string[], newLastModified: Date) {
+        postData.lastModifiedAt = newLastModified;
+        postData.tags = newTags;
+        updateCache(postData);
     }
 </script>
 
@@ -52,11 +59,22 @@
             <p class="error-p">An error has occurred</p>
             <DefaultErrBlock errList={fetchingErrs} />
         {:else}
-            <label class="last-modified">{postData.lastModified}</label>
+            {#key postData}
+                <label class="last-modified">
+                    Last modified at: {DateUtils.toLocale(
+                        postData.lastModifiedAt,
+                    )}
+                </label>
+            {/key}
             <PostTitleEditingView
                 postId={postData.id}
                 title={postData.title}
                 updateParentValue={updateTitle}
+            />
+            <PostTagsEditingView
+                postId={postData.id}
+                tags={postData.tags}
+                updateParentValue={updateTags}
             />
         {/if}
     {/await}
@@ -67,7 +85,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding: 0 1rem;
+        padding: 1rem 1rem 0;
         box-sizing: border-box;
     }
 
@@ -82,5 +100,11 @@
         min-width: 20rem;
         max-width: 40rem !important;
         margin-left: 4rem;
+    }
+
+    .last-modified {
+        margin-left: 0.5rem;
+        color: var(--gray);
+        text-decoration: underline;
     }
 </style>

@@ -1,8 +1,6 @@
 <script lang="ts">
-    import type {
-        DraftPostMainInfo,
-        DraftPostsSortOption,
-    } from "../../draftPosts";
+    import { DateUtils } from "../../../../../ts/common/utils/date-utils";
+    import type { DraftPostMainInfo } from "../../draftPosts";
 
     let { posts }: { posts: DraftPostMainInfo[] } = $props<{
         posts: DraftPostMainInfo[];
@@ -20,7 +18,9 @@
             <label class="post-title">
                 {post.title}
             </label>
-            <label class="last-modified">{post.lastModified}</label>
+            <label class="last-modified">
+                last modified at {DateUtils.toLocale(post.lastModifiedAt)}
+            </label>
         </a>
     {/each}
 </div>
@@ -29,16 +29,17 @@
     .posts-list {
         width: 100%;
         max-height: calc(98vh - var(--layout-header-height) - 8.5rem);
-        overflow-y: auto;
+        overflow: hidden auto;
         box-sizing: border-box;
     }
-   
+
     .post-link {
         display: grid;
         padding: 0.5rem;
         margin: 0.125rem;
         border: 0.125rem solid var(--back-second);
         box-sizing: border-box;
+        text-decoration: none;
     }
 
     .post-link:hover {
@@ -46,9 +47,14 @@
     }
 
     .post-title {
+        display: inline-block;
         margin-bottom: 0.25rem;
         font-size: 1rem;
         font-weight: 400;
+        box-sizing: border-box;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .last-modified {

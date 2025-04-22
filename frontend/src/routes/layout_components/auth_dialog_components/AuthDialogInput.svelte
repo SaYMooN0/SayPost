@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import { StringUtils } from "../../../ts/string-utils";
+    import { StringUtils } from "../../../ts/common/utils/string-utils";
 
     let {
         type = "text",

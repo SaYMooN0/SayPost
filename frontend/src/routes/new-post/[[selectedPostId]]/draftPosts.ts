@@ -1,12 +1,13 @@
 export type DraftPostMainInfo = {
     id: string;
     title: string;
-    lastModified: Date;
+    lastModifiedAt: Date;
 }
 export type DraftPostFullInfo = {
     id: string;
     title: string;
-    lastModified: Date;
+    lastModifiedAt: Date;
+    createdAt: Date;
     content: string;
     tags: string[];
 }

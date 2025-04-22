@@ -1,5 +1,5 @@
 import { ApiAuth } from "../ts/backend-services";
-import { StringUtils } from "../ts/string-utils";
+import { StringUtils } from "../ts/common/utils/string-utils";
 
 export class AuthStoreData {
 	private _username: string | null;

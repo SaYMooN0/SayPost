@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Err } from "../../ts/common/errs/err";
-    import { StringUtils } from "../../ts/string-utils";
+    import { StringUtils } from "../../ts/common/utils/string-utils";
 
     const { err }: { err: Err } = $props<{ err: Err }>();
     let showAdditional = $state(false);

@@ -5,7 +5,7 @@ namespace SayPostMainService.Api.contracts.draft_posts;
 internal record class DraftPostMainInfo(
     string Id,
     string Title,
-    DateTime LastModified
+    DateTime LastModifiedAt
 )
 {
     public static DraftPostMainInfo FromPost(DraftPost post) => new(

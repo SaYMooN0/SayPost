@@ -6,7 +6,7 @@
     import PageAuthNeeded from "../../../components/PageAuthNeeded.svelte";
     import { ApiMain } from "../../../ts/backend-services";
     import { Err } from "../../../ts/common/errs/err";
-    import { StringUtils } from "../../../ts/string-utils";
+    import { StringUtils } from "../../../ts/common/utils/string-utils";
     import DraftPostEditingView from "./components/DraftPostEditingView.svelte";
     import DraftPostsList from "./components/left_side_components/DraftPostsList.svelte";
     import DraftPostsListSortingLabel from "./components/left_side_components/DraftPostsListSortingLabel.svelte";
@@ -31,7 +31,6 @@
     );
 
     async function fetchDraftPosts() {
-        console.log("fetching", draftPostsSortOption);
         const url = `/draft-posts?sortOption=${draftPostsSortOption}`;
         const response = await ApiMain.fetchJsonResponse<{
             posts: DraftPostMainInfo[];
@@ -92,7 +91,9 @@
     }
     function updateCache(newVal: DraftPostFullInfo) {
         draftPostCache.set(newVal.id, newVal);
-        const idx = draftPostsMainInfo.findIndex((post) => post.id === newVal.id);
+        const idx = draftPostsMainInfo.findIndex(
+            (post) => post.id === newVal.id,
+        );
         if (idx !== -1) {
             draftPostsMainInfo[idx] = newVal;
         }
@@ -152,8 +153,10 @@
     }
 
     .page-content {
+        --left-side-width: 18rem;
+
         display: grid;
-        grid-template-columns: 18rem 1fr;
+        grid-template-columns: var(--left-side-width) 1fr;
         box-sizing: border-box;
     }
 
@@ -161,7 +164,6 @@
         display: flex;
         flex-direction: column;
         height: calc(98vh - var(--layout-header-height));
-        padding: 0.5rem;
         box-sizing: border-box;
     }
 </style>

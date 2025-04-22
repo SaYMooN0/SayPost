@@ -3,7 +3,7 @@
     import GrayLabelWithOnclick from "../../../components/GrayLabelWithOnclick.svelte";
     import { ApiAuth } from "../../../ts/backend-services";
     import { Err } from "../../../ts/common/errs/err";
-    import { StringUtils } from "../../../ts/string-utils";
+    import { StringUtils } from "../../../ts/common/utils/string-utils";
     import AuthDialogInput from "./AuthDialogInput.svelte";
     let {
         email = $bindable(),

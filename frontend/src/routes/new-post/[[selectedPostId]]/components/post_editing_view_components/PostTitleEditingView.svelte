@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { tick } from "svelte";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
@@ -20,6 +21,7 @@
     let editableValue = $state("");
     let isEditing = $state(false);
     let editingErrs: Err[] = $state([]);
+    let titleEditingEl: HTMLTextAreaElement;
 
     async function saveTitleChanges() {
         const response = await ApiMain.fetchJsonResponse<{
@@ -40,18 +42,37 @@
             editingErrs = response.errors;
         }
     }
-    function startEditing() {
+    async function startEditing() {
         isEditing = true;
         editableValue = title;
+        await tick();
+        adjustHeight();
+        titleEditingEl.focus();
+    }
+
+    function adjustHeight() {
+        if (!titleEditingEl) return;
+        titleEditingEl.style.height = "auto";
+        titleEditingEl.style.height = titleEditingEl.scrollHeight + "px";
     }
 </script>
 
 {#if isEditing}
     <div class="editing-state-container">
-        <label contenteditable="true" bind:innerText={editableValue}> </label>
+        <textarea
+            bind:value={editableValue}
+            bind:this={titleEditingEl}
+            rows="1"
+            class="autosize-textarea"
+            oninput={() => adjustHeight()}
+        />
         <div class="btns-container">
-            <button onclick={() => saveTitleChanges()}>Save</button>
-            <button onclick={() => (isEditing = false)}>Cancel</button>
+            <button class="cancel-btn" onclick={() => (isEditing = false)}>
+                Cancel
+            </button>
+            <button class="save-btn" onclick={() => saveTitleChanges()}>
+                Save
+            </button>
         </div>
         {#if editingErrs.length != 0}
             <DefaultErrBlock errList={editingErrs} />
@@ -59,6 +80,7 @@
     </div>
 {:else}
     <h1 class="post-title">
+        {title}
         <svg
             onclick={() => startEditing()}
             xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +107,6 @@
                 stroke-linejoin="round"
             />
         </svg>
-        {title}
     </h1>
 {/if}
 
@@ -93,28 +114,85 @@
     .editing-state-container {
         display: flex;
         flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
     }
 
-    .editing-state-container > .btns-container {
-        display: grid;
+    .editing-state-container > textarea {
+        border: 0.125rem solid var(--back-second);
+        border-radius: 0.25rem;
+        background-color: var(--back-second);
+        color: var(--text);
+        font-size: 2rem;
+        outline: none;
+        resize: none;
+        font-weight: 600;
+    }
+
+    .editing-state-container > textarea:focus {
+        border-color: var(--accent-main);
+        background-color: transparent;
+    }
+
+    .btns-container {
+        display: flex;
+        flex-direction: row;
         grid-template-columns: 1fr 1fr;
+        justify-content: right;
+        gap: 0.5rem;
+    }
+
+    .btns-container button {
+        width: 8rem;
+        height: 2rem;
+        border: none;
+        border-radius: 1rem;
+        color: var(--back-main);
+        font-size: 1.25rem;
+        transition: all 0.08s ease-in;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    .btns-container button:hover {
+        letter-spacing: 2px;
+    }
+
+    .btns-container button:active {
+        transform: scale(0.96);
+    }
+
+    .cancel-btn {
+        background-color: var(--gray);
+    }
+
+    .save-btn {
+        background-color: var(--accent-main);
     }
 
     .post-title {
+        margin: 0.5rem 0;
         font-size: 2rem;
+        word-break: break-all;
     }
 
     .post-title > svg {
         width: 2rem;
         height: 2rem;
         padding: 0.25rem;
-        border: 0.125rem solid var(--back-second);
-        border-radius: 0.25rem;
-        background-color: var(--back-second);
+        border: 0.125rem solid transparent;
+        border-radius: 0.375rem;
         box-sizing: border-box;
+        color: var(--accent-main);
+        vertical-align: middle;
     }
 
     .post-title > svg:hover {
+        border-color: var(--back-second);
+        background-color: var(--back-second);
+    }
+
+    .post-title > svg:active {
         border-color: var(--accent-main);
     }
 </style>

@@ -1,4 +1,5 @@
 import { Err, ErrWithExtraData } from "./common/errs/err";
+import { DateUtils } from "./common/utils/date-utils";
 
 
 export type ResponseResult<T> =
@@ -27,9 +28,9 @@ class BackendService {
                 credentials: 'include'
             });
             if (response.ok) {
-                let json = await response.json();
-                const result = json as T;
-                return { isSuccess: true, data: result };
+                const text = await response.text();
+                const data = BackendService.parseWithDates<T>(text);
+                return { isSuccess: true, data };
             }
 
             const errors = await this.handleErrorResponse(response);
@@ -63,6 +64,16 @@ class BackendService {
             };
         }
     }
+    static parseWithDates<T>(json: string): T {
+        return JSON.parse(json, (key, value) => {
+            if (typeof value === 'string' && DateUtils.isoDateRegex.test(value)) {
+                return new Date(value);
+            }
+            return value;
+        });
+    }
+
+
     private async handleErrorResponse(response: Response): Promise<Err[]> {
         if (response.headers.get("content-type")?.includes("application/json")) {
             const json = await response.json();

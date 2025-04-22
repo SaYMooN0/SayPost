@@ -1,6 +1,6 @@
 <script lang="ts">
     import { tick, type Snippet } from "svelte";
-    import { StringUtils } from "../../ts/string-utils";
+    import { StringUtils } from "../../ts/common/utils/string-utils";
 
     const { dialogId = StringUtils.rndStrWithPref("dialog-"), children } =
         $props<{
@@ -31,7 +31,7 @@
             show = false;
         }}
     >
-        <div class="dialog-content">
+        <div class="dialog-content" id="{dialogId}-dialog-content">
             {@render children()}
         </div>
     </dialog>

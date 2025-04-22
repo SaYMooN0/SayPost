@@ -7,6 +7,7 @@ public record class DraftPostFullInfoResponse(
     string Title,
     string Content,
     DateTime CreatedAt,
+    DateTime LastModifiedAt,
     string[] Tags
 )
 {
@@ -15,6 +16,7 @@ public record class DraftPostFullInfoResponse(
         draftPost.Title.ToString(),
         draftPost.Content.ToString(),
         draftPost.CreatedAt,
+        draftPost.LastModifiedAt,
         draftPost.Tags.Select(t => t.ToString()).ToArray()
     );
 }
