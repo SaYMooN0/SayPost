@@ -29,6 +29,10 @@ internal static class DraftPostHandlers
             .WithAuthenticationRequired()
             .WithRequestValidation<UpdateDraftPostContentRequest>()
             .WithAccessToModifyDraftPostRequired();
+        endpoints.MapPatch("/{draftPostId}/update-tags", UpdateDraftPostTags)
+            .WithAuthenticationRequired()
+            .WithRequestValidation<UpdateDraftPostTagsRequest>()
+            .WithAccessToModifyDraftPostRequired();
 
         return endpoints;
     }
@@ -97,6 +101,22 @@ internal static class DraftPostHandlers
         var request = httpContext.GetValidatedRequest<UpdateDraftPostContentRequest>();
 
         var command = new UpdateDraftPostContentCommand(postId, request.GetParsedPostContent());
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result,
+            (newValues) => Results.Json(new {
+                NewPostContent = newValues.NewContent.ToString(),
+                NewLastModified = newValues.NewLastModified
+            })
+        );
+    }
+    private static async Task<IResult> UpdateDraftPostTags(
+        HttpContext httpContext, ISender mediator
+    ) {
+        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
+        var request = httpContext.GetValidatedRequest<UpdateDraftPostTagsRequest>();
+
+        var command = new UpdateDraftPostTagsCommand(postId, request.GetParsedPostTags());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,

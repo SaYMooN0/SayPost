@@ -9,6 +9,7 @@ public class ErrList
     public ErrList() => _errList = [];
 
     public ErrList(Err err) => _errList = [err];
+    public ErrList(IEnumerable<Err> errs) => _errList = errs.ToList();
 
     public void Add(Err err) => _errList.Add(err);
 
@@ -45,5 +46,6 @@ public class ErrList
 
         return sb.ToString();
     }
+
     public static implicit operator ErrList(Err err) => new(err);
 }

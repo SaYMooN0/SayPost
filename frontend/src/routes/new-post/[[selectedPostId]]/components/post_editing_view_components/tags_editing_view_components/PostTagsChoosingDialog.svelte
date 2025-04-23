@@ -79,7 +79,7 @@
         </div>
         <div class="right-part">
             <label class="chosen-tags-label">
-                Tags chosen: {chosenTags.length}:
+                Tags chosen: ({chosenTags.length})
             </label>
             {#each chosenTags as tag}
                 <TagOperatingDisplay
@@ -93,17 +93,26 @@
     </div>
     <div class="divider"></div>
     <DefaultErrBlock errList={errors} />
-    <button onclick={() => saveData()}>Save</button>
+    <button class="save-btn" onclick={() => saveData()}>Save</button>
 </BaseDialogWithCloseButton>
 
 <style>
     :global(#post-tags-choosing-dialog-content) {
         --dialog-height: 30rem;
-        height: var(--dialog-height);
-        background-color: var(--back-main);
+
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: var(--dialog-height);
+        padding: 1rem 1.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--back-main);
+        box-sizing: border-box;
+    }
+
+    :global(#post-tags-choosing-dialog-content > .close-button) {
+        top: 0.5rem !important;
+        right: 0.5rem !important;
     }
 
     .tags-adding-container {
@@ -133,7 +142,29 @@
         color: var(--gray);
         font-size: 1rem;
     }
+
+    .chosen-tags-label {
+        color: var(--text);
+        font-size: 1.5rem;
+    }
+
     .divider {
         margin-top: auto;
+    }
+
+    .save-btn {
+        padding: 0.25rem 2rem;
+        margin-top: 0.5rem;
+        border: none;
+        border-radius: 2rem;
+        background-color: var(--accent-main);
+        color: var(--back-main);
+        font-size: 1.5rem;
+        cursor: pointer;
+        outline: none;
+    }
+
+    .save-btn:hover {
+        background-color: var(--accent-hov);
     }
 </style>

@@ -4,11 +4,13 @@ using SharedKernel.common.domain.ids;
 
 namespace SharedKernel.common.domain;
 
-public abstract class AggregateRoot<IdType> : Entity<IdType>, IAggregateRoot where IdType : IEntityId
+public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot where TId : IEntityId
 {
     protected AggregateRoot() : base() { }
 
-    protected readonly List<IDomainEvent> _domainEvents = new();
+    private readonly List<IDomainEvent> _domainEvents = [];
+
+    protected void AddDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 
     public IImmutableList<IDomainEvent> GetDomainEventsCopy() => _domainEvents.ToImmutableList();
 

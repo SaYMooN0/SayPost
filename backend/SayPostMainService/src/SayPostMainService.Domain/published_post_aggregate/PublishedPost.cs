@@ -1,9 +1,40 @@
 using SayPostMainService.Domain.common;
+using SayPostMainService.Domain.common.post_aggregates_shared;
+using SayPostMainService.Domain.draft_post_aggregate;
+using SayPostMainService.Domain.published_post_aggregate.events;
 using SharedKernel.common.domain;
+using SharedKernel.common.domain.ids;
+using SharedKernel.date_time_provider;
 
 namespace SayPostMainService.Domain.published_post_aggregate;
 
 public class PublishedPost : AggregateRoot<PublishedPostId>
 {
     private PublishedPost() { }
+
+    public AppUserId AuthorId { get; }
+    public PostTitle Title { get; }
+    public PostContent Content { get; }
+    public DateTime PublicationDate { get; }
+    public HashSet<PostTagId> Tags { get; }
+
+    public PublishedPost(
+        AppUserId authorId, PostTitle title, PostContent content,
+        DateTime publicationDate, HashSet<PostTagId> tags
+    ) {
+        AuthorId = authorId;
+        Title = title;
+        Content = content;
+        PublicationDate = publicationDate;
+        Tags = tags;
+    }
+
+    public static PublishedPost CreateFromDraft(DraftPost draftPost, IDateTimeProvider dateTimeProvider) {
+        PublishedPost publishedPost = new(
+            draftPost.AuthorId, draftPost.Title, draftPost.Content,
+            dateTimeProvider.Now, draftPost.Tags
+        );
+        publishedPost.AddDomainEvent(new NewPublishedPostCreated(publishedPost.Id, publishedPost.AuthorId));
+        return publishedPost;
+    }
 }

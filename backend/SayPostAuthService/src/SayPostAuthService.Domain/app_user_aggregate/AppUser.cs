@@ -17,12 +17,12 @@ public class AppUser : AggregateRoot<AppUserId>
         Id = id;
         Email = email;
         PasswordHash = passwordHash;
-        Username = username;    
+        Username = username;
     }
 
     public static AppUser CreateNew(Email email, string passwordHash) {
         AppUser user = new(AppUserId.CreateNew(), email, passwordHash, "SayPostUser");
-        user._domainEvents.Add(new NewAppUserCreatedEvent(user.Id));
+        user.AddDomainEvent(new NewAppUserCreatedEvent(user.Id));
         return user;
     }
 

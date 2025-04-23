@@ -10,10 +10,10 @@ using SharedKernel.date_time_provider;
 namespace SayPostMainService.Application.draft_posts.commands;
 
 public record class UpdateDraftPostContentCommand(DraftPostId DraftPostId, PostContent NewContent) :
-    IRequest<ErrOr<PostContent>>;
+    IRequest<ErrOr<(PostContent NewContent, DateTime NewLastModified)>>;
 
 internal class UpdateDraftPostContentCommandHandler
-    : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<PostContent>>
+    : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<(PostContent NewContent, DateTime NewLastModified)>>
 {
     private readonly IDraftPostsRepository _draftPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
@@ -26,7 +26,7 @@ internal class UpdateDraftPostContentCommandHandler
     }
 
 
-    public async Task<ErrOr<PostContent>> Handle(
+    public async Task<ErrOr<(PostContent NewContent, DateTime NewLastModified)>> Handle(
         UpdateDraftPostContentCommand request, CancellationToken cancellationToken
     ) {
         DraftPost? post = await _draftPostsRepository.GetById(request.DraftPostId);
@@ -40,6 +40,6 @@ internal class UpdateDraftPostContentCommandHandler
         post.UpdateContent(request.NewContent, _dateTimeProvider);
         await _draftPostsRepository.Update(post);
 
-        return post.Content;
+        return (post.Content, post.LastModifiedAt);
     }
 }

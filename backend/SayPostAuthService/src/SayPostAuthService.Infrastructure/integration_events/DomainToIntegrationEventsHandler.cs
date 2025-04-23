@@ -1,7 +1,6 @@
 ﻿using InfrastructureShared.integration_events.integration_events_publisher;
 using MediatR;
 using SayPostAuthService.Domain.app_user_aggregate.events;
-using SharedKernel.common.domain.ids;
 using SharedKernel.integration_events;
 
 namespace SayPostAuthService.Infrastructure.integration_events;

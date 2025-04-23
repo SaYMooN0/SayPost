@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.common;
+using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 

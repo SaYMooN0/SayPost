@@ -48,9 +48,9 @@
     .tags > div {
         padding: 4px 8px;
         border-radius: 4px;
-        transition: all 0.12s ease-in;
-        cursor: pointer;
         background-color: var(--accent-main);
         color: var(--back-main);
+        transition: all 0.12s ease-in;
+        cursor: pointer;
     }
 </style>
