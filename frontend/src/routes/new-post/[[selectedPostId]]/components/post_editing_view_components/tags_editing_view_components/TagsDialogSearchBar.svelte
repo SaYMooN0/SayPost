@@ -1,5 +1,6 @@
 <script lang="ts">
-    import type { Err } from "../../../../../../ts/common/errs/err";
+    import { ApiMain } from "../../../../../../ts/backend-services";
+    import { Err } from "../../../../../../ts/common/errs/err";
     import { StringUtils } from "../../../../../../ts/common/utils/string-utils";
 
     let {
@@ -25,6 +26,36 @@
         tagSearchInput = "";
         event.stopPropagation();
     }
+    let controller: AbortController | null = null;
+    let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    $effect(() => {
+        const value = tagSearchInput;
+
+        if (value.trim() === "") {
+            setSearchedTags([]);
+            return;
+        }
+
+        if (controller) controller.abort();
+        if (debounceTimeout) clearTimeout(debounceTimeout);
+
+        debounceTimeout = setTimeout(async () => {
+            controller = new AbortController();
+
+            const response = await ApiMain.fetchJsonResponse<{
+                tags: string[];
+            }>(`/post-tags/search/${encodeURIComponent(value)}`, {
+                signal: controller.signal,
+            });
+
+            if (response.isSuccess) {
+                setSearchedTags(response.data.tags);
+            } else {
+                setErrs(response.errors);
+            }
+        }, 400);
+    });
 </script>
 
 <div class="search-bar">

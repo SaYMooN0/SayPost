@@ -51,5 +51,6 @@ public class Program
 
     private static void MapHandlers(WebApplication app) {
         app.MapGroup("/draft-posts").MapDraftPostHandlers();
+        app.MapGroup("/post-tags").MapPostTagHandlers();
     }
 }

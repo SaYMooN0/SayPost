@@ -3,6 +3,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.draft_post_aggregate;
+using SayPostMainService.Domain.post_tag_aggregate;
+using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
 
@@ -14,6 +16,8 @@ public class MainDbContext : DbContext
 
     public DbSet<AppUser> AppUsers { get; init; } = null!;
     public DbSet<DraftPost> DraftPosts { get; init; } = null!;
+    public DbSet<PublishedPost> PublishedPostsPosts { get; init; } = null!;
+    public DbSet<PostTag> PostTags { get; init; } = null!;
 
 
     public MainDbContext(DbContextOptions<MainDbContext> options, IPublisher publisher) : base(options) {
@@ -31,7 +35,7 @@ public class MainDbContext : DbContext
             .Where(e => e.Entity is IAggregateRoot)
             .SelectMany(ar => (ar.Entity as IAggregateRoot).PopAndClearDomainEvents())
             .ToList();
-        
+
         await PublishDomainEvents(domainEvents);
         return await base.SaveChangesAsync(cancellationToken);
     }

@@ -1,0 +1,27 @@
+﻿using ApiShared;
+using MediatR;
+using SayPostMainService.Api.contracts.post_tags;
+using SayPostMainService.Application.post_tags.queries;
+
+namespace SayPostMainService.Api.endpoints;
+
+internal static class PostTagHandlers
+
+{
+    internal static IEndpointRouteBuilder MapPostTagHandlers(this IEndpointRouteBuilder endpoints) {
+        endpoints.MapGet("/search/{searchVal}", SearchPostTags);
+
+        return endpoints;
+    }
+
+    private static async Task<IResult> SearchPostTags(
+        HttpContext httpContext, ISender mediator, string searchVal
+    ) {
+        var query = new SearchPostTagsQuery(searchVal);
+        var result = await mediator.Send(query);
+
+        return CustomResults.FromErrOr(result,
+            (tags) => Results.Json(new { Tags = tags })
+        );
+    }
+}

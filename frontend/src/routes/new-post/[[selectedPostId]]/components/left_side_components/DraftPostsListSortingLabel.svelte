@@ -19,6 +19,14 @@
             document.removeEventListener("click", handleClickOutside);
         };
     });
+
+    function sortOptionBtnClick(
+        e: MouseEvent,
+        oldestCreated: DraftPostsSortOption,
+    ) {
+        e.stopPropagation();
+        sortOption = oldestCreated;
+    }
 </script>
 
 <label
@@ -67,7 +75,8 @@
     <div class="context-menu" class:open={isSelectMenuOpen}>
         <label class="sort-by-label">Sort by</label>
         <div
-            onclick={() => (sortOption = DraftPostsSortOption.lastModified)}
+            onclick={(e) =>
+                sortOptionBtnClick(e, DraftPostsSortOption.lastModified)}
             class="sort-option"
             class:chosen={sortOption == DraftPostsSortOption.lastModified}
         >
@@ -75,7 +84,7 @@
             <span></span>
         </div>
         <div
-            onclick={() => (sortOption = DraftPostsSortOption.title)}
+            onclick={(e) => sortOptionBtnClick(e, DraftPostsSortOption.title)}
             class="sort-option"
             class:chosen={sortOption == DraftPostsSortOption.title}
         >
@@ -83,7 +92,8 @@
             <span></span>
         </div>
         <div
-            onclick={() => (sortOption = DraftPostsSortOption.lastCreated)}
+            onclick={(e) =>
+                sortOptionBtnClick(e, DraftPostsSortOption.lastCreated)}
             class="sort-option"
             class:chosen={sortOption == DraftPostsSortOption.lastCreated}
         >
@@ -91,7 +101,8 @@
             <span></span>
         </div>
         <div
-            onclick={() => (sortOption = DraftPostsSortOption.oldestCreated)}
+            onclick={(e) =>
+                sortOptionBtnClick(e, DraftPostsSortOption.oldestCreated)}
             class="sort-option"
             class:chosen={sortOption == DraftPostsSortOption.oldestCreated}
         >
@@ -138,7 +149,6 @@
 
     .sorting-label:active {
         border-color: var(--accent-hov);
-        transform: scale(0.98);
     }
 
     .context-menu {

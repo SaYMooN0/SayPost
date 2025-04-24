@@ -21,7 +21,6 @@ public static class BuilderExtensions
             .WriteTo.GrafanaLoki(
                 "http://localhost:3100",
                 labels: [new LokiLabel() { Key = "app", Value = serviceName }])
-            .WriteTo.Console()
             .CreateLogger();
         
         builder.Host.UseSerilog();

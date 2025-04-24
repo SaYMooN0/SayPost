@@ -35,14 +35,14 @@
             <path
                 d="M5.07579 17C4.08939 4.54502 12.9123 1.0121 19.9734 2.22417C20.2585 6.35185 18.2389 7.89748 14.3926 8.61125C15.1353 9.38731 16.4477 10.3639 16.3061 11.5847C16.2054 12.4534 15.6154 12.8797 14.4355 13.7322C11.8497 15.6004 8.85421 16.7785 5.07579 17Z"
                 stroke="currentColor"
-                stroke-width="1.5"
+                stroke-width="1.6"
                 stroke-linecap="round"
                 stroke-linejoin="round"
             />
             <path
                 d="M4 22C4 15.5 7.84848 12.1818 10.5 10"
                 stroke="currentColor"
-                stroke-width="1.5"
+                stroke-width="1.6"
                 stroke-linecap="round"
                 stroke-linejoin="round"
             />
@@ -60,7 +60,7 @@
         flex-direction: column;
     }
 
-    .container>:global(.err-container){
+    .container > :global(.err-container) {
         overflow: hidden auto;
         max-height: 4rem;
         margin-top: 0.5rem;
@@ -70,16 +70,31 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem;
+        justify-content: center;
+        gap: 0.25rem;
+        padding: 0.375rem 0;
         margin-top: 1rem;
-        border: 0.125rem solid var(--back-second);
-        border-radius: 0.25rem;
-        background-color: var(--back-second);
-        color: var(--text);
+        font-size: 1.25rem;
+        font-weight: 500;
+        border: none;
+        border-radius: 4rem;
+        background-color: var(--accent-main);
+        color: var(--back-main);
+        transition: all 0.12s ease-in;
     }
 
     .new-post-btn > svg {
-        height: 2rem;
+        height: 1.75rem;
+    }
+    .new-post-btn:hover {
+        gap: 0.5rem;
+        letter-spacing: 1px;
+    }
+    .new-post-btn:active {
+        gap: 0.75rem;
+        letter-spacing:normal;
+        background-color: var(--accent-hov);
+        transform: scale(0.98);
+
     }
 </style>
