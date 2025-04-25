@@ -1,9 +1,11 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { DraftPostsSortOption } from "../../draftPosts";
+    import DefaultSwitch from "../../../../../components/DefaultSwitch.svelte";
 
-    let { sortOption = $bindable() } = $props<{
+    let { sortOption = $bindable(), pinnedPostsOnTop = $bindable() } = $props<{
         sortOption: DraftPostsSortOption;
+        pinnedPostsOnTop: boolean;
     }>();
 
     let isSelectMenuOpen = $state(false);
@@ -29,7 +31,7 @@
     }
 </script>
 
-<label
+<div
     class="sorting-label unselectable"
     onclick={() => (isSelectMenuOpen = !isSelectMenuOpen)}
     bind:this={buttonElement}
@@ -39,35 +41,35 @@
         <path
             d="M11 8L21 8.00006"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="1.7"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M11 12H21"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="1.7"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M11 16H21"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="1.7"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M11 4H21"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="1.7"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M5.5 21V3M5.5 21C4.79977 21 3.49153 19.0057 3 18.5M5.5 21C6.20023 21 7.50847 19.0057 8 18.5"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="1.7"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
@@ -109,8 +111,12 @@
             Oldest created
             <span></span>
         </div>
+        <div class="pinned-option-div">
+            Put pinned posts on top:
+            <DefaultSwitch bind:isChecked={pinnedPostsOnTop} />
+        </div>
     </div>
-</label>
+</div>
 
 <style>
     .sorting-label {
@@ -127,30 +133,36 @@
         transition: all 0.12s ease-in;
         box-sizing: border-box;
         border-bottom: 0.125rem solid transparent;
+        cursor: pointer;
     }
 
     .sorting-label > svg {
-        width: 2.25rem;
-        height: 2.25rem;
-        padding: 0.125rem;
-        border: 0.125rem solid var(--back-second);
+        width: 2rem;
+        height: 2rem;
+        padding: 0.25rem;
         border-radius: 0.5rem;
         background-color: var(--back-second);
         box-sizing: border-box;
+        transition: inherit;
     }
 
     .sorting-label:hover {
         border-color: var(--accent-main);
+        padding: 0.25rem 1.5rem;
     }
 
     .sorting-label:hover > svg {
-        border-color: var(--accent-hov);
+        color: var(--accent-hov);
     }
 
     .sorting-label:active {
         border-color: var(--accent-hov);
+        padding: 0.25rem 1.75rem;
     }
 
+    .sorting-label:active > svg {
+        color: var(--accent-hov);
+    }
     .context-menu {
         position: absolute;
         top: 110%;
@@ -176,10 +188,18 @@
         box-sizing: border-box;
     }
 
-    .sort-by-label {
-        margin-left: 1rem;
+    .pinned-option-div {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         font-size: 1rem;
-        font-weight: 600;
+        margin: 0.5rem;
+    }
+
+    .sort-by-label {
+        font-size: 1rem;
+        color: var(--gray);
+        margin-left: 2rem;
     }
 
     .sort-option {

@@ -21,7 +21,9 @@ public class AppUser : AggregateRoot<AppUserId>
     public ImmutableHashSet<DraftPostId> DraftPostIds => _draftPostIds.ToImmutableHashSet();
     public ImmutableHashSet<PublishedPostId> PublishedPostIds => _publishedPostIds.ToImmutableHashSet();
 
-    public void AddDraftPost(DraftPostId draftPostId) {
+    public void AddDraftPost(DraftPostId draftPostId) =>
         _draftPostIds.Add(draftPostId);
-    }
+
+    public void RemoveDraftPost(DraftPostId draftPostId) =>
+        _draftPostIds.Remove(draftPostId);
 }

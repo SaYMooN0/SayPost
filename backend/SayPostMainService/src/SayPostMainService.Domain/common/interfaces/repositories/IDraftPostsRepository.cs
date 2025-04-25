@@ -10,9 +10,10 @@ public interface IDraftPostsRepository
     Task Update(DraftPost draftPost);
 
     Task<IReadOnlyCollection<DraftPost>> GetPostsByUserWithSortingAsNoTracking(
-        AppUserId authorId, DraftPostsSortOption sortOption
+        AppUserId authorId, DraftPostsSortOption sortOption, bool putPinnedOnTop
     );
 
     Task<DraftPost?> GetById(DraftPostId draftPostId);
     Task<ErrOr<AppUserId>> GetPostAuthor(DraftPostId draftPostId);
+    Task Delete(DraftPost post);
 }

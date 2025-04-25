@@ -29,10 +29,11 @@ internal class DraftPostsRepository : IDraftPostsRepository
 
     public async Task<IReadOnlyCollection<DraftPost>> GetPostsByUserWithSortingAsNoTracking(
         AppUserId userId,
-        DraftPostsSortOption sortOption
+        DraftPostsSortOption sortOption,
+        bool putPinnedOnTop
     ) => await _db.DraftPosts
         .Where(p => p.AuthorId == userId)
-        .OrderBySortOption(sortOption)
+        .OrderByPinnedThenSortOption(putPinnedOnTop, sortOption)
         .ToArrayAsync();
 
     public async Task<DraftPost?> GetById(DraftPostId draftPostId) =>
@@ -49,19 +50,51 @@ internal class DraftPostsRepository : IDraftPostsRepository
 
         return draftPost.AuthorId;
     }
+
+    public async Task Delete(DraftPost post) {
+        _db.DraftPosts.Remove(post);
+        await _db.SaveChangesAsync();
+    }
 }
 
 file static class DraftPostsRepositoryExtensions
 {
-    public static IQueryable<DraftPost> OrderBySortOption(
-        this IQueryable<DraftPost> query, DraftPostsSortOption sortOption
+    public static IQueryable<DraftPost> OrderByPinnedThenSortOption(
+        this IQueryable<DraftPost> query,
+        bool putPinnedOnTop,
+        DraftPostsSortOption sortOption
+    ) {
+        if (!putPinnedOnTop)
+            return query.OrderBySortOption(sortOption);
+
+        return query
+            .OrderByDescending(p => p.IsPinned) 
+            .ThenBySortOption(sortOption);
+    }
+
+    private static IOrderedQueryable<DraftPost> OrderBySortOption(
+        this IQueryable<DraftPost> query,
+        DraftPostsSortOption sortOption
     ) => sortOption switch {
         DraftPostsSortOption.Title => query.OrderBy(p => p.Title),
         DraftPostsSortOption.LastModified => query.OrderByDescending(p => p.LastModifiedAt),
         DraftPostsSortOption.LastCreated => query.OrderByDescending(p => p.CreatedAt),
         DraftPostsSortOption.OldestCreated => query.OrderBy(p => p.CreatedAt),
         _ => throw new ArgumentOutOfRangeException(
-            $"Unexpected {nameof(sortOption)} value: {sortOption} in the {nameof(OrderBySortOption)}"
+            $"Unexpected {nameof(sortOption)} value: {sortOption} in {nameof(OrderBySortOption)}"
+        )
+    };
+
+    private static IOrderedQueryable<DraftPost> ThenBySortOption(
+        this IOrderedQueryable<DraftPost> query,
+        DraftPostsSortOption sortOption
+    ) => sortOption switch {
+        DraftPostsSortOption.Title => query.ThenBy(p => p.Title),
+        DraftPostsSortOption.LastModified => query.ThenByDescending(p => p.LastModifiedAt),
+        DraftPostsSortOption.LastCreated => query.ThenByDescending(p => p.CreatedAt),
+        DraftPostsSortOption.OldestCreated => query.ThenBy(p => p.CreatedAt),
+        _ => throw new ArgumentOutOfRangeException(
+            $"Unexpected {nameof(sortOption)} value: {sortOption} in {nameof(ThenBySortOption)}"
         )
     };
 }

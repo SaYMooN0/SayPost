@@ -1,4 +1,4 @@
-using ApiShared;
+﻿using ApiShared;
 using ApiShared.extensions;
 using MediatR;
 using SayPostMainService.Api.contracts.draft_posts;
@@ -6,61 +6,31 @@ using SayPostMainService.Api.extensions;
 using SayPostMainService.Application.draft_posts.commands;
 using SayPostMainService.Application.draft_posts.queries;
 using SayPostMainService.Domain.common;
-using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Api.endpoints;
 
-internal static class DraftPostHandlers
+internal static class SpecificDraftPostHandlers
 {
-    internal static IEndpointRouteBuilder MapDraftPostHandlers(this IEndpointRouteBuilder endpoints) {
-        endpoints.MapGet("/", ListDraftPosts)
-            .WithAuthenticationRequired();
-        endpoints.MapPost("/create", CreateDraftPost)
-            .WithAuthenticationRequired();
+    internal static IEndpointRouteBuilder MapSpecificDraftPostHandlers(this RouteGroupBuilder endpoints) {
+        endpoints
+            .WithGroupAuthenticationRequired()
+            .WithGroupAccessToModifyDraftPostRequired();
 
-        endpoints.MapGet("/{draftPostId}/", GetDraftPostFullInfo)
-            .WithAuthenticationRequired()
-            .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{draftPostId}/update-title", UpdateDraftPostTitle)
-            .WithAuthenticationRequired()
-            .WithRequestValidation<UpdateDraftPostTitleRequest>()
-            .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{draftPostId}/update-content", UpdateDraftPostContent)
-            .WithAuthenticationRequired()
-            .WithRequestValidation<UpdateDraftPostContentRequest>()
-            .WithAccessToModifyDraftPostRequired();
-        endpoints.MapPatch("/{draftPostId}/update-tags", UpdateDraftPostTags)
-            .WithAuthenticationRequired()
-            .WithRequestValidation<UpdateDraftPostTagsRequest>()
-            .WithAccessToModifyDraftPostRequired();
+
+        endpoints.MapGet("/", GetDraftPostFullInfo);
+        endpoints.MapPost("/pin", PinDraftPost);
+        endpoints.MapPost("/unpin", UnpinDraftPost);
+        endpoints.MapDelete("/delete", DeleteDraftPost);
+
+        endpoints.MapPatch("/update-title", UpdateDraftPostTitle)
+            .WithRequestValidation<UpdateDraftPostTitleRequest>();
+        endpoints.MapPatch("/update-content", UpdateDraftPostContent)
+            .WithRequestValidation<UpdateDraftPostContentRequest>();
+        endpoints.MapPatch("/update-tags", UpdateDraftPostTags)
+            .WithRequestValidation<UpdateDraftPostTagsRequest>();
+
 
         return endpoints;
-    }
-
-    private static async Task<IResult> ListDraftPosts(
-        HttpContext httpContext, ISender mediator, string sortOption = "lastModified"
-    ) {
-        AppUserId userId = httpContext.GetAuthenticatedUserId();
-
-        var query = new ListDraftPostsForUserQuery(userId, sortOption);
-        var result = await mediator.Send(query);
-
-        return CustomResults.FromErrOr(result,
-            (posts) => Results.Json(ListDraftPostMainInfoResponse.FromPosts(posts))
-        );
-    }
-
-    private static async Task<IResult> CreateDraftPost(
-        HttpContext httpContext, ISender mediator
-    ) {
-        AppUserId userId = httpContext.GetAuthenticatedUserId();
-
-        var command = new CreateNewDraftPostCommand(userId);
-        var result = await mediator.Send(command);
-
-        return CustomResults.FromErrOr(result,
-            (draftPost) => Results.Json(DraftPostFullInfoResponse.FromDraftPost(draftPost))
-        );
     }
 
     private static async Task<IResult> GetDraftPostFullInfo(
@@ -76,6 +46,36 @@ internal static class DraftPostHandlers
         );
     }
 
+    private static async Task<IResult> PinDraftPost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
+
+        var command = new PinDraftPostCommand(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result, (isPinned) => Results.Json(new { IsPostPinned = isPinned }));
+    }
+    private static async Task<IResult> UnpinDraftPost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
+
+        var command = new UnpinDraftPostCommand(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result, (isPinned) => Results.Json(new { IsPostPinned = isPinned }));
+    }
+    private static async Task<IResult> DeleteDraftPost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
+
+        var command = new DeleteDraftPostCommand(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOrNothing(result, () => Results.Ok());
+    }
 
     private static async Task<IResult> UpdateDraftPostTitle(
         HttpContext httpContext, ISender mediator
@@ -110,6 +110,7 @@ internal static class DraftPostHandlers
             })
         );
     }
+
     private static async Task<IResult> UpdateDraftPostTags(
         HttpContext httpContext, ISender mediator
     ) {

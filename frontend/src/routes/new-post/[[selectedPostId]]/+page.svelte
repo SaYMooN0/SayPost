@@ -29,6 +29,7 @@
     let draftPostsSortOption: DraftPostsSortOption = $state(
         DraftPostsSortOption.lastModified,
     );
+    let draftPostsPinnedPostsOnTop: boolean = $state(true);
 
     async function fetchDraftPosts() {
         const url = `/draft-posts?sortOption=${draftPostsSortOption}`;
@@ -120,6 +121,7 @@
                     <LeftSideWriteNewPostBtn {createNewPost} />
                     <DraftPostsListSortingLabel
                         bind:sortOption={draftPostsSortOption}
+                        bind:pinnedPostsOnTop={draftPostsPinnedPostsOnTop}
                     />
                     <DraftPostsList posts={draftPostsMainInfo} />
                 </div>

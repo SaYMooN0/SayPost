@@ -16,9 +16,7 @@
 
     let tagSearchInput: string = $state("");
     let inputEl: HTMLInputElement;
-    export function setSearchInputEmpty() {
-        tagSearchInput = "";
-    }
+ 
     function onResetClick(event: MouseEvent) {
         setTimeout(() => {
             inputEl.focus();
@@ -26,7 +24,6 @@
         tagSearchInput = "";
         event.stopPropagation();
     }
-    let controller: AbortController | null = null;
     let debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 
     $effect(() => {
@@ -37,24 +34,22 @@
             return;
         }
 
-        if (controller) controller.abort();
         if (debounceTimeout) clearTimeout(debounceTimeout);
 
         debounceTimeout = setTimeout(async () => {
-            controller = new AbortController();
-
             const response = await ApiMain.fetchJsonResponse<{
                 tags: string[];
             }>(`/post-tags/search/${encodeURIComponent(value)}`, {
-                signal: controller.signal,
+                method: "GET",
             });
 
             if (response.isSuccess) {
                 setSearchedTags(response.data.tags);
-            } else {
+                setErrs([]);
+            } else if (response) {
                 setErrs(response.errors);
             }
-        }, 400);
+        }, 260);
     });
 </script>
 

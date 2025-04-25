@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 
 namespace SayPostMainService.Infrastructure.persistence.repositories;

@@ -1,11 +1,13 @@
 export type DraftPostMainInfo = {
     id: string;
     title: string;
+    isPinned: boolean;
     lastModifiedAt: Date;
 }
 export type DraftPostFullInfo = {
     id: string;
     title: string;
+    isPinned: boolean;
     lastModifiedAt: Date;
     createdAt: Date;
     content: string;

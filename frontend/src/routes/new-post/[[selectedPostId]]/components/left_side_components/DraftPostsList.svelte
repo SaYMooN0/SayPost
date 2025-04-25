@@ -65,70 +65,78 @@
     .post-link {
         position: relative;
         display: grid;
-        grid-template-columns: 1fr auto;
         align-items: center;
         padding: 0.375rem 0.125rem 0.375rem 0.5rem;
         margin: 0.125rem;
         border: 0.125rem solid var(--back-second);
-        box-sizing: border-box;
-        text-decoration: none;
         border-radius: 0.5rem;
+        text-decoration: none;
         transition: all 0.1s ease-in;
+        grid-template-columns: 1fr auto;
+        box-sizing: border-box;
     }
 
     .post-link:hover {
-        background-color: var(--back-second);
-        margin-left: 0.5rem;
         padding-right: 0.25rem;
+        margin-left: 0.5rem;
+        background-color: var(--back-second);
     }
+
     .post-link > .hover-indicator {
         position: absolute;
-        left: 0;
         top: 0;
+        left: 0;
         width: 0.125rem;
         height: 100%;
         border-radius: 5rem;
         background-color: var(--accent-main);
         opacity: 0;
-        pointer-events: none;
         transition: inherit;
+        pointer-events: none;
     }
+
     .post-link:hover > .hover-indicator {
         left: -0.5rem;
         opacity: 1;
     }
+
     .more-btn {
-        opacity: 0;
-        height: 1.75rem;
         width: 1.75rem;
+        height: 1.75rem;
         color: var(--gray);
+        opacity: 0;
         transition: inherit;
     }
+
     .more-btn:hover {
         color: var(--accent-main);
     }
+
     .more-btn:hover path {
         stroke-width: 3.6;
     }
+
     .post-link:hover > .more-btn {
         opacity: 1;
     }
+
     .post-link > .text {
-        width: 100%;
         display: grid;
+        width: 100%;
         grid-template-rows: 1.6fr 1fr;
     }
+
     .post-title {
         display: inline-block;
         margin-bottom: 0.25rem;
+        color: var(--accent-main);
         font-size: 1rem;
         font-weight: 400;
+        cursor: inherit;
         box-sizing: border-box;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        cursor: inherit;
-        color: var(--accent-main);
     }
 
     .last-modified {

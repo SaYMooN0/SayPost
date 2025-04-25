@@ -8,7 +8,7 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.draft_posts.queries;
 
-public record class ListDraftPostsForUserQuery(AppUserId UserId, string SortOption) :
+public record class ListDraftPostsForUserQuery(AppUserId UserId, string SortOption, bool PutPinnedOnTop) :
     IRequest<ErrOr<ImmutableArray<DraftPost>>>;
 
 internal class ListDraftPostsForUserQueryHandler
@@ -33,7 +33,7 @@ internal class ListDraftPostsForUserQueryHandler
         }
 
         var posts = await _draftPostsRepository.GetPostsByUserWithSortingAsNoTracking(
-            request.UserId, sortOption
+            request.UserId, sortOption, request.PutPinnedOnTop
         );
         return posts.ToImmutableArray();
     }

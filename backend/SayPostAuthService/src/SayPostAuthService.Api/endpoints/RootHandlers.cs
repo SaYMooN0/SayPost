@@ -59,7 +59,7 @@ internal static class RootHandlers
     ) {
         var request = httpContext.GetValidatedRequest<ConfirmRegistrationRequest>();
         UnconfirmedAppUserId unconfirmedUserId = new(new(request.UserId));
-        
+
         ConfirmUserRegistrationCommand command = new(unconfirmedUserId, request.ConfirmationCode);
         var result = await mediator.Send(command);
 
@@ -70,7 +70,7 @@ internal static class RootHandlers
         HttpContext httpContext, ISender mediator
     ) {
         var request = httpContext.GetValidatedRequest<LoginUserRequest>();
-        
+
         CreateAuthTokenForAppUserCommand command = new(request.ParsedEmail, request.Password);
         var result = await mediator.Send(command);
 

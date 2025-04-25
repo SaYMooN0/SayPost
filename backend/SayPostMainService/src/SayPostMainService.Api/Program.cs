@@ -45,12 +45,14 @@ public class Program
 
         MapHandlers(app);
 
+
         app.UseCors("AllowFrontend");
         app.Run();
     }
 
     private static void MapHandlers(WebApplication app) {
-        app.MapGroup("/draft-posts").MapDraftPostHandlers();
-        app.MapGroup("/post-tags").MapPostTagHandlers();
+        app.MapGroup("/draft-posts").MapDraftPostsHandlers();
+        app.MapGroup("/draft-posts/{draftPostId}").MapSpecificDraftPostHandlers();
+        app.MapGroup("/post-tags").MapPostTagsHandlers();
     }
 }

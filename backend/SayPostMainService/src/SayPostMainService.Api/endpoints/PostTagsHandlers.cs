@@ -1,14 +1,13 @@
 ﻿using ApiShared;
 using MediatR;
-using SayPostMainService.Api.contracts.post_tags;
 using SayPostMainService.Application.post_tags.queries;
 
 namespace SayPostMainService.Api.endpoints;
 
-internal static class PostTagHandlers
+internal static class PostTagsHandlers
 
 {
-    internal static IEndpointRouteBuilder MapPostTagHandlers(this IEndpointRouteBuilder endpoints) {
+    internal static IEndpointRouteBuilder MapPostTagsHandlers(this RouteGroupBuilder endpoints) {
         endpoints.MapGet("/search/{searchVal}", SearchPostTags);
 
         return endpoints;
@@ -21,7 +20,7 @@ internal static class PostTagHandlers
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,
-            (tags) => Results.Json(new { Tags = tags })
+            (tags) => Results.Json(new {Tags = tags})
         );
     }
 }

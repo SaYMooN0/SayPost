@@ -69,27 +69,29 @@
     .new-post-btn {
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         gap: 0.25rem;
         padding: 0.375rem 0;
         margin-top: 1rem;
-        font-size: 1.25rem;
-        font-weight: 500;
         border: none;
         border-radius: 4rem;
         background-color: var(--accent-main);
         color: var(--back-main);
+        font-size: 1.25rem;
+        font-weight: 500;
         transition: all 0.12s ease-in;
     }
 
     .new-post-btn > svg {
         height: 1.75rem;
     }
+
     .new-post-btn:hover {
         gap: 0.5rem;
         letter-spacing: 1px;
     }
+
     .new-post-btn:active {
         gap: 0.75rem;
         letter-spacing:normal;

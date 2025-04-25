@@ -22,7 +22,6 @@
         errors = [];
         tagsToChooseFrom = tags;
         dialogElement.open();
-        tagsSearchBar.setSearchInputEmpty();
     }
 
     async function saveData() {
@@ -62,7 +61,7 @@
                 setErrs={(errs) => (errors = errs)}
                 setSearchedTags={(tags) => (tagsToChooseFrom = tags)}
             />
-            <div class="tags-to-choose-list">
+            <div class="tags-ops-list">
                 {#each tagsToChooseFrom as tag}
                     <TagOperatingDisplay
                         {tag}
@@ -71,43 +70,51 @@
                         btnOnClick={() => addTag(tag)}
                     />
                 {/each}
-                <label class="continue-typing">
-                    If you don't find the tag you need continue entering the
-                    name of the tag
-                </label>
             </div>
+            <label class="continue-typing">
+                If you don't find the tag you need continue entering the name of
+                the tag
+            </label>
         </div>
         <div class="right-part">
             <label class="chosen-tags-label">
                 Tags chosen: ({chosenTags.length})
             </label>
-            {#each chosenTags as tag}
-                <TagOperatingDisplay
-                    {tag}
-                    isTagAdded={true}
-                    isTagRemovingState={true}
-                    btnOnClick={() => removeTag(tag)}
-                />
-            {/each}
+            <div class="tags-ops-list">
+                {#each chosenTags as tag}
+                    <TagOperatingDisplay
+                        {tag}
+                        isTagAdded={true}
+                        isTagRemovingState={true}
+                        btnOnClick={() => removeTag(tag)}
+                    />
+                {/each}
+            </div>
         </div>
     </div>
     <div class="divider"></div>
-    <DefaultErrBlock errList={errors} />
+    {#if errors.length != 0}
+        <DefaultErrBlock errList={errors} />
+    {/if}
     <button class="save-btn" onclick={() => saveData()}>Save</button>
 </BaseDialogWithCloseButton>
 
 <style>
     :global(#post-tags-choosing-dialog-content) {
-        --dialog-height: 30rem;
+        --dialog-height: ;
 
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: var(--dialog-height);
+        min-height: 30rem;
         padding: 1rem 1.5rem;
         border-radius: 0.5rem;
         background-color: var(--back-main);
         box-sizing: border-box;
+    }
+
+    :global(#post-tags-choosing-dialog-content:has(.err-block)) {
+        --dialog-height: 36rem;
     }
 
     :global(#post-tags-choosing-dialog-content > .close-button) {
@@ -130,11 +137,12 @@
         overflow-y: auto;
     }
 
-    .tags-to-choose-list {
+    .tags-ops-list {
         display: flex;
         flex-direction: column;
         align-items: center;
-        max-height: 20rem;
+        width: 100%;
+        height: 22rem;
         overflow-y: auto;
     }
 

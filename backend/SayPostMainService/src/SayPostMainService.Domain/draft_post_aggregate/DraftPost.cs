@@ -19,6 +19,7 @@ public class DraftPost : AggregateRoot<DraftPostId>
     public DateTime CreatedAt { get; }
     public DateTime LastModifiedAt { get; private set; }
     public HashSet<PostTagId> Tags { get; private set; }
+    public bool IsPinned { get; private set; }
 
     private DraftPost(
         DraftPostId id, AppUserId authorId,
@@ -66,4 +67,9 @@ public class DraftPost : AggregateRoot<DraftPostId>
         LastModifiedAt = dateTimeProvider.Now;
         return ErrOrNothing.Nothing;
     }
+
+    public void Pin() => IsPinned = true;
+    public void Unpin() => IsPinned = false;
+
+    public void Delete() => AddDomainEvent(new DraftPostDeletedEvent(Id, AuthorId));
 }
