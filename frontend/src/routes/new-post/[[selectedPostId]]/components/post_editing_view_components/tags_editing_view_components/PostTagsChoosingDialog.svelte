@@ -54,67 +54,59 @@
     bind:this={dialogElement}
     dialogId={"post-tags-choosing"}
 >
-    <div class="tags-adding-container">
-        <div class="left-part">
-            <TagsDialogSearchBar
-                bind:this={tagsSearchBar}
-                setErrs={(errs) => (errors = errs)}
-                setSearchedTags={(tags) => (tagsToChooseFrom = tags)}
-            />
-            <div class="tags-ops-list">
-                {#each tagsToChooseFrom as tag}
-                    <TagOperatingDisplay
-                        {tag}
-                        isTagAdded={chosenTags.includes(tag)}
-                        isTagRemovingState={false}
-                        btnOnClick={() => addTag(tag)}
-                    />
-                {/each}
-            </div>
-            <label class="continue-typing">
-                If you don't find the tag you need continue entering the name of
-                the tag
-            </label>
+    <div class="main-part">
+        <TagsDialogSearchBar
+            bind:this={tagsSearchBar}
+            setErrs={(errs) => (errors = errs)}
+            setSearchedTags={(tags) => (tagsToChooseFrom = tags)}
+        />
+        <label class="chosen-tags-label">
+            Tags chosen: ({chosenTags.length})
+        </label>
+        <div class="tags-ops-list">
+            {#each tagsToChooseFrom as tag}
+                <TagOperatingDisplay
+                    {tag}
+                    isTagAdded={chosenTags.includes(tag)}
+                    isTagRemovingState={false}
+                    btnOnClick={() => addTag(tag)}
+                />
+            {/each}
         </div>
-        <div class="right-part">
-            <label class="chosen-tags-label">
-                Tags chosen: ({chosenTags.length})
-            </label>
-            <div class="tags-ops-list">
-                {#each chosenTags as tag}
-                    <TagOperatingDisplay
-                        {tag}
-                        isTagAdded={true}
-                        isTagRemovingState={true}
-                        btnOnClick={() => removeTag(tag)}
-                    />
-                {/each}
-            </div>
+
+        <div class="tags-ops-list">
+            {#each chosenTags as tag}
+                <TagOperatingDisplay
+                    {tag}
+                    isTagAdded={true}
+                    isTagRemovingState={true}
+                    btnOnClick={() => removeTag(tag)}
+                />
+            {/each}
         </div>
     </div>
-    <div class="divider"></div>
-    {#if errors.length != 0}
-        <DefaultErrBlock errList={errors} />
-    {/if}
-    <button class="save-btn" onclick={() => saveData()}>Save</button>
+    <div class="bottom-part">
+        <label class="continue-typing">
+            If you don't find the tag you need continue entering the name of the
+            tag
+        </label>
+        {#if errors.length != 0}
+            <DefaultErrBlock errList={errors} />
+        {/if}
+        <button class="save-btn" onclick={() => saveData()}>Save</button>
+    </div>
 </BaseDialogWithCloseButton>
 
 <style>
     :global(#post-tags-choosing-dialog-content) {
-        --dialog-height: ;
-
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 30rem;
+        width: 100%;
         padding: 1rem 1.5rem;
         border-radius: 0.5rem;
         background-color: var(--back-main);
         box-sizing: border-box;
-    }
-
-    :global(#post-tags-choosing-dialog-content:has(.err-block)) {
-        --dialog-height: 36rem;
     }
 
     :global(#post-tags-choosing-dialog-content > .close-button) {
@@ -122,42 +114,45 @@
         right: 0.5rem !important;
     }
 
-    .tags-adding-container {
+    .main-part {
         display: grid;
+        place-content: center center;
+        place-items: center center;
         gap: 0.5rem;
-        width: 100%;
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .left-part,
-    .right-part {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        overflow-y: auto;
+        grid-template-columns: 30rem 30rem;
+        grid-template-rows: auto auto;
     }
 
     .tags-ops-list {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 0.5rem;
         width: 100%;
-        height: 22rem;
+        height: 26rem;
         overflow-y: auto;
-    }
-
-    .continue-typing {
-        color: var(--gray);
-        font-size: 1rem;
     }
 
     .chosen-tags-label {
         color: var(--text);
-        font-size: 1.5rem;
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+ 
+    .bottom-part {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 1rem;
     }
 
-    .divider {
-        margin-top: auto;
+    .continue-typing {
+        padding: 0.125rem 2rem;
+        color: var(--gray);
+        font-size: 1rem;
+        text-align: center;
     }
 
     .save-btn {

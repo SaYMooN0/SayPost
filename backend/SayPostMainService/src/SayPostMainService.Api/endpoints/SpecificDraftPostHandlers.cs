@@ -18,8 +18,8 @@ internal static class SpecificDraftPostHandlers
 
 
         endpoints.MapGet("/", GetDraftPostFullInfo);
-        endpoints.MapPost("/pin", PinDraftPost);
-        endpoints.MapPost("/unpin", UnpinDraftPost);
+        endpoints.MapPatch("/pin", PinDraftPost);
+        endpoints.MapPatch("/unpin", UnpinDraftPost);
         endpoints.MapDelete("/delete", DeleteDraftPost);
 
         endpoints.MapPatch("/update-title", UpdateDraftPostTitle)

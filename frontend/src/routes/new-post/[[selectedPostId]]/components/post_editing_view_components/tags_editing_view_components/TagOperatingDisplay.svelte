@@ -65,7 +65,11 @@
 <style>
     .tag-display {
         display: grid;
-        width: var(--tag-op-width);
+        align-items: center;
+        width: 100%;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        background-color: var(--back-second);
         box-sizing: border-box;
         grid-template-columns: 1fr auto;
     }

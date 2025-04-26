@@ -2,8 +2,21 @@
     import { DateUtils } from "../../../../../ts/common/utils/date-utils";
     import type { DraftPostMainInfo } from "../../draftPosts";
 
-    let { posts }: { posts: DraftPostMainInfo[] } = $props<{
+    let {
+        posts,
+        openMoreActionsMenu,
+    }: {
         posts: DraftPostMainInfo[];
+        openMoreActionsMenu: (
+            event: MouseEvent,
+            postData: DraftPostMainInfo,
+        ) => void;
+    } = $props<{
+        posts: DraftPostMainInfo[];
+        openMoreActionsMenu: (
+            event: MouseEvent,
+            postData: DraftPostMainInfo,
+        ) => void;
     }>();
 </script>
 
@@ -16,8 +29,11 @@
             data-sveltekit-noscroll
         >
             <div class="hover-indicator"></div>
+            {#if post.isPinned}
+                <div class="pinned-indicator"></div>
+            {/if}
             <div class="text">
-                <label class="post-title"> {post.title} </label>
+                <label class="post-title">{post.title}</label>
                 <label class="last-modified">
                     last modified at {DateUtils.toLocale(post.lastModifiedAt)}
                 </label>
@@ -27,6 +43,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="none"
+                onclick={(e) => openMoreActionsMenu(e, post)}
             >
                 <path
                     d="M11.992 12H12.001"

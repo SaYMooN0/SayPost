@@ -1,25 +1,26 @@
 <script lang="ts">
+    import { StringUtils } from "../ts/common/utils/string-utils";
+
     let {
-        id = "",
         fieldName = "",
         isChecked = $bindable(),
     }: { id: string; fieldName: string; isChecked: boolean } = $props<{
-        type?: string;
         fieldName?: string;
         isChecked: boolean;
     }>();
+    let id = StringUtils.rndStrWithPref("switch-");
 </script>
 
-<div class="switch">
+<label class="switch" for={id}>
     <input type="checkbox" {id} name={fieldName} bind:checked={isChecked} />
     <span class="slider"></span>
-</div>
+</label>
 
 <style>
     .switch {
-        --button-width: 2.75em;
-        --button-height: 1.75em;
-        --toggle-diameter: 1.125em;
+        --button-width: 2.5rem;
+        --button-height: 1.5rem;
+        --toggle-diameter: 1rem;
         --button-toggle-offset: calc(
             (var(--button-height) - var(--toggle-diameter)) / 2
         );
@@ -27,7 +28,6 @@
         display: flex;
         align-items: center;
         height: var(--button-height);
-        background-color: var(--back-second);
     }
 
     .slider {
@@ -36,7 +36,7 @@
         width: var(--button-width);
         height: var(--button-height);
         border-radius: calc(var(--button-height) / 2);
-        background-color: var(--back-second);
+        background-color: var(--gray);
         transition: 0.3s all ease-in-out;
     }
 
@@ -54,7 +54,7 @@
     }
 
     .switch input[type="checkbox"]:checked + .slider {
-        background-color: var(--primary);
+        background-color: var(--accent-main);
     }
 
     .switch input[type="checkbox"]:checked + .slider::after {

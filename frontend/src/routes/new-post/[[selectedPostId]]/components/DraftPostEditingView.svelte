@@ -5,21 +5,21 @@
     import PostTitleEditingView from "./post_editing_view_components/PostTitleEditingView.svelte";
     import { DateUtils } from "../../../../ts/common/utils/date-utils";
     import PostTagsEditingView from "./post_editing_view_components/PostTagsEditingView.svelte";
-    import TagOperatingDisplay from "./post_editing_view_components/tags_editing_view_components/TagOperatingDisplay.svelte";
 
     let {
         getPostData,
         updateCache,
     }: {
-        getPostData: () => Promise<DraftPostFullInfo | undefined | Err[]>;
+        getPostData: () => Promise<DraftPostFullInfo | Err[]>;
         updateCache: (newVal: DraftPostFullInfo) => void;
     } = $props<{
-        getPostData: () => Promise<DraftPostFullInfo | undefined | Err[]>;
+        getPostData: () => Promise<DraftPostFullInfo | Err[]>;
         updateCache: (newVal: DraftPostFullInfo) => void;
     }>();
     let postData: DraftPostFullInfo = $state({
         id: "",
         title: "",
+        isPinned: false,
         lastModifiedAt: new Date(),
         createdAt: new Date(),
         content: "",
@@ -30,12 +30,6 @@
         const res = await getPostData();
         if (Array.isArray(res)) {
             fetchingErrs = res;
-        } else if (res === undefined) {
-            fetchingErrs = [
-                new Err(
-                    "Something went during fetching the post data. Please try again later",
-                ),
-            ];
         } else {
             fetchingErrs = [];
             postData = res;
@@ -55,7 +49,7 @@
 
 <div class="editing-view">
     {#await invokeGetPostData() then _}
-        {#if fetchingErrs && fetchingErrs.length != 0}
+        {#if fetchingErrs.length != 0}
             <p class="error-p">An error has occurred</p>
             <DefaultErrBlock errList={fetchingErrs} />
         {:else}

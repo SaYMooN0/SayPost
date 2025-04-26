@@ -39,7 +39,7 @@ internal class SearchPostTagsQueryHandler
 
         if (val.Length > PostTagId.MaxTagLength) {
             return ErrFactory.InvalidData(
-                $"Tag length is too long. Maximum allowed length sof tag is {PostTagId.MaxTagLength} characters "
+                $"Tag length is too long. Maximum allowed length of tag is {PostTagId.MaxTagLength} characters "
             );
         }
 

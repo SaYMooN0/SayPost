@@ -96,7 +96,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        height: 2.5rem;
+        width: 20rem;
         border: 0.125rem solid var(--back-second);
         border-radius: 1.5rem;
         background-color: var(--back-second);
@@ -116,7 +116,7 @@
         z-index: 2;
         width: 100%;
         height: 100%;
-        padding: 0.125rem 1.75rem;
+        padding: 0.5rem 1.75rem;
         border: none;
         background-color: transparent;
         font-size: 1rem;

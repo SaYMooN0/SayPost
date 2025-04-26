@@ -147,8 +147,8 @@
     }
 
     .sorting-label:hover {
-        border-color: var(--accent-main);
         padding: 0.25rem 1.5rem;
+        border-color: var(--accent-main);
     }
 
     .sorting-label:hover > svg {
@@ -156,13 +156,14 @@
     }
 
     .sorting-label:active {
-        border-color: var(--accent-hov);
         padding: 0.25rem 1.75rem;
+        border-color: var(--accent-hov);
     }
 
     .sorting-label:active > svg {
         color: var(--accent-hov);
     }
+
     .context-menu {
         position: absolute;
         top: 110%;
@@ -192,14 +193,14 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        font-size: 1rem;
         margin: 0.5rem;
+        font-size: 1rem;
     }
 
     .sort-by-label {
-        font-size: 1rem;
-        color: var(--gray);
         margin-left: 2rem;
+        color: var(--gray);
+        font-size: 1rem;
     }
 
     .sort-option {
