@@ -24,9 +24,8 @@
             return;
         }
         const url =
-            `/draft-posts/${currentPostData.id}/` + currentPostData.isPinned
-                ? "unpin"
-                : "pin";
+            `/draft-posts/${currentPostData.id}/` +
+            (currentPostData.isPinned ? "unpin" : "pin");
         const response = await ApiMain.fetchJsonResponse<{
             isPostPinned: boolean;
         }>(url, { method: "PATCH" });
@@ -35,6 +34,7 @@
                 currentPostData.id,
                 response.data.isPostPinned,
             );
+            close();
         } else {
         }
     }
@@ -186,51 +186,54 @@
 
 <style>
     .context-menu {
-        width: 8rem;
         position: fixed;
         z-index: 9999;
         display: flex;
         flex-direction: column;
+        width: 8rem;
         padding: 0.25rem;
-        box-sizing: border-box;
         border: 1px solid var(--back-second);
         border-radius: 0.5rem;
         background: var(--back-main);
         box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 10%);
+        box-sizing: border-box;
     }
 
     .action-btn {
-        padding: 0.125rem;
-        border: none;
-        background: none;
-        font-size: 1rem;
-        cursor: pointer;
-        box-sizing: border-box;
-        border-radius: 0.25rem;
-        display: grid;
-        grid-template-columns: 1.5rem 1fr;
-        text-align: left;
-        width: 100%;
         display: grid;
         align-items: center;
-        color: var(--text);
         gap: 0.125rem;
-        transition: all 0.1s ease-in;
-    }
-    .action-btn > svg {
-        color: var(--accent-main);
+        width: 100%;
         padding: 0.125rem;
+        border: none;
+        border-radius: 0.25rem;
+        background: none;
+        color: var(--text);
+        font-size: 1rem;
+        text-align: left;
+        transition: all 0.1s ease-in;
+        cursor: pointer;
+        box-sizing: border-box;
+        grid-template-columns: 1.5rem 1fr;
     }
+
+    .action-btn > svg {
+        padding: 0.125rem;
+        color: var(--accent-main);
+    }
+
     .action-btn:hover {
         gap: 0.25rem;
-        color: var(--accent-main);
         background-color: var(--back-second);
+        color: var(--accent-main);
     }
+
     .delete-btn > svg {
         color: var(--err-red);
     }
+
     .delete-btn:hover {
-        color: var(--err-red);
         background-color: var(--err-red-back);
+        color: var(--err-red);
     }
 </style>

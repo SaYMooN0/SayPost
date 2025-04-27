@@ -5,6 +5,7 @@
     import PostTitleEditingView from "./post_editing_view_components/PostTitleEditingView.svelte";
     import { DateUtils } from "../../../../ts/common/utils/date-utils";
     import PostTagsEditingView from "./post_editing_view_components/PostTagsEditingView.svelte";
+    import PostContentEditingView from "./post_editing_view_components/PostContentEditingView.svelte";
 
     let {
         getPostData,
@@ -40,11 +41,17 @@
         postData.title = newTitle;
         updateCache(postData);
     }
+    function updateContent(newContent: string, newLastModified: Date) {
+        postData.lastModifiedAt = newLastModified;
+        postData.content = newContent;
+        updateCache(postData);
+    }
     function updateTags(newTags: string[], newLastModified: Date) {
         postData.lastModifiedAt = newLastModified;
         postData.tags = newTags;
         updateCache(postData);
     }
+    async function publishPost() {}
 </script>
 
 <div class="editing-view">
@@ -53,13 +60,9 @@
             <p class="error-p">An error has occurred</p>
             <DefaultErrBlock errList={fetchingErrs} />
         {:else}
-            {#key postData}
-                <label class="last-modified">
-                    Last modified at: {DateUtils.toLocale(
-                        postData.lastModifiedAt,
-                    )}
-                </label>
-            {/key}
+            <label class="last-modified">
+                Last modified at: {DateUtils.toLocale(postData.lastModifiedAt)}
+            </label>
             <PostTitleEditingView
                 postId={postData.id}
                 title={postData.title}
@@ -70,6 +73,14 @@
                 tags={postData.tags}
                 updateParentValue={updateTags}
             />
+            <PostContentEditingView
+                postId={postData.id}
+                content={postData.content}
+                updateParentValue={updateContent}
+            />
+            <button onclick={() => publishPost()} class="publish-btn">
+                Publish post
+            </button>
         {/if}
     {/await}
 </div>

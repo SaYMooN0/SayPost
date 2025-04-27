@@ -1,6 +1,7 @@
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.post_aggregates_shared;
 using SayPostMainService.Domain.draft_post_aggregate.events;
+using SayPostMainService.Domain.published_post_aggregate.events;
 using SayPostMainService.Domain.rules;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
@@ -70,6 +71,5 @@ public class DraftPost : AggregateRoot<DraftPostId>
 
     public void Pin() => IsPinned = true;
     public void Unpin() => IsPinned = false;
-
     public void Delete() => AddDomainEvent(new DraftPostDeletedEvent(Id, AuthorId));
 }

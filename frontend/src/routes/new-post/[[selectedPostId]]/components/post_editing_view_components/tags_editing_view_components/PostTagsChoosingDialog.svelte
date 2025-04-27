@@ -20,7 +20,7 @@
     export function open(tags: string[]) {
         tagsToChooseFrom = [];
         errors = [];
-        tagsToChooseFrom = tags;
+        chosenTags = [...tags];
         dialogElement.open();
     }
 
@@ -138,7 +138,7 @@
         font-size: 1.75rem;
         font-weight: 600;
     }
- 
+
     .bottom-part {
         display: flex;
         flex-direction: column;

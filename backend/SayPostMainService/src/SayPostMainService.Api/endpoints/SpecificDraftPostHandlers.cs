@@ -2,6 +2,7 @@
 using ApiShared.extensions;
 using MediatR;
 using SayPostMainService.Api.contracts.draft_posts;
+using SayPostMainService.Api.contracts.draft_posts.update_tags;
 using SayPostMainService.Api.extensions;
 using SayPostMainService.Application.draft_posts.commands;
 using SayPostMainService.Application.draft_posts.queries;
@@ -28,6 +29,7 @@ internal static class SpecificDraftPostHandlers
             .WithRequestValidation<UpdateDraftPostContentRequest>();
         endpoints.MapPatch("/update-tags", UpdateDraftPostTags)
             .WithRequestValidation<UpdateDraftPostTagsRequest>();
+        endpoints.MapPost("/publish", PublishDraftPost);
 
 
         return endpoints;
@@ -38,7 +40,7 @@ internal static class SpecificDraftPostHandlers
     ) {
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
-        var query = new GetDraftPostByIdQuery(postId);
+        GetDraftPostByIdQuery query = new(postId);
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,
@@ -51,27 +53,29 @@ internal static class SpecificDraftPostHandlers
     ) {
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
-        var command = new PinDraftPostCommand(postId);
+        PinDraftPostCommand command = new(postId);
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result, (isPinned) => Results.Json(new { IsPostPinned = isPinned }));
     }
+
     private static async Task<IResult> UnpinDraftPost(
         HttpContext httpContext, ISender mediator
     ) {
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
-        var command = new UnpinDraftPostCommand(postId);
+        UnpinDraftPostCommand command = new(postId);
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result, (isPinned) => Results.Json(new { IsPostPinned = isPinned }));
     }
+
     private static async Task<IResult> DeleteDraftPost(
         HttpContext httpContext, ISender mediator
     ) {
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
-        var command = new DeleteDraftPostCommand(postId);
+        DeleteDraftPostCommand command = new(postId);
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOrNothing(result, () => Results.Ok());
@@ -83,7 +87,7 @@ internal static class SpecificDraftPostHandlers
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<UpdateDraftPostTitleRequest>();
 
-        var command = new UpdateDraftPostTitleCommand(postId, request.GetParsedPostTitle());
+        UpdateDraftPostTitleCommand command = new(postId, request.GetParsedPostTitle());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
@@ -100,7 +104,8 @@ internal static class SpecificDraftPostHandlers
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<UpdateDraftPostContentRequest>();
 
-        var command = new UpdateDraftPostContentCommand(postId, request.GetParsedPostContent());
+        UpdateDraftPostContentCommand command =
+            new UpdateDraftPostContentCommand(postId, request.GetParsedPostContent());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
@@ -117,11 +122,24 @@ internal static class SpecificDraftPostHandlers
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<UpdateDraftPostTagsRequest>();
 
-        var command = new UpdateDraftPostTagsCommand(postId, request.GetParsedPostTags());
+        UpdateDraftPostTagsCommand command = new(postId, request.GetParsedPostTags());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
-            (newContent) => Results.Json(new { NewPostContent = newContent.ToString() })
+            (post) => Results.Json(DraftPostTagsUpdatedResponse.FromDraftPost(post))
+        );
+    }
+
+    private static async Task<IResult> PublishDraftPost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
+
+        var command = new PublishDraftPostCommand(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result,
+            (publishedPostId) => Results.Json(new { PublishedPostId = publishedPostId })
         );
     }
 }

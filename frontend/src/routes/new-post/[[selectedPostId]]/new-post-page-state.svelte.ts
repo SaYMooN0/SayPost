@@ -4,15 +4,14 @@ import type { Err } from "../../../ts/common/errs/err";
 import { DraftPostsSortOption, type DraftPostFullInfo, type DraftPostMainInfo } from "./draftPosts";
 
 export class NewPostPageState {
-
     selectedPostId: string | null = $state(null);;
-    
+
     draftPostsCount: number = $state(0);
     draftPostsMainInfo: DraftPostMainInfo[] = $state([]);
     postsMainInfoFetchingErrs: Err[] = $state([]);
-    
+
     draftPostCache: Map<string, DraftPostFullInfo>;
-    
+
     draftPostsSortOption = $state(DraftPostsSortOption.lastModified);
     draftPostsPinnedPostsOnTop = $state(true);
 
@@ -21,12 +20,11 @@ export class NewPostPageState {
         $effect(() => {
             this.draftPostsSortOption;
             this.draftPostsPinnedPostsOnTop;
-    
+
             this.fetchDraftPosts();
         });
     }
     async fetchDraftPosts(): Promise<void> {
-        console.log("fetchDraftPosts");
         const url = `/draft-posts?sortOption=${this.draftPostsSortOption}&putPinnedOnTop=${this.draftPostsPinnedPostsOnTop}`;
         const response = await ApiMain.fetchJsonResponse<{
             posts: DraftPostMainInfo[];

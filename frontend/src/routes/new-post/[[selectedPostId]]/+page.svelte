@@ -49,7 +49,8 @@
             <div class="left-side">
                 <DraftPostItemMoreActionsMenu
                     bind:this={moreActionsBtnMenu}
-                    updatePostPinnedState={pageState.updatePostPinnedState}
+                    updatePostPinnedState={(postId, newState) =>
+                        pageState.updatePostPinnedState(postId, newState)}
                     deletePost={async (id) => await pageState.deletePost(id)}
                 />
                 <LeftSideWriteNewPostBtn
@@ -60,6 +61,7 @@
                     bind:pinnedPostsOnTop={pageState.draftPostsPinnedPostsOnTop}
                 />
                 <DraftPostsList
+                    currentPostId={pageState.selectedPostId ?? ""}
                     posts={pageState.draftPostsMainInfo}
                     {openMoreActionsMenu}
                 />

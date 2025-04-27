@@ -4,7 +4,7 @@ using SayPostMainService.Domain.rules;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 
-namespace SayPostMainService.Api.contracts.draft_posts;
+namespace SayPostMainService.Api.contracts.draft_posts.update_tags;
 
 public class UpdateDraftPostTagsRequest : IRequestWithValidationNeeded
 {
@@ -22,7 +22,7 @@ public class UpdateDraftPostTagsRequest : IRequestWithValidationNeeded
             );
         }
 
-        return ErrFactory.NotImplemented();
+        return RequestValidationResult.Success;
     }
 
     public HashSet<PostTagId> GetParsedPostTags() => NewTags

@@ -19,9 +19,11 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
     public HashSet<PostTagId> Tags { get; }
 
     public PublishedPost(
-        AppUserId authorId, PostTitle title, PostContent content,
+        PublishedPostId id, AppUserId authorId,
+        PostTitle title, PostContent content,
         DateTime publicationDate, HashSet<PostTagId> tags
     ) {
+        Id = id;
         AuthorId = authorId;
         Title = title;
         Content = content;
@@ -31,7 +33,8 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
 
     public static PublishedPost CreateFromDraft(DraftPost draftPost, IDateTimeProvider dateTimeProvider) {
         PublishedPost publishedPost = new(
-            draftPost.AuthorId, draftPost.Title, draftPost.Content,
+            PublishedPostId.CreateNew(), draftPost.AuthorId,
+            draftPost.Title, draftPost.Content,
             dateTimeProvider.Now, draftPost.Tags
         );
         publishedPost.AddDomainEvent(new NewPublishedPostCreated(publishedPost.Id, publishedPost.AuthorId));

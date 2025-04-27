@@ -21,7 +21,7 @@
     let editableValue = $state("");
     let isEditing = $state(false);
     let editingErrs: Err[] = $state([]);
-    let titleEditingEl: HTMLTextAreaElement;
+    let editingEl: HTMLTextAreaElement;
 
     async function saveTitleChanges() {
         const response = await ApiMain.fetchJsonResponse<{
@@ -35,9 +35,8 @@
             ),
         );
         if (response.isSuccess) {
-            title = response.data.newTitle;
             isEditing = false;
-            updateParentValue(title, response.data.newLastModified);
+            updateParentValue(response.data.newTitle, response.data.newLastModified);
         } else {
             editingErrs = response.errors;
         }
@@ -47,13 +46,13 @@
         editableValue = title;
         await tick();
         adjustHeight();
-        titleEditingEl.focus();
+        editingEl.focus();
     }
 
     function adjustHeight() {
-        if (!titleEditingEl) return;
-        titleEditingEl.style.height = "auto";
-        titleEditingEl.style.height = titleEditingEl.scrollHeight + "px";
+        if (!editingEl) return;
+        editingEl.style.height = "auto";
+        editingEl.style.height = editingEl.scrollHeight + "px";
     }
 </script>
 
@@ -61,7 +60,7 @@
     <div class="editing-state-container">
         <textarea
             bind:value={editableValue}
-            bind:this={titleEditingEl}
+            bind:this={editingEl}
             rows="1"
             class="autosize-textarea"
             oninput={() => adjustHeight()}

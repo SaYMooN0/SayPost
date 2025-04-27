@@ -18,7 +18,7 @@ public class PostTagId : IEntityId
         new Regex(@"^[a-zA-Zа-яА-Я0-9\+\-_]{1," + MaxTagLength + "}$");
 
     public static bool IsStringValidTag(string tag) => TagRegex.IsMatch(tag);
-    public string Value { get; }
+    private string Value { get; }
 
     private PostTagId(string value) {
         if (!IsStringValidTag(value)) {
