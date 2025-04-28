@@ -67,21 +67,21 @@
 
 <style>
     .no-tags {
-        color: var(--gray);
-        padding: 0.25rem;
         display: grid;
-        grid-template-columns: 1fr auto;
-        align-items: 0.5rem;
+        align-items: center;
+        padding: 0.25rem;
+        color: var(--gray);
         font-size: 1.25rem;
+        grid-template-columns: 1fr auto;
     }
 
     .add-tags-btn {
-        font-size: 1rem;
         padding: 0.25rem 0.75rem;
-        border-radius: 0.25rem;
         border: none;
+        border-radius: 0.25rem;
         background-color: var(--accent-main);
         color: var(--back-main);
+        font-size: 1rem;
         transition: all 0.12s ease-in;
         cursor: pointer;
         outline: none;
@@ -90,40 +90,45 @@
     .add-tags-btn:hover {
         background-color: var(--accent-hov);
     }
+
     .tags {
         display: flex;
         flex-wrap: wrap;
+        gap: 0.5rem;
         padding: 0.25rem 0;
         border-radius: 0.25rem;
         background-color: var(--back);
-        gap: 0.5rem;
     }
+
     .tag {
-        font-size: 1rem;
         padding: 0.25rem 0.75rem;
         border-radius: 6rem;
         background-color: var(--accent-main);
         color: var(--back-main);
-    }
-    .change-tags-btn {
         font-size: 1rem;
-        border-radius: 0.25rem;
+    }
+
+    .change-tags-btn {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 0.25rem 0.5rem;
         gap: 0.25rem;
-        background-color: var(--back-second);
+        padding: 0.25rem 0.5rem;
         border: none;
-        outline: none;
+        border-radius: 0.25rem;
+        background-color: var(--back-second);
         color: var(--gray);
-        cursor: pointer;
+        font-size: 1rem;
         transition: all 0.1s ease-in;
+        cursor: pointer;
+        outline: none;
     }
+
     .change-tags-btn:hover {
         background-color: var(--gray);
         color: var(--back-main);
     }
+
     .change-tags-btn > svg {
         height: 1.25rem;
     }

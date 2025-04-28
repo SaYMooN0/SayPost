@@ -25,6 +25,9 @@ public class PostContent : ValueObject
     public override string ToString() => Value;
 
     public static ErrOrNothing IsStringCorrectPostContent(string value) {
+        if (string.IsNullOrWhiteSpace(value)) {
+            return ErrFactory.InvalidData("Post content can't be empty");
+        }
         if (value.Length > MaxContentLength) {
             return ErrFactory.InvalidData(
                 "Content length is too long",

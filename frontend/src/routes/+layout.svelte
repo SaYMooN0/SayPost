@@ -20,7 +20,7 @@
 
 <style>
     .page {
-        width: 100vw;
+        width: 100%;
         box-sizing: border-box;
         margin: 0;
     }

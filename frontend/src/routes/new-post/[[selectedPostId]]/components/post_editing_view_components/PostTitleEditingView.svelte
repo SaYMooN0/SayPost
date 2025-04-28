@@ -17,6 +17,9 @@
         title: string;
         updateParentValue: (newTitle: string, newLastModified: Date) => void;
     }>();
+    export function isInEditingState() {
+        return isEditing;
+    }
 
     let editableValue = $state("");
     let isEditing = $state(false);
@@ -36,7 +39,10 @@
         );
         if (response.isSuccess) {
             isEditing = false;
-            updateParentValue(response.data.newTitle, response.data.newLastModified);
+            updateParentValue(
+                response.data.newTitle,
+                response.data.newLastModified,
+            );
         } else {
             editingErrs = response.errors;
         }
@@ -44,6 +50,7 @@
     async function startEditing() {
         isEditing = true;
         editableValue = title;
+        editingErrs = [];
         await tick();
         adjustHeight();
         editingEl.focus();
@@ -62,7 +69,6 @@
             bind:value={editableValue}
             bind:this={editingEl}
             rows="1"
-            class="autosize-textarea"
             oninput={() => adjustHeight()}
         />
         <div class="btns-container">

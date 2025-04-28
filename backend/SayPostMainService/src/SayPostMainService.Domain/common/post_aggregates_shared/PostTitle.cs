@@ -25,6 +25,10 @@ public class PostTitle : ValueObject
     public override string ToString() => Value;
 
     public static ErrOrNothing IsStringCorrectPostTitle(string value) {
+        if (string.IsNullOrWhiteSpace(value)) {
+            return ErrFactory.InvalidData("Post title can't be empty");
+        }
+
         if (value.Length > MaxContentLength) {
             return ErrFactory.InvalidData(
                 "Content title is too long",

@@ -1,14 +1,20 @@
 ﻿using SayPostNotificationService.Domain.common;
 using SharedKernel.common.domain;
+using SharedKernel.date_time_provider;
 
 namespace SayPostNotificationService.Domain.notification_aggregate;
 
-public abstract class BaseNotification : AggregateRoot<NotificationId>
+public class Notification : AggregateRoot<NotificationId>
 {
-    protected BaseNotification() { }
+    private Notification() { }
     public DateTime CreatedAt { get; }
 
-    protected BaseNotification(DateTime createdAt) {
+    private Notification(DateTime createdAt) {
         CreatedAt = createdAt;
     }
+
+    public static Notification CreateNew(IDateTimeProvider dateTimeProvider) =>
+        new(dateTimeProvider.Now) {
+            Id = NotificationId.CreateNew(),
+        };
 }

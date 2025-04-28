@@ -1,26 +1,18 @@
 ﻿using System.Reflection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SayPostMainService.Domain.app_user_aggregate;
-using SayPostMainService.Domain.draft_post_aggregate;
-using SayPostMainService.Domain.post_tag_aggregate;
-using SayPostMainService.Domain.published_post_aggregate;
+using SayPostNotificationService.Domain.app_user_aggregate;
 using SharedKernel.common.domain;
-using SharedKernel.common.domain.ids;
 
-namespace SayPostMainService.Infrastructure.persistence;
+namespace SayPostNotificationService.Infrastructure.persistence;
 
-public class MainDbContext : DbContext
+public class NotificationDbContext: DbContext
 {
     private readonly IPublisher _publisher;
 
     public DbSet<AppUser> AppUsers { get; init; } = null!;
-    public DbSet<DraftPost> DraftPosts { get; init; } = null!;
-    public DbSet<PublishedPost> PublishedPosts { get; init; } = null!;
-    public DbSet<PostTag> PostTags { get; init; } = null!;
 
-
-    public MainDbContext(DbContextOptions<MainDbContext> options, IPublisher publisher) : base(options) {
+    public NotificationDbContext(DbContextOptions<NotificationDbContext> options, IPublisher publisher) : base(options) {
         _publisher = publisher;
     }
 

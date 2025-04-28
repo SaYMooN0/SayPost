@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SharedKernel.common.errs;
 
-namespace ApiShared;
+namespace ApiShared.extensions;
 
 public static class ErrExtensions
 {

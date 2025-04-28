@@ -11,7 +11,7 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
         _db = db;
     }
     public async Task Add(PublishedPost post) {
-        await _db.PublishedPostsPosts.AddAsync(post);
+        await _db.PublishedPosts.AddAsync(post);
         await _db.SaveChangesAsync();
     }
 }

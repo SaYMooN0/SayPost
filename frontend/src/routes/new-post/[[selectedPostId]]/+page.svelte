@@ -74,6 +74,10 @@
                 <DraftPostEditingView
                     getPostData={async () => await pageState.getPostFullInfo()}
                     updateCache={(newVal) => pageState.updateCache(newVal)}
+                    updateAfterPublishing={() => {
+                        pageState.fetchDraftPosts();
+                        pageState.selectedPostId = null;
+                    }}
                 />
             {/if}
         </div>

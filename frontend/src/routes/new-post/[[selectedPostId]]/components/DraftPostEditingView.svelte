@@ -6,16 +6,20 @@
     import { DateUtils } from "../../../../ts/common/utils/date-utils";
     import PostTagsEditingView from "./post_editing_view_components/PostTagsEditingView.svelte";
     import PostContentEditingView from "./post_editing_view_components/PostContentEditingView.svelte";
+    import DraftPostPublishingView from "./post_editing_view_components/DraftPostPublishingView.svelte";
 
     let {
         getPostData,
         updateCache,
+        updateAfterPublishing,
     }: {
         getPostData: () => Promise<DraftPostFullInfo | Err[]>;
         updateCache: (newVal: DraftPostFullInfo) => void;
+        updateAfterPublishing: () => void;
     } = $props<{
         getPostData: () => Promise<DraftPostFullInfo | Err[]>;
         updateCache: (newVal: DraftPostFullInfo) => void;
+        updateAfterPublishing: () => void;
     }>();
     let postData: DraftPostFullInfo = $state({
         id: "",
@@ -51,7 +55,14 @@
         postData.tags = newTags;
         updateCache(postData);
     }
-    async function publishPost() {}
+    let titleEditingEl: PostTitleEditingView;
+    let contentEditingEl: PostContentEditingView;
+    function anyElementsInEditingState(): boolean {
+        return (
+            titleEditingEl.isInEditingState() ||
+            contentEditingEl.isInEditingState()
+        );
+    }
 </script>
 
 <div class="editing-view">
@@ -64,6 +75,7 @@
                 Last modified at: {DateUtils.toLocale(postData.lastModifiedAt)}
             </label>
             <PostTitleEditingView
+                bind:this={titleEditingEl}
                 postId={postData.id}
                 title={postData.title}
                 updateParentValue={updateTitle}
@@ -74,13 +86,16 @@
                 updateParentValue={updateTags}
             />
             <PostContentEditingView
+                bind:this={contentEditingEl}
                 postId={postData.id}
                 content={postData.content}
                 updateParentValue={updateContent}
             />
-            <button onclick={() => publishPost()} class="publish-btn">
-                Publish post
-            </button>
+            <DraftPostPublishingView
+                postId={postData.id}
+                {updateAfterPublishing}
+                anyElementsInEditingState={() => anyElementsInEditingState()}
+            />
         {/if}
     {/await}
 </div>
@@ -101,7 +116,7 @@
     }
 
     .editing-view > :global(.error-p + .err-block) {
-        width: fit-content;
+        width: 100%;
         min-width: 20rem;
         max-width: 40rem !important;
         margin-left: 4rem;

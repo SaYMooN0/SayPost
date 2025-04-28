@@ -5,11 +5,11 @@ using SharedKernel.integration_events;
 
 namespace SayPostNotificationService.Application.app_users.integration_events;
 
-internal class NewAppUserCreatedEventHandler : INotificationHandler<NewAppUserCreatedIntegrationEvent>
+internal class NewAppUserCreatedIntegrationEventHandler : INotificationHandler<NewAppUserCreatedIntegrationEvent>
 {
     private readonly IAppUsersRepository _appUsersRepository;
 
-    public NewAppUserCreatedEventHandler(IAppUsersRepository appUsersRepository) {
+    public NewAppUserCreatedIntegrationEventHandler(IAppUsersRepository appUsersRepository) {
         _appUsersRepository = appUsersRepository;
     }
 
