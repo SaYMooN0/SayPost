@@ -45,7 +45,14 @@ public class Program
 
         MapHandlers(app);
 
-
+        using (var serviceScope = app.Services.CreateScope()) {
+            var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.AppUsers.Add(new(new(new("01964f73-b7e9-71c7-8b45-9f63b58df9e6"))));
+            db.SaveChanges();
+        }
+        
         app.UseCors("AllowFrontend");
         app.Run();
     }

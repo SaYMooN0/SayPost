@@ -1,0 +1,33 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SayPostNotificationService.Domain.app_user_aggregate;
+using SayPostNotificationService.Domain.common.interfaces.repositories;
+using SharedKernel.common.domain.ids;
+
+namespace SayPostNotificationService.Infrastructure.persistence.repositories;
+
+internal class AppUsersRepository : IAppUsersRepository
+{
+    private NotificationDbContext _db;
+
+    public AppUsersRepository(NotificationDbContext db) {
+        _db = db;
+    }
+
+
+    public async Task Add(AppUser appUser) {
+        await _db.AppUsers.AddAsync(appUser);
+        await _db.SaveChangesAsync();
+    }
+
+    public async Task Update(AppUser appUser) {
+        _db.AppUsers.Update(appUser);
+        await _db.SaveChangesAsync();
+    }
+
+    public Task<AppUser[]> GetAllWithNotifications() =>;
+
+    public Task<AppUser?> GetByIdWithNotifications(AppUserId appUserId) => ;
+
+    public Task<AppUser[]> GetAll() =>
+        _db.AppUsers.ToArrayAsync();
+}

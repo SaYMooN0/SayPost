@@ -6,13 +6,14 @@ using SharedKernel.common.domain;
 
 namespace SayPostNotificationService.Infrastructure.persistence;
 
-public class NotificationDbContext: DbContext
+public class NotificationDbContext : DbContext
 {
     private readonly IPublisher _publisher;
 
     public DbSet<AppUser> AppUsers { get; init; } = null!;
 
-    public NotificationDbContext(DbContextOptions<NotificationDbContext> options, IPublisher publisher) : base(options) {
+    public NotificationDbContext(DbContextOptions<NotificationDbContext> options, IPublisher publisher) :
+        base(options) {
         _publisher = publisher;
     }
 

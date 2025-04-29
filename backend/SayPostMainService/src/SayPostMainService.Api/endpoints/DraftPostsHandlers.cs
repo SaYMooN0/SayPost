@@ -14,12 +14,8 @@ internal static class DraftPostsHandlers
         endpoints
             .WithGroupAuthenticationRequired();
 
-
-        endpoints.MapGet("/", ListDraftPosts)
-            .WithAuthenticationRequired();
-        endpoints.MapPost("/create", CreateDraftPost)
-            .WithAuthenticationRequired();
-
+        endpoints.MapGet("/", ListDraftPosts);
+        endpoints.MapPost("/create", CreateDraftPost);
 
         return endpoints;
     }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SayPostNotificationService.Domain.common.interfaces.repositories;
 using SayPostNotificationService.Infrastructure.persistence;
+using SayPostNotificationService.Infrastructure.persistence.repositories;
 using SharedKernel.configs;
 using SharedKernel.date_time_provider;
 
@@ -59,8 +60,7 @@ public static class DependencyInjection
                                     ?? throw new Exception("Database connection string is not provided.");
         services.AddDbContext<NotificationDbContext>(options => options.UseNpgsql(dbConnectionString));
 
-        // services.AddScoped<IAppUsersRepository, AppUsersRepository>();
-        // services.AddScoped<INotificationsRepository, AppUsersRepository>();
+        services.AddScoped<IAppUsersRepository, AppUsersRepository>();
 
         return services;
     }
