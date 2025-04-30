@@ -14,5 +14,13 @@ internal class AppUsersConfigurations : IEntityTypeConfiguration<AppUser>
             .Property(x => x.Id)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
+
+        builder
+            .Ignore(x => x.Notifications);
+        
+        builder
+            .HasMany<Notification>("_notifications")
+            .WithOne()
+            .HasForeignKey("AppUserId");
     }
 }

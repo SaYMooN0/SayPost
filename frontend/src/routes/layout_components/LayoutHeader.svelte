@@ -15,7 +15,7 @@
     <div class="header-left-part">
         <a
             class="layout-logo-container"
-            data-sveltekit-preload-data="tap"
+            data-sveltekit-preload-data="hover"
             href="/"
         >
             <svg

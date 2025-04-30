@@ -1,12 +1,11 @@
 import { goto } from "$app/navigation";
 import { ApiMain } from "../../../ts/backend-services";
 import type { Err } from "../../../ts/common/errs/err";
-import { DraftPostsSortOption, type DraftPostFullInfo, type DraftPostMainInfo } from "./draftPosts";
+import { DraftPostsSortOption, type DraftPostFullInfo, type DraftPostMainInfo } from "./draft-posts";
 
 export class NewPostPageState {
-    selectedPostId: string | null = $state(null);;
+    selectedPostId: string | null = $state(null);
 
-    draftPostsCount: number = $state(0);
     draftPostsMainInfo: DraftPostMainInfo[] = $state([]);
     postsMainInfoFetchingErrs: Err[] = $state([]);
 
@@ -33,14 +32,12 @@ export class NewPostPageState {
         });
         if (response.isSuccess) {
             this.draftPostsMainInfo = response.data.posts;
-            this.draftPostsCount = response.data.posts.length;
             if (this.postsMainInfoFetchingErrs.length != 0) {
                 this.postsMainInfoFetchingErrs = [];
             }
         } else {
             this.postsMainInfoFetchingErrs = response.errors;
             this.draftPostsMainInfo = [];
-            this.draftPostsCount = 0;
         }
     }
     async createNewPost(): Promise<Err[] | void> {

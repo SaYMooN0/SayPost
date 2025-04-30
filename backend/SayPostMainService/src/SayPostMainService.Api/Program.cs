@@ -49,7 +49,8 @@ public class Program
             var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-            db.AppUsers.Add(new(new(new("01964f73-b7e9-71c7-8b45-9f63b58df9e6"))));
+            // db.AppUsers.Add(new(new(new("01964f73-b7e9-71c7-8b45-9f63b58df9e6"))));
+            db.AppUsers.Add(new(new(new("0196405c-0c03-7520-8da6-d17cdc334ba7"))));
             db.SaveChanges();
         }
         
@@ -58,6 +59,7 @@ public class Program
     }
 
     private static void MapHandlers(WebApplication app) {
+        app.MapGroup("/posts").MapPostsHandlers();
         app.MapGroup("/draft-posts").MapDraftPostsHandlers();
         app.MapGroup("/draft-posts/{draftPostId}").MapSpecificDraftPostHandlers();
         app.MapGroup("/post-tags").MapPostTagsHandlers();

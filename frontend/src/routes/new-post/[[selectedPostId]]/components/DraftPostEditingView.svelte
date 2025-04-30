@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { DraftPostFullInfo } from "../draftPosts";
+    import type { DraftPostFullInfo } from "../draft-posts";
     import { Err } from "../../../../ts/common/errs/err";
     import DefaultErrBlock from "../../../../components/err_blocks/DefaultErrBlock.svelte";
     import PostTitleEditingView from "./post_editing_view_components/PostTitleEditingView.svelte";

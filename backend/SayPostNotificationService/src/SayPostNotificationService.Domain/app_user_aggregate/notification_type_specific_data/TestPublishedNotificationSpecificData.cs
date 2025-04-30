@@ -4,8 +4,8 @@ namespace SayPostNotificationService.Domain.app_user_aggregate.notification_type
 
 public class TestPublishedNotificationSpecificData : BaseNotificationSpecificData
 {
-    private PublishedPostId PostId { get; }
-    private AppUserId PostAuthorId { get; }
+    public PublishedPostId PostId { get;private init; }
+    public AppUserId PostAuthorId { get; private init;}
 
     public TestPublishedNotificationSpecificData(PublishedPostId postId, AppUserId postAuthorId) {
         PostId = postId;
@@ -16,4 +16,9 @@ public class TestPublishedNotificationSpecificData : BaseNotificationSpecificDat
         yield return PostId;
         yield return PostAuthorId;
     }
+
+    public override Dictionary<string, string> ToDictionary() => new() {
+        ["PostId"] = PostId.ToString(),
+        ["PostAuthorId"] = PostAuthorId.ToString()
+    };
 }

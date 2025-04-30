@@ -34,6 +34,15 @@ internal class
             );
         }
 
-        return user.GetSortedNotifications();
+        if (request.ShowOnlyNotViewed) {
+            return user.Notifications
+                .Where(n => !n.Viewed)
+                .OrderByDescending(n => n.TypeSpecificData)
+                .ToArray();
+        }
+
+        return user.Notifications
+            .OrderByDescending(n => n.TypeSpecificData)
+            .ToArray();
     }
 }

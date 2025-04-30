@@ -1,6 +1,6 @@
 <script lang="ts">
     import { DateUtils } from "../../../../../ts/common/utils/date-utils";
-    import type { DraftPostMainInfo } from "../../draftPosts";
+    import type { DraftPostMainInfo } from "../../draft-posts";
 
     let {
         posts,

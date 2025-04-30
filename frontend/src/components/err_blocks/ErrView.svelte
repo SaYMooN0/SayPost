@@ -1,11 +1,10 @@
 <script lang="ts">
     import type { Err } from "../../ts/common/errs/err";
-    import { StringUtils } from "../../ts/common/utils/string-utils";
 
     const { err }: { err: Err } = $props<{ err: Err }>();
     let showAdditional = $state(false);
 
-    let iconElement: SVGSVGElement | null = null;
+    let iconElement: SVGElement;
 
     function toggleDetails() {
         showAdditional = !showAdditional;
@@ -88,13 +87,13 @@
     }
 
     .err-additional {
+        interpolate-size: allow-keywords;
         height: auto;
         margin: 0.125rem 0 0 0.25rem;
         color: var(--err-red);
         font-size: 1rem;
         opacity: 1;
         transition: all 0.2s ease;
-        interpolate-size: allow-keywords;
         box-sizing: border-box;
     }
 

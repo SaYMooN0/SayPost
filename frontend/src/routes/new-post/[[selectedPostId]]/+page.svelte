@@ -12,7 +12,7 @@
     import LeftSideWriteNewPostBtn from "./components/left_side_components/LeftSideWriteNewPostBtn.svelte";
     import NoDraftPosts from "./components/NoDraftPosts.svelte";
     import NoPostSelected from "./components/NoPostSelected.svelte";
-    import type { DraftPostMainInfo } from "./draftPosts";
+    import type { DraftPostMainInfo } from "./draft-posts";
     import { NewPostPageState } from "./new-post-page-state.svelte";
 
     let pageState: NewPostPageState = new NewPostPageState();
@@ -39,7 +39,7 @@
             <label>Something went wrong...</label>
             <DefaultErrBlock errList={pageState.postsMainInfoFetchingErrs} />
         </div>
-    {:else if pageState.draftPostsCount == 0}
+    {:else if pageState.draftPostsMainInfo.length == 0}
         <NoDraftPosts
             refresh={async () => await pageState.fetchDraftPosts()}
             createNewPost={async () => await pageState.createNewPost()}

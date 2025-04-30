@@ -24,10 +24,11 @@ internal class AppUsersRepository : IAppUsersRepository
         await _db.SaveChangesAsync();
     }
 
-    public Task<AppUser[]> GetAllWithNotifications() =>;
+    public Task<AppUser[]> GetAllWithNotifications() => _db.AppUsers
+        .Include(u => EF.Property<ICollection<Notification>>(u, "_notifications"))
+        .ToArrayAsync();
 
-    public Task<AppUser?> GetByIdWithNotifications(AppUserId appUserId) => ;
-
-    public Task<AppUser[]> GetAll() =>
-        _db.AppUsers.ToArrayAsync();
+    public Task<AppUser?> GetByIdWithNotifications(AppUserId appUserId) => _db.AppUsers
+        .Include(u => EF.Property<ICollection<Notification>>(u, "_notifications"))
+        .FirstOrDefaultAsync(u => u.Id == appUserId);
 }

@@ -10,13 +10,13 @@ public class Notification : Entity<NotificationId>
 {
     private Notification() { }
     public DateTime CreatedAt { get; }
-    public BaseNotificationSpecificData NotificationSpecificData { get; }
+    public BaseNotificationSpecificData TypeSpecificData { get; }
     public bool Viewed { get; private set; }
 
-    private Notification(NotificationId id, DateTime createdAt, BaseNotificationSpecificData notificationSpecificData) {
+    private Notification(NotificationId id, DateTime createdAt, BaseNotificationSpecificData typeSpecificData) {
         Id = id;
         CreatedAt = createdAt;
-        NotificationSpecificData = notificationSpecificData;
+        TypeSpecificData = typeSpecificData;
         Viewed = false;
     }
 
