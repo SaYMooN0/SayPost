@@ -3,7 +3,6 @@
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
-    import { error } from "@sveltejs/kit";
 
     let {
         postId,
@@ -143,6 +142,7 @@
     .section-p > button:hover {
         background-color: var(--accent-hov);
     }
+
     .editing-state-container {
         display: flex;
         flex-direction: column;
@@ -174,28 +174,34 @@
         gap: 0.5rem;
         padding-left: auto;
     }
+
     .btns-container svg {
-        height: 1.5rem;
         width: 1.5rem;
+        height: 1.5rem;
         padding: 1px;
-        box-sizing: border-box;
-        border-radius: 0.25rem;
         border: none;
+        border-radius: 0.25rem;
         color: var(--back-main);
         cursor: pointer;
+        box-sizing: border-box;
     }
+
     .cancel-btn {
         background-color: var(--gray);
     }
+
     .cancel-btn:hover {
         background-color: var(--err-red);
     }
+
     .save-btn {
         background-color: var(--accent-main);
     }
+
     .save-btn:hover {
         background-color: var(--accent-hov);
     }
+
     .content {
         margin: 0.25rem 0;
         font-size: 2rem;

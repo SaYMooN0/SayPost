@@ -13,9 +13,9 @@ internal static class PostTagsHandlers
     }
 
     private static async Task<IResult> SearchPostTags(
-        HttpContext httpContext, ISender mediator, string searchVal
+        HttpContext httpContext, ISender mediator, string searchVal, int? count
     ) {
-        var query = new SearchPostTagsQuery(searchVal);
+        var query = new SearchPostTagsQuery(searchVal, count ?? 10 );
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,

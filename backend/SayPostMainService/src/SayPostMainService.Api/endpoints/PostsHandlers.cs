@@ -8,23 +8,27 @@ namespace SayPostMainService.Api.endpoints;
 internal static class PostsHandlers
 {
     internal static IEndpointRouteBuilder MapPostsHandlers(this RouteGroupBuilder endpoints) {
-        endpoints.MapGet("/", ListPosts);
+        endpoints.MapGet("/", ListPreviews);
 
         return endpoints;
     }
 
-    private static async Task<IResult> ListPosts(
+    private static async Task<IResult> ListPreviews(
         HttpContext httpContext,
         ISender mediator,
-        DateTime? dateFrom = null,
-        DateTime? dateTo = null,
-        string[]? includeTags = null
+        long? dateFrom = null,
+        long? dateTo = null,
+        string? includeTags = null,
+        string? excludeTags = null
     ) {
-        var query = new ListPublishedPostsQuery(dateFrom, dateTo, includeTags ?? []);
+        ListPublishedPostsQuery query = new(
+            DateFrom: dateFrom, DateTo: dateTo,
+            IncludeTags: includeTags, ExcludeTags: excludeTags
+        );
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,
-            (posts) => Results.Json(ListPublishedPostsResponse.FromPosts(posts))
+            (posts) => Results.Json(ListPublishedPostPreviewsResponse.FromPosts(posts))
         );
     }
 }

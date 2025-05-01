@@ -2,21 +2,21 @@ using SayPostMainService.Domain.published_post_aggregate;
 
 namespace SayPostMainService.Api.contracts.published_posts;
 
-public record class PublishedPostDataResponse(
+public record class PublishedPostPreviewResponse(
     string Id,
     string Title,
-    string Content,
     DateTime PublicationDate,
     string[] Tags,
+    int CommentsCount,
     string AuthorId
 )
 {
-    public static PublishedPostDataResponse FromPost(PublishedPost post) => new(
+    public static PublishedPostPreviewResponse FromPost(PublishedPost post) => new(
         post.Id.ToString(),
         post.Title.ToString(),
-        post.Content.ToString(),
         post.PublicationDate,
         post.Tags.Select(t => t.ToString()).ToArray(),
+        post.Comments.Count,
         post.AuthorId.ToString()
     );
 }

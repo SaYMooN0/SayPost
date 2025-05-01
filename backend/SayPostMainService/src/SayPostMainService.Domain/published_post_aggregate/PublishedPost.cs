@@ -17,6 +17,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
     public PostContent Content { get; }
     public DateTime PublicationDate { get; }
     public HashSet<PostTagId> Tags { get; }
+    public ICollection<PostComment> _comments { get; }
 
     public PublishedPost(
         PublishedPostId id, AppUserId authorId,
@@ -29,6 +30,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         Content = content;
         PublicationDate = publicationDate;
         Tags = tags;
+        _comments = new List<PostComment>();
     }
 
     public static PublishedPost CreateFromDraft(DraftPost draftPost, IDateTimeProvider dateTimeProvider) {
@@ -40,4 +42,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         publishedPost.AddDomainEvent(new NewPublishedPostCreated(publishedPost.Id, publishedPost.AuthorId));
         return publishedPost;
     }
+
+    public List<PostComment> Comments => _comments.ToList();
+    public void AddComment(PostComment comment) => _comments.Add(comment);
 }

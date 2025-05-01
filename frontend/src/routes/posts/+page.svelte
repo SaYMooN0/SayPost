@@ -1,22 +1,26 @@
 <script lang="ts">
-	import { applyAction } from "$app/forms";
+	import { afterNavigate, goto } from "$app/navigation";
+	import { page } from "$app/state";
 	import DefaultErrBlock from "../../components/err_blocks/DefaultErrBlock.svelte";
 	import { ApiMain } from "../../ts/backend-services";
 	import type { Err } from "../../ts/common/errs/err";
+	import { StringUtils } from "../../ts/common/utils/string-utils";
 	import { PostsFilterState } from "./posts-filter-state.svelte";
 	import PostsFilter from "./posts_page_components/PostsFilter.svelte";
 	import PostView from "./posts_page_components/PostView.svelte";
-	import type { PublishedPost } from "./published-posts";
+	import type { PostPreview } from "./published-posts";
 
-	const postsFilter = new PostsFilterState();
-	let posts: PublishedPost[] = $state([]);
+	let postsFilter = $state(new PostsFilterState());
+	let posts: PostPreview[] = $state([]);
 	let postsFetchingErrs: Err[] = $state([]);
 
 	async function fetchPosts() {
 		console.log("fetching");
-		const url = `/posts?${postsFilter.getQuery()}`;
+		const queryParams = postsFilter.getQuery();
+		const url = `/posts${StringUtils.isNullOrWhiteSpace(queryParams) ? "" : "?" + queryParams}`;
+		console.log(url);
 		const response = await ApiMain.fetchJsonResponse<{
-			posts: PublishedPost[];
+			posts: PostPreview[];
 		}>(url, {
 			method: "GET",
 		});
@@ -31,10 +35,17 @@
 			postsFetchingErrs = response.errors;
 		}
 	}
+	function applyFilter() {
+		goto(`/posts?${postsFilter.getQuery()}`);
+	}
+	afterNavigate(() => {
+		postsFilter.applyQueryParams(page.url.searchParams);
+		fetchPosts();
+	});
 </script>
 
 <div class="page">
-	<PostsFilter {postsFilter} applyFilter={() => fetchPosts()} />
+	<PostsFilter bind:postsFilter {applyFilter} />
 	{#if postsFetchingErrs.length != 0}
 		<DefaultErrBlock errList={postsFetchingErrs} />
 	{:else if posts.length == 0}
@@ -48,10 +59,10 @@
 
 <style>
 	.page {
-		width: 100%;
-		box-sizing: border-box;
-		margin: 0;
 		display: grid;
+		width: 100%;
+		margin: 0;
+		box-sizing: border-box;
 		grid-template-rows: auto 1fr;
 	}
 </style>

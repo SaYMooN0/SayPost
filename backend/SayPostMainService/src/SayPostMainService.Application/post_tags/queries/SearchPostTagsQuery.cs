@@ -7,7 +7,7 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.post_tags.queries;
 
-public record class SearchPostTagsQuery(string SearchValue) :
+public record class SearchPostTagsQuery(string SearchValue, int Count) :
     IRequest<ErrOr<ImmutableArray<string>>>;
 
 internal class SearchPostTagsQueryHandler
@@ -27,7 +27,9 @@ internal class SearchPostTagsQueryHandler
             return err;
         }
 
-        var tags = await _postTagsRepository.TagIdValuesWithSubstring(request.SearchValue, 20);
+        int count = request.Count > 20 ? 20 : request.Count;
+
+        var tags = await _postTagsRepository.TagIdValuesWithSubstring(request.SearchValue, count);
 
         return ErrOr<ImmutableArray<string>>.Success([request.SearchValue, ..tags]);
     }

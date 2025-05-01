@@ -5,5 +5,5 @@ namespace SayPostMainService.Domain.common.interfaces.repositories;
 public interface IPublishedPostsRepository
 {
     Task Add(PublishedPost post);
-    Task<PublishedPost[]> QueryPosts(PostsQueryFilter filter);
+    Task<PublishedPost[]> QueryPostsWithComments(PostsQueryFilter filter);
 }

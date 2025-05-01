@@ -9,3 +9,7 @@ public class PublishedPostId(Guid value) : GuidBasedId(value)
 {
     public static PublishedPostId CreateNew() => new(Guid.CreateVersion7());
 }
+public class PostCommentId(Guid value) : GuidBasedId(value)
+{
+    public static PostCommentId CreateNew() => new(Guid.CreateVersion7());
+}

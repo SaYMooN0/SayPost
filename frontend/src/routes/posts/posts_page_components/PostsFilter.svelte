@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { PostsFilterState } from "../posts-filter-state.svelte";
-    import FilterTagsSelection from "./FilterTagsSelection.svelte";
+    import FilterTagsSelection from "./filter_components/FilterTagsSelection.svelte";
 
     let {
-        postsFilter,
+        postsFilter = $bindable(),
         applyFilter,
     }: {
         postsFilter: PostsFilterState;
@@ -45,31 +45,39 @@
         </svg>
     </p>
     <div class="filter" class:hidden={!isVisible}>
-        <p class="filter-p">Published from: <input /> to: <input /></p>
+        <p class="filter-p">
+            Published from: <input
+                type="date"
+                bind:value={postsFilter.dateFrom}
+            />
+            to: <input type="date" bind:value={postsFilter.dateTo} />
+        </p>
         <p class="filter-p">Include tags:</p>
         <FilterTagsSelection bind:selectedTags={postsFilter.includeTags} />
         <p class="filter-p">Exclude tags:</p>
         <FilterTagsSelection bind:selectedTags={postsFilter.excludeTags} />
         <div class="filter-btns">
-            <button>Reset</button>
-            <button>Apply</button>
+            <button onclick={postsFilter.reset}>Reset</button>
+            <button onclick={applyFilter}>Apply</button>
         </div>
     </div>
 </div>
 
 <style>
     .container {
-        background-color: var(--back-second);
-        padding: 0.125rem 1rem;
+        padding: 0.25rem 1rem;
         border-radius: 1rem;
+        background-color: var(--back-second);
     }
+
     .always-shown {
-        margin: 0;
         display: grid;
-        grid-template-columns: 1fr auto;
         align-items: center;
+        margin: 0;
         font-size: 1.5rem;
+        grid-template-columns: 1fr auto;
     }
+
     .always-shown > svg {
         height: 1.75rem;
         transition: transform 0.17s ease-in;
@@ -84,30 +92,41 @@
     :global(.always-shown .rotate-up) {
         animation: rotate-up 0.4s ease-in-out forwards;
     }
+
     .filter {
-        margin-top: 0.5rem;
-        interpolate-size: allow-keywords;
-        font-size: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
         height: auto;
+        margin-top: 0.5rem;
+        font-size: 1.25rem;
         opacity: 1;
         transition:
             all 0.2s ease-in,
             opacity 0.5s ease-out;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
+        interpolate-size: allow-keywords;
     }
+
     .hidden {
-        margin-top: 0;
         height: 0;
-        opacity: 0;
+        margin-top: 0;
         font-size: 0.25rem;
+        opacity: 0;
         transition:
             all 0.2s ease-in,
             opacity 0.04s ease-out;
     }
+
     .filter-p {
         margin: 0;
+    }
+    .filter-btns {
+        display: grid;
+        grid-template-columns: 8rem 8rem;
+        gap: 0.5rem;
+        justify-content: right;
+        padding-right: 0.25rem;
+        padding-bottom: 0.5rem;
     }
     @keyframes rotate-down {
         from {

@@ -19,6 +19,7 @@ public class Notification : Entity<NotificationId>
         TypeSpecificData = typeSpecificData;
         Viewed = false;
     }
+    public void View()=> Viewed = true;
 
     public static Notification CreateNewTestPublished(
         IDateTimeProvider dateTimeProvider,
@@ -28,6 +29,12 @@ public class Notification : Entity<NotificationId>
         NotificationId.CreateNew(), dateTimeProvider.Now,
         new TestPublishedNotificationSpecificData(postId, postAuthorId)
     );
-
-    public void View()=> Viewed = true;
+    public static Notification CreateNewCommentLeft(
+        IDateTimeProvider dateTimeProvider,
+        string postTitle,
+        AppUserId commentAuthorId
+    ) => new(
+        NotificationId.CreateNew(), dateTimeProvider.Now,
+        new CommentLeftNotificationSpecificData(postTitle, commentAuthorId)
+    );
 }

@@ -1,9 +1,9 @@
-export type PublishedPost = {
+export type PostPreview = {
     id: string;
     title: string;
-    content: string;
     publicationDate:Date;
     tags: string[];
+    commentsCount:number;
     authorId:string;
 
 }

@@ -8,4 +8,7 @@ namespace SharedKernel.integration_events;
 
 [JsonDerivedType(typeof(NewPostPublishedIntegrationEvent),
     typeDiscriminator: nameof(NewPostPublishedIntegrationEvent))]
+
+[JsonDerivedType(typeof(NewCommentUnderPostLeftIntegrationEvent),
+    typeDiscriminator: nameof(NewCommentUnderPostLeftIntegrationEvent))]
 public interface IIntegrationEvent : INotification { }

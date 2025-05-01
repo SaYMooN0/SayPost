@@ -65,37 +65,41 @@
 
 <style>
     .publish-btn {
-        margin: 1rem auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
         width: fit-content;
         padding: 0.375rem 1.25rem;
+        margin: 1rem auto;
         border: none;
         border-radius: 4rem;
         background-color: var(--accent-main);
         color: var(--back-main);
         font-size: 1.5rem;
-        transition: all 0.12s ease-in;
-        cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        align-items: center;
         transition: all 0.1s ease-in;
+        cursor: pointer;
     }
+
     .publish-btn:hover {
-        padding: 0.375rem 1.5rem;
         gap: 0.75rem;
+        padding: 0.375rem 1.5rem;
         background-color: var(--accent-hov);
     }
+
     .publish-btn:active {
         transform: scale(0.96);
     }
+
     .publish-btn svg {
         height: 1.75rem;
         transition: inherit;
     }
+
     .publish-btn:hover svg {
         transform: rotate(25deg);
     }
+
     .errs-wrapper {
         margin-bottom: 4rem;
     }
