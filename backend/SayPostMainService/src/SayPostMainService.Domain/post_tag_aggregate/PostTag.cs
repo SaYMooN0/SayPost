@@ -7,9 +7,9 @@ public class PostTag : AggregateRoot<PostTagId>
 {
     private PostTag() { }
     public int PostWithThisTagCount { get; private set; }
-    public static PostTag Create(PostTagId postTagId) => new() {
+    public static PostTag Create(PostTagId postTagId, int postWithThisTagCount) => new() {
         Id = postTagId,
-        PostWithThisTagCount = 0
+        PostWithThisTagCount = postWithThisTagCount
     };
     public override string ToString() => Id.ToString();
     public void IncrementPostWithThisTagCount() => PostWithThisTagCount++;

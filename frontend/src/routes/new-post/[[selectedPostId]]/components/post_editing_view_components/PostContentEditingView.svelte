@@ -172,7 +172,7 @@
         grid-template-columns: auto auto;
         justify-content: right;
         gap: 0.5rem;
-        padding-left: auto;
+        margin-left: auto;
     }
 
     .btns-container svg {

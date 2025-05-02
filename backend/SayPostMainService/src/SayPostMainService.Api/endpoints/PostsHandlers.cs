@@ -21,7 +21,7 @@ internal static class PostsHandlers
         string? includeTags = null,
         string? excludeTags = null
     ) {
-        ListPublishedPostsQuery query = new(
+        ListPostsWithCommentsQuery query = new(
             DateFrom: dateFrom, DateTo: dateTo,
             IncludeTags: includeTags, ExcludeTags: excludeTags
         );

@@ -4,7 +4,6 @@ using MediatR;
 using SayPostNotificationService.Api.contracts;
 using SayPostNotificationService.Application.app_users.commands;
 using SayPostNotificationService.Application.app_users.queries;
-using SayPostNotificationService.Domain.app_user_aggregate;
 using SharedKernel.common.domain.ids;
 
 namespace SayPostNotificationService.Api.endpoints;

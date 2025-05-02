@@ -1,3 +1,3 @@
 ﻿namespace SharedKernel.common.domain.ids;
 
-public interface IEntityId { }
+public interface IEntityId  { }

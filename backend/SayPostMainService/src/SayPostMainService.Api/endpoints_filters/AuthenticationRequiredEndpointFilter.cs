@@ -1,7 +1,5 @@
 ﻿using ApiShared;
 using ApiShared.extensions;
-using SayPostMainService.Api.extensions;
-using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SharedKernel.common.domain.ids;
@@ -25,7 +23,7 @@ internal class AccessToModifyDraftPostRequiredEndpointFilter : IEndpointFilter
         if (!Guid.TryParse(postIdString, out var postGuid)) {
             return CustomResults.ErrorResponse(ErrFactory.InvalidData(
                 "Invalid draft post id",
-                "Couldn't parse draft post id from route"
+                $"Couldn't parse draft post id from route. Given value: {postIdString}"
             ));
         }
         

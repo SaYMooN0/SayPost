@@ -64,6 +64,60 @@ class BackendService {
             };
         }
     }
+    public async serverFetchJsonResponse<T>(
+        fetchFunc: typeof fetch,
+        url: string,
+        options: RequestInit
+    ): Promise<ResponseResult<T>> {
+        try {
+            const response = await fetchFunc(this._baseUrl + url, {
+                ...options,
+                credentials: 'include'
+            });
+    
+            if (response.ok) {
+                const text = await response.text();
+                const data = BackendService.parseWithDates<T>(text);
+                return { isSuccess: true, data };
+            }
+    
+            const errors = await this.handleErrorResponse(response);
+            return { isSuccess: false, errors };
+    
+        } catch (e: any) {
+            return {
+                isSuccess: false,
+                errors: [new Err("Unknown error", -1, "Error: " + e.message)]
+            };
+        }
+    }
+    
+    public async serverFetchVoidResponse(
+        fetchFunc: typeof fetch,
+        url: string,
+        options: RequestInit
+    ): Promise<ResponseVoidResult> {
+        try {
+            const response = await fetchFunc(this._baseUrl + url, {
+                ...options,
+                credentials: 'include'
+            });
+    
+            if (response.ok) {
+                return { isSuccess: true };
+            }
+    
+            const errors = await this.handleErrorResponse(response);
+            return { isSuccess: false, errors };
+    
+        } catch (e: any) {
+            return {
+                isSuccess: false,
+                errors: [new Err("Unknown error", -1, "Error: " + e.message)]
+            };
+        }
+    }
+    
     static parseWithDates<T>(json: string): T {
         return JSON.parse(json, (key, value) => {
             if (typeof value === 'string' && DateUtils.isoDateRegex.test(value)) {

@@ -29,13 +29,13 @@ internal class PublishDraftPostCommandHandler : IRequestHandler<PublishDraftPost
     }
 
     public async Task<ErrOr<PublishedPostId>> Handle(
-        PublishDraftPostCommand request, CancellationToken cancellationToken
+        PublishDraftPostCommand command, CancellationToken cancellationToken
     ) {
-        DraftPost? draftPost = await _draftPostsRepository.GetById(request.DraftPostId);
+        DraftPost? draftPost = await _draftPostsRepository.GetById(command.DraftPostId);
         if (draftPost is null) {
             return ErrFactory.NotFound(
                 "Unknown post",
-                $"Post with id: {request.DraftPostId} that you are trying to publish was not found"
+                $"Post with id: {command.DraftPostId} that you are trying to publish was not found"
             );
         }
 

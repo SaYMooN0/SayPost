@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { PostPreview } from "../published-posts";
+    import type { PostPreview } from "../published-posts-previews";
 
     let { post }: { post: PostPreview } = $props<{ post: PostPreview }>();
 </script>
@@ -21,14 +21,22 @@
             ? "No comments"
             : `${post.commentsCount} comments`}
     </p>
+
+    <a
+        data-sveltekit-preload-data="hover"
+        class="read-link"
+        href="/posts/{post.id}"
+    >
+        Read
+    </a>
 </div>
 
 <style>
     .post-view {
+        padding: 0.5rem;
         margin-top: 1rem;
         border: 0.125rem solid var(--accent-main);
         border-radius: 0.5rem;
-        padding: 0.5rem;
         box-sizing: border-box;
     }
 </style>

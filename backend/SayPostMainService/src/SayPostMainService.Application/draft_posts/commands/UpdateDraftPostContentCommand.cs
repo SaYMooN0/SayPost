@@ -27,17 +27,17 @@ internal class UpdateDraftPostContentCommandHandler
 
 
     public async Task<ErrOr<(PostContent NewContent, DateTime NewLastModified)>> Handle(
-        UpdateDraftPostContentCommand request, CancellationToken cancellationToken
+        UpdateDraftPostContentCommand command, CancellationToken cancellationToken
     ) {
-        DraftPost? post = await _draftPostsRepository.GetById(request.DraftPostId);
+        DraftPost? post = await _draftPostsRepository.GetById(command.DraftPostId);
         if (post is null) {
             return ErrFactory.NotFound(
                 "Post not found",
-                $"Post with id: {request.DraftPostId} that you are trying to update was not found"
+                $"Post with id: {command.DraftPostId} that you are trying to update was not found"
             );
         }
 
-        post.UpdateContent(request.NewContent, _dateTimeProvider);
+        post.UpdateContent(command.NewContent, _dateTimeProvider);
         await _draftPostsRepository.Update(post);
 
         return (post.Content, post.LastModifiedAt);

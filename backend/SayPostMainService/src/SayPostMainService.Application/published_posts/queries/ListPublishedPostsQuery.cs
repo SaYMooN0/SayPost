@@ -9,21 +9,20 @@ using SharedKernel.date_time_provider;
 
 namespace SayPostMainService.Application.published_posts.queries;
 
-public record class ListPublishedPostsQuery(
+public record class ListPostsWithCommentsQuery(
     long? DateFrom,
     long? DateTo,
     string? IncludeTags,
     string? ExcludeTags
-)
-    : IRequest<ErrOr<ImmutableArray<PublishedPost>>>;
+) : IRequest<ErrOr<ImmutableArray<PublishedPost>>>;
 
-internal class ListPublishedPostsQueryHandler
-    : IRequestHandler<ListPublishedPostsQuery, ErrOr<ImmutableArray<PublishedPost>>>
+internal class ListPostsWithCommentsQueryHandler
+    : IRequestHandler<ListPostsWithCommentsQuery, ErrOr<ImmutableArray<PublishedPost>>>
 {
     private readonly IPublishedPostsRepository _publishedPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public ListPublishedPostsQueryHandler(
+    public ListPostsWithCommentsQueryHandler(
         IPublishedPostsRepository publishedPostsRepository,
         IDateTimeProvider dateTimeProvider
     ) {
@@ -32,7 +31,7 @@ internal class ListPublishedPostsQueryHandler
     }
 
     public async Task<ErrOr<ImmutableArray<PublishedPost>>> Handle(
-        ListPublishedPostsQuery request, CancellationToken cancellationToken
+        ListPostsWithCommentsQuery request, CancellationToken cancellationToken
     ) {
         var filer = CreateFilter(request, _dateTimeProvider);
         if (filer.IsErr(out var err)) {
@@ -45,7 +44,7 @@ internal class ListPublishedPostsQueryHandler
     }
 
     private static ErrOr<PostsQueryFilter> CreateFilter(
-        ListPublishedPostsQuery r,
+        ListPostsWithCommentsQuery r,
         IDateTimeProvider dateTimeProvider
     ) {
         DateTime? dateFrom = r.DateFrom.HasValue
@@ -112,10 +111,10 @@ internal class ListPublishedPostsQueryHandler
             ExcludeTags: excludeTags.Select(t => PostTagId.Create(t).AsSuccess()).ToHashSet()
         );
     }
+
     private static string[] ParseTags(string? rawTags) =>
         rawTags?
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Where(t => !string.IsNullOrWhiteSpace(t))
             .ToArray() ?? [];
-
 }

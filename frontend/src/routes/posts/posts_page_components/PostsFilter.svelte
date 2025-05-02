@@ -57,8 +57,8 @@
         <p class="filter-p">Exclude tags:</p>
         <FilterTagsSelection bind:selectedTags={postsFilter.excludeTags} />
         <div class="filter-btns">
-            <button onclick={postsFilter.reset}>Reset</button>
-            <button onclick={applyFilter}>Apply</button>
+            <button class="reset" onclick={postsFilter.reset}>Reset</button>
+            <button class="apply" onclick={applyFilter}>Apply</button>
         </div>
     </div>
 </div>
@@ -76,8 +76,9 @@
         margin: 0;
         font-size: 1.5rem;
         grid-template-columns: 1fr auto;
+        font-weight: 400;
+        transition: all 0.2s ease-in;
     }
-
     .always-shown > svg {
         height: 1.75rem;
         transition: transform 0.17s ease-in;
@@ -98,18 +99,23 @@
         flex-direction: column;
         gap: 0.25rem;
         height: auto;
-        margin-top: 0.5rem;
+        margin: 0.5rem 0 0.75rem 0;
         font-size: 1.25rem;
         opacity: 1;
         transition:
             all 0.2s ease-in,
             opacity 0.5s ease-out;
         interpolate-size: allow-keywords;
+        background-color: var(--back-main);
+        border-radius: 1rem;
+        padding: 0.75rem;
+        box-sizing: border-box;
     }
 
     .hidden {
         height: 0;
-        margin-top: 0;
+        margin: 0;
+        padding: 0;
         font-size: 0.25rem;
         opacity: 0;
         transition:
@@ -120,13 +126,38 @@
     .filter-p {
         margin: 0;
     }
+
     .filter-btns {
         display: grid;
-        grid-template-columns: 8rem 8rem;
-        gap: 0.5rem;
         justify-content: right;
+        gap: 0.5rem;
         padding-right: 0.25rem;
         padding-bottom: 0.5rem;
+        grid-template-columns: 8rem 8rem;
+    }
+    .filter-btns button {
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
+        outline: none;
+        border: none;
+        font-size: 1.25rem;
+        transition: all 0.12s ease-in;
+        cursor: pointer;
+    }
+    .reset {
+        color: var(--back-main);
+        background-color: var(--gray);
+    }
+    .apply {
+        color: var(--back-main);
+
+        background-color: var(--accent-main);
+    }
+    .apply:hover {
+        background-color: var(--accent-hov);
+    }
+    .filter-btns button:hover {
+        border-radius: 0.75rem;
     }
     @keyframes rotate-down {
         from {

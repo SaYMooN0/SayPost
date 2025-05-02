@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
@@ -10,7 +11,7 @@ public class DraftPostId(Guid value) : GuidBasedId(value)
     public static DraftPostId CreateNew() => new(Guid.CreateVersion7());
 }
 
-public class PostTagId : IEntityId
+public class PostTagId : ValueObject, IComparable,  IEntityId
 {
     public const int MaxTagLength = 30;
 
@@ -37,4 +38,13 @@ public class PostTagId : IEntityId
     }
 
     public override string ToString() => Value;
+    public int CompareTo(object? obj)  => obj switch {
+        IEntityId ed => ToString().CompareTo(ed.ToString()),
+        Guid guid => guid.CompareTo(Value),
+        _ => -1
+    };
+
+    public override IEnumerable<object> GetEqualityComponents() {
+        yield return Value;
+    }
 }

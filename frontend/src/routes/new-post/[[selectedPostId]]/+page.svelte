@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { goto, afterNavigate } from "$app/navigation";
+    import {  afterNavigate } from "$app/navigation";
     import { page } from "$app/state";
     import AuthView from "../../../components/AuthView.svelte";
     import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";

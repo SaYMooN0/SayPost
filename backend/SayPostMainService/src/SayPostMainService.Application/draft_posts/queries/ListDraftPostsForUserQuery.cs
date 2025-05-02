@@ -22,18 +22,18 @@ internal class ListDraftPostsForUserQueryHandler
 
 
     public async Task<ErrOr<ImmutableArray<DraftPost>>> Handle(
-        ListDraftPostsForUserQuery request, CancellationToken cancellationToken
+        ListDraftPostsForUserQuery query, CancellationToken cancellationToken
     ) {
         DraftPostsSortOption sortOption;
         try {
-            sortOption = Enum.Parse<DraftPostsSortOption>(request.SortOption, ignoreCase: true);
+            sortOption = Enum.Parse<DraftPostsSortOption>(query.SortOption, ignoreCase: true);
         }
         catch {
-            return ErrFactory.InvalidData($"Incorrect sort option provided: {request.SortOption}");
+            return ErrFactory.InvalidData($"Incorrect sort option provided: {query.SortOption}");
         }
 
         var posts = await _draftPostsRepository.GetPostsByUserWithSortingAsNoTracking(
-            request.UserId, sortOption, request.PutPinnedOnTop
+            query.UserId, sortOption, query.PutPinnedOnTop
         );
         return posts.ToImmutableArray();
     }

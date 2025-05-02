@@ -39,10 +39,22 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
             draftPost.Title, draftPost.Content,
             dateTimeProvider.Now, draftPost.Tags
         );
-        publishedPost.AddDomainEvent(new NewPublishedPostCreated(publishedPost.Id, publishedPost.AuthorId));
+        publishedPost.AddDomainEvent(new NewPublishedPostCreatedEvent(
+            publishedPost.Id,
+            publishedPost.AuthorId,
+            publishedPost.Tags.ToArray()
+        ));
         return publishedPost;
     }
 
-    public List<PostComment> Comments => _comments.ToList();
-    public void AddComment(PostComment comment) => _comments.Add(comment);
+    public IReadOnlyCollection<PostComment> Comments => _comments.ToList();
+
+    public void AddComment(PostComment comment) {
+        _comments.Add(comment);
+        AddDomainEvent(new NewCommentToPostAddedEvent(
+            this.AuthorId,
+            this.Title,
+            comment.AuthorId
+        ));
+    }
 }

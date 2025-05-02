@@ -6,7 +6,8 @@ using SharedKernel.integration_events;
 namespace SayPostMainService.Infrastructure.integration_events;
 
 internal class DomainToIntegrationEventsHandler :
-    INotificationHandler<NewPublishedPostCreated>
+    INotificationHandler<NewPublishedPostCreatedEvent>,
+    INotificationHandler<NewCommentToPostAddedEvent>
 // and all other domain events that need to be published as integration events
 {
     private readonly IIntegrationEventsPublisher _integrationEventsPublisher;
@@ -15,8 +16,17 @@ internal class DomainToIntegrationEventsHandler :
         _integrationEventsPublisher = integrationEventsPublisher;
     }
 
-    public async Task Handle(NewPublishedPostCreated notification, CancellationToken cancellationToken) {
+    public async Task Handle(NewPublishedPostCreatedEvent notification, CancellationToken cancellationToken) {
         var integrationEvent = new NewPostPublishedIntegrationEvent(notification.PostId, notification.AuthorId);
+        await _integrationEventsPublisher.PublishEvent(integrationEvent);
+    }
+
+    public async Task Handle(NewCommentToPostAddedEvent notification, CancellationToken cancellationToken) {
+        var integrationEvent = new NewCommentUnderPostLeftIntegrationEvent(
+            notification.PostAuthorId,
+            notification.PostTitle.ToString(),
+            notification.CommentAuthorId
+        );
         await _integrationEventsPublisher.PublishEvent(integrationEvent);
     }
 }

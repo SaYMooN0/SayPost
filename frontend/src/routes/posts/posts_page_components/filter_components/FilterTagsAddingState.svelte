@@ -5,7 +5,7 @@
     import { StringUtils } from "../../../../ts/common/utils/string-utils";
 
     let {
-        selectedTags,
+        selectedTags = $bindable(),
         closeAddingState,
     }: {
         selectedTags: string[];
@@ -71,7 +71,11 @@
         bind:this={inputEl}
         name={"tag-search-" + StringUtils.rndStr(12)}
     />
-    <div class="searched-tags {searchedTags.length === 0 ? "no-tags" : "tags-grid"}">
+    <div
+        class="searched-tags {searchedTags.length === 0
+            ? 'no-tags'
+            : 'tags-grid'}"
+    >
         {#if searchedTags.length === 0}
             <p>Use input to add tags</p>
         {:else}
@@ -81,7 +85,12 @@
                     {#if selectedTags.includes(tag)}
                         <div>added</div>
                     {:else}
-                        <div onclick={() => selectedTags.push(tag)}>add</div>
+                        <div
+                            onclick={() => selectedTags.push(tag)}
+                            class="add-tag-btn"
+                        >
+                            add
+                        </div>
                     {/if}
                 </div>
             {/each}
@@ -93,39 +102,51 @@
 <style>
     .adding-state {
         position: relative;
-        border: 0.125rem solid var(--gray);
         padding: 0.5rem;
+        border: 0.125rem solid var(--gray);
         box-sizing: border-box;
+        background-color: var(--back-main);
+        margin: 0.5rem 0;
+        border-radius: 0.5rem;
     }
-    .searched-tags{
-        height: 10rem;
+    .adding-state:focus-within{
+        border-color: var(--accent-main);
+    }
+    .searched-tags {
         display: none;
+        height: 10rem;
     }
-    .adding-state:focus-within .no-tags{
+
+    .adding-state:focus-within .no-tags {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
     }
-    .adding-state:has(.tags-grid) .searched-tags{
+
+    .adding-state:has(.tags-grid) .searched-tags {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 0.5rem;
     }
-    
+
     .close-btn {
         position: absolute;
         top: 0.25rem;
         right: 0.25rem;
         height: 1.25rem;
         padding: 0.125rem;
-        box-sizing: border-box;
-        background-color: var(--gray);
-        cursor: pointer;
-        color: var(--back-main);
         border-radius: 1rem;
+        background-color: var(--gray);
+        color: var(--back-main);
+        cursor: pointer;
+        box-sizing: border-box;
     }
+
     .tag {
         display: grid;
         grid-template-columns: 1fr 4rem;
+    }
+    .add-tag-btn{
+        background-color: var(--back-second);
     }
 </style>

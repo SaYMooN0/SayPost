@@ -25,17 +25,17 @@ internal class UpdateDraftPostTagsCommandHandler : IRequestHandler<UpdateDraftPo
 
 
     public async Task<ErrOr<DraftPost>> Handle(
-        UpdateDraftPostTagsCommand request, CancellationToken cancellationToken
+        UpdateDraftPostTagsCommand command, CancellationToken cancellationToken
     ) {
-        DraftPost? post = await _draftPostsRepository.GetById(request.DraftPostId);
+        DraftPost? post = await _draftPostsRepository.GetById(command.DraftPostId);
         if (post is null) {
             return ErrFactory.NotFound(
                 "Post not found",
-                $"Post with id: {request.DraftPostId} that you are trying to update was not found"
+                $"Post with id: {command.DraftPostId} that you are trying to update was not found"
             );
         }
 
-        var updateRes = post.UpdateTags(request.Tags, _dateTimeProvider);
+        var updateRes = post.UpdateTags(command.Tags, _dateTimeProvider);
         if (updateRes.IsErr(out var err)) {
             return err;
         }

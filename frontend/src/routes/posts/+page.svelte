@@ -8,23 +8,20 @@
 	import { PostsFilterState } from "./posts-filter-state.svelte";
 	import PostsFilter from "./posts_page_components/PostsFilter.svelte";
 	import PostView from "./posts_page_components/PostView.svelte";
-	import type { PostPreview } from "./published-posts";
+	import type { PostPreview } from "./published-posts-previews";
 
 	let postsFilter = $state(new PostsFilterState());
 	let posts: PostPreview[] = $state([]);
 	let postsFetchingErrs: Err[] = $state([]);
 
 	async function fetchPosts() {
-		console.log("fetching");
 		const queryParams = postsFilter.getQuery();
 		const url = `/posts${StringUtils.isNullOrWhiteSpace(queryParams) ? "" : "?" + queryParams}`;
-		console.log(url);
 		const response = await ApiMain.fetchJsonResponse<{
 			posts: PostPreview[];
 		}>(url, {
 			method: "GET",
 		});
-		console.log(response);
 		if (response.isSuccess) {
 			posts = response.data.posts;
 			if (postsFetchingErrs.length != 0) {

@@ -18,13 +18,13 @@ internal class PinDraftPostCommandHandler : IRequestHandler<PinDraftPostCommand,
     }
 
     public async Task<ErrOr<bool>> Handle(
-        PinDraftPostCommand request, CancellationToken cancellationToken
+        PinDraftPostCommand command, CancellationToken cancellationToken
     ) {
-        DraftPost? post = await _draftPostsRepository.GetById(request.DraftPostId);
+        DraftPost? post = await _draftPostsRepository.GetById(command.DraftPostId);
         if (post is null) {
             return ErrFactory.NotFound(
                 "Post not found",
-                $"Post with id: {request.DraftPostId} that you are trying to update was not found"
+                $"Post with id: {command.DraftPostId} that you are trying to update was not found"
             );
         }
 

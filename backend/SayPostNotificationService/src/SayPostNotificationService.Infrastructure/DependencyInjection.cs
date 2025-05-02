@@ -56,7 +56,7 @@ public static class DependencyInjection
     }
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration) {
-        string dbConnectionString = configuration.GetConnectionString("NotificationsServiceDb")
+        string dbConnectionString = configuration.GetConnectionString("NotificationServiceDb")
                                     ?? throw new Exception("Database connection string is not provided.");
         services.AddDbContext<NotificationDbContext>(options => options.UseNpgsql(dbConnectionString));
 

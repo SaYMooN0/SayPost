@@ -30,17 +30,17 @@ internal class CreateNewDraftPostCommandHandler
 
 
     public async Task<ErrOr<DraftPost>> Handle(
-        CreateNewDraftPostCommand request, CancellationToken cancellationToken
+        CreateNewDraftPostCommand command, CancellationToken cancellationToken
     ) {
-        bool userExists = await _appUsersRepository.DoesUserExist(request.UserId);
+        bool userExists = await _appUsersRepository.DoesUserExist(command.UserId);
         if (!userExists) {
             return ErrFactory.NotFound(
                 "User not found",
-                $"User with id {request.UserId} that is trying to create a new post was not found"
+                $"User with id {command.UserId} that is trying to create a new post was not found"
             );
         }
 
-        DraftPost post = DraftPost.CreateNew(request.UserId, _dateTimeProvider);
+        DraftPost post = DraftPost.CreateNew(command.UserId, _dateTimeProvider);
         await _draftPostsRepository.Add(post);
 
         return post;

@@ -19,10 +19,10 @@ internal class GetDraftPostByIdQueryHandler : IRequestHandler<GetDraftPostByIdQu
     }
 
 
-    public async Task<ErrOr<DraftPost>> Handle(GetDraftPostByIdQuery request, CancellationToken cancellationToken) {
-        var post = await _draftPostsRepository.GetById(request.PostId);
+    public async Task<ErrOr<DraftPost>> Handle(GetDraftPostByIdQuery query, CancellationToken cancellationToken) {
+        var post = await _draftPostsRepository.GetById(query.PostId);
         if (post is null) {
-            return ErrFactory.NotFound($"Post with id {request.PostId} was not found");
+            return ErrFactory.NotFound($"Post with id {query.PostId} was not found");
         }
         return post;
     }
