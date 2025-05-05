@@ -103,15 +103,17 @@
     .adding-state {
         position: relative;
         padding: 0.5rem;
-        border: 0.125rem solid var(--gray);
-        box-sizing: border-box;
-        background-color: var(--back-main);
         margin: 0.5rem 0;
+        border: 0.125rem solid var(--gray);
         border-radius: 0.5rem;
+        background-color: var(--back-main);
+        box-sizing: border-box;
     }
+
     .adding-state:focus-within{
         border-color: var(--accent-main);
     }
+
     .searched-tags {
         display: none;
         height: 10rem;
@@ -146,6 +148,7 @@
         display: grid;
         grid-template-columns: 1fr 4rem;
     }
+
     .add-tag-btn{
         background-color: var(--back-second);
     }

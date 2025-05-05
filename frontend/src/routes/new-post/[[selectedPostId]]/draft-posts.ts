@@ -1,3 +1,5 @@
+import type { PostContent, PostContentItem } from "../../../ts/common/post-content-item";
+
 export type DraftPostMainInfo = {
     id: string;
     title: string;
@@ -10,7 +12,7 @@ export type DraftPostFullInfo = {
     isPinned: boolean;
     lastModifiedAt: Date;
     createdAt: Date;
-    content: string;
+    content: PostContent;
     tags: string[];
 }
 export enum DraftPostsSortOption {

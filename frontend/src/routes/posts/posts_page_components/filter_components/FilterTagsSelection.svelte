@@ -55,26 +55,28 @@
     }
 
     .tag {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.125rem;
         padding: 0.25rem 0.75rem;
         border-radius: 6rem;
         background-color: var(--back-second);
         color: var(--gray);
         font-size: 1rem;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.125rem;
         font-weight: 420;
     }
+
     .tag svg {
-        height: 1rem;
         width: 1rem;
+        height: 1rem;
         color: inherit;
-        cursor: pointer;
         transition: 0.08s all ease-in;
+        cursor: pointer;
     }
+
     .tag svg:hover {
-        transform: scale(1.04);
         color: var(--text-main);
+        transform: scale(1.04);
     }
 </style>

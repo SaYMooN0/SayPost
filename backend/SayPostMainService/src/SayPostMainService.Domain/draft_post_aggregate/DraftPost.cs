@@ -1,5 +1,6 @@
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.post_aggregates_shared;
+using SayPostMainService.Domain.common.post_aggregates_shared.post_content;
 using SayPostMainService.Domain.draft_post_aggregate.events;
 using SayPostMainService.Domain.published_post_aggregate.events;
 using SayPostMainService.Domain.rules;
@@ -41,7 +42,7 @@ public class DraftPost : AggregateRoot<DraftPostId>
             id: DraftPostId.CreateNew(),
             authorId: authorId,
             title: PostTitle.CreateNew(),
-            content: PostContent.CreateNew(),
+            content: PostContent.Default(),
             createdAt: timeProvider.Now,
             lastModifiedAt: timeProvider.Now
         );

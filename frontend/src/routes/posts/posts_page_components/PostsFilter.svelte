@@ -79,6 +79,7 @@
         font-weight: 400;
         transition: all 0.2s ease-in;
     }
+
     .always-shown > svg {
         height: 1.75rem;
         transition: transform 0.17s ease-in;
@@ -99,23 +100,23 @@
         flex-direction: column;
         gap: 0.25rem;
         height: auto;
-        margin: 0.5rem 0 0.75rem 0;
+        padding: 0.75rem;
+        margin: 0.5rem 0 0.75rem;
+        border-radius: 1rem;
+        background-color: var(--back-main);
         font-size: 1.25rem;
         opacity: 1;
         transition:
             all 0.2s ease-in,
             opacity 0.5s ease-out;
         interpolate-size: allow-keywords;
-        background-color: var(--back-main);
-        border-radius: 1rem;
-        padding: 0.75rem;
         box-sizing: border-box;
     }
 
     .hidden {
         height: 0;
-        margin: 0;
         padding: 0;
+        margin: 0;
         font-size: 0.25rem;
         opacity: 0;
         transition:
@@ -135,30 +136,35 @@
         padding-bottom: 0.5rem;
         grid-template-columns: 8rem 8rem;
     }
+
     .filter-btns button {
         padding: 0.25rem 0.5rem;
-        border-radius: 1rem;
-        outline: none;
         border: none;
+        border-radius: 1rem;
         font-size: 1.25rem;
         transition: all 0.12s ease-in;
         cursor: pointer;
+        outline: none;
     }
-    .reset {
-        color: var(--back-main);
-        background-color: var(--gray);
-    }
-    .apply {
-        color: var(--back-main);
 
-        background-color: var(--accent-main);
+    .reset {
+        background-color: var(--gray);
+        color: var(--back-main);
     }
+
+    .apply {
+        background-color: var(--accent-main);
+        color: var(--back-main);
+    }
+
     .apply:hover {
         background-color: var(--accent-hov);
     }
+
     .filter-btns button:hover {
         border-radius: 0.75rem;
     }
+
     @keyframes rotate-down {
         from {
             transform: rotate(0deg) scale(1.2);

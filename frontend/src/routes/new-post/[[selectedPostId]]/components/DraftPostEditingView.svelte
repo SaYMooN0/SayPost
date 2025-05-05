@@ -7,6 +7,7 @@
     import PostTagsEditingView from "./post_editing_view_components/PostTagsEditingView.svelte";
     import PostContentEditingView from "./post_editing_view_components/PostContentEditingView.svelte";
     import DraftPostPublishingView from "./post_editing_view_components/DraftPostPublishingView.svelte";
+    import type { PostContent } from "../../../../ts/common/post-content-item";
 
     let {
         getPostData,
@@ -21,13 +22,13 @@
         updateCache: (newVal: DraftPostFullInfo) => void;
         updateAfterPublishing: () => void;
     }>();
-    let postData: DraftPostFullInfo = $state({
+    let postData = $state<DraftPostFullInfo>({
         id: "",
         title: "",
         isPinned: false,
         lastModifiedAt: new Date(),
         createdAt: new Date(),
-        content: "",
+        content: { items: [] },
         tags: [],
     });
     let fetchingErrs = $state<Err[]>([]);
@@ -45,7 +46,7 @@
         postData.title = newTitle;
         updateCache(postData);
     }
-    function updateContent(newContent: string, newLastModified: Date) {
+    function updateContent(newContent: PostContent, newLastModified: Date) {
         postData.lastModifiedAt = newLastModified;
         postData.content = newContent;
         updateCache(postData);

@@ -59,6 +59,7 @@ export class NewPostPageState {
         const response = await ApiMain.fetchJsonResponse<DraftPostFullInfo>(
             `/draft-posts/${this.selectedPostId}`, { method: "GET", },
         );
+        console.log("fetched:", response);
         if (response.isSuccess) {
             if (this.selectedPostId) {
                 this.draftPostCache.set(this.selectedPostId, response.data);
@@ -67,7 +68,6 @@ export class NewPostPageState {
         } else { return response.errors; }
     }
     updateCache(newVal: DraftPostFullInfo) {
-        console.log("updateCache");
         this.draftPostCache.set(newVal.id, newVal);
         const idx = this.draftPostsMainInfo.findIndex((post) => post.id === newVal.id);
 

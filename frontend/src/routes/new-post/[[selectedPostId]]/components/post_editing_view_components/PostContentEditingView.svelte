@@ -3,6 +3,12 @@
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
+    import type { PostContent } from "../../../../../ts/common/post-content-item";
+    import PostContentEditingSubheadingView from "./content_editing_view_components/PostContentEditingSubheadingView.svelte";
+    import PostContentEditingParagraphView from "./content_editing_view_components/PostContentEditingParagraphView.svelte";
+    import PostContentEditingQuoteView from "./content_editing_view_components/PostContentEditingQuoteView.svelte";
+    import PostContentEditingListView from "./content_editing_view_components/PostContentEditingListView.svelte";
+    import PostContentEditingHeadingView from "./content_editing_view_components/PostContentEditingHeadingView.svelte";
 
     let {
         postId,
@@ -10,12 +16,18 @@
         updateParentValue,
     }: {
         postId: string;
-        content: string;
-        updateParentValue: (newContent: string, newLastModified: Date) => void;
+        content: PostContent;
+        updateParentValue: (
+            newContent: PostContent,
+            newLastModified: Date,
+        ) => void;
     } = $props<{
         postId: string;
-        content: string;
-        updateParentValue: (newContent: string, newLastModified: Date) => void;
+        content: PostContent;
+        updateParentValue: (
+            newContent: PostContent,
+            newLastModified: Date,
+        ) => void;
     }>();
     export function isInEditingState() {
         return isEditing;
@@ -24,96 +36,48 @@
     let isEditing = $state(false);
     let editingErrs: Err[] = $state([]);
     let editingEl: HTMLTextAreaElement;
-
+    function deleteContentItem(index: number) {
+      
+    }
     async function saveContentChanges() {
-        const response = await ApiMain.fetchJsonResponse<{
-            newPostContent: string;
-            newLastModified: Date;
-        }>(
-            `/draft-posts/${postId}/update-content`,
-            ApiMain.requestJsonPostOptions(
-                { newPostContent: editableValue },
-                "PATCH",
-            ),
-        );
-        if (response.isSuccess) {
-            content = response.data.newPostContent;
-            isEditing = false;
-            updateParentValue(content, response.data.newLastModified);
-        } else {
-            editingErrs = response.errors;
-        }
-    }
-    async function startEditing() {
-        isEditing = true;
-        editableValue = content;
-        editingErrs = [];
-        await tick();
-        adjustHeight();
-        editingEl.focus();
-    }
-
-    function adjustHeight() {
-        if (!editingEl) return;
-        editingEl.style.height = "auto";
-        editingEl.style.height = editingEl.scrollHeight + "px";
+        // const response = await ApiMain.fetchJsonResponse<{
+        //     newPostContent: PostContent;
+        //     newLastModified: Date;
+        // }>(
+        //     `/draft-posts/${postId}/update-content`,
+        //     ApiMain.requestJsonPostOptions(
+        //         { newPostContent: editableValue },
+        //         "PATCH",
+        //     ),
+        // );
+        // if (response.isSuccess) {
+        //     content = response.data.newPostContent;
+        //     isEditing = false;
+        //     updateParentValue(content, response.data.newLastModified);
+        // } else {
+        //     editingErrs = response.errors;
+        // }
     }
 </script>
 
-<p class="section-p">
-    Post content
-    {#if !isEditing}
-        <button onclick={startEditing}>Edit</button>
-    {/if}
-</p>
-{#if isEditing}
-    <div class="editing-state-container">
-        <textarea
-            bind:value={editableValue}
-            bind:this={editingEl}
-            rows="1"
-            class="autosize-textarea"
-            oninput={() => adjustHeight()}
-        />
-        <div class="btns-container">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                class="cancel-btn"
-                onclick={() => (isEditing = false)}
-                fill="none"
-            >
-                <path
-                    d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                ></path>
-            </svg>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                class="save-btn"
-                onclick={() => saveContentChanges()}
-                fill="none"
-            >
-                <path
-                    d="M5 14.5C5 14.5 6.5 14.5 8.5 18C8.5 18 14.0588 8.83333 19 7"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                ></path>
-            </svg>
-        </div>
-        {#if editingErrs.length != 0}
-            <DefaultErrBlock errList={editingErrs} />
+<div class="content-editing-view">
+    <p class="section-p">Post Content</p>
+    {#each content.items as item, i}
+        {#if item.$type === "HeadingContentItem"}
+            <PostContentEditingHeadingView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
+        {:else if item.$type === "SubheadingContentItem"}
+            <PostContentEditingSubheadingView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
+        {:else if item.$type === "ParagraphContentItem"}
+            <PostContentEditingParagraphView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
+        {:else if item.$type === "QuoteContentItem"}
+            <PostContentEditingQuoteView />
+        {:else if item.$type === "ListContentItem"}
+            <PostContentEditingListView />
+        {:else}
+            <p>Unknown post content item type</p>
         {/if}
-    </div>
-{:else}
-    <p class="content">{content}</p>
-{/if}
+    {/each}
+</div>
 
 <style>
     .section-p {
@@ -126,6 +90,7 @@
         grid-template-columns: auto 1fr;
     }
 
+    /* 
     .section-p > button {
         width: fit-content;
         padding: 0.25rem 1.25rem;
@@ -205,5 +170,5 @@
     .content {
         margin: 0.25rem 0;
         font-size: 2rem;
-    }
+    } */
 </style>

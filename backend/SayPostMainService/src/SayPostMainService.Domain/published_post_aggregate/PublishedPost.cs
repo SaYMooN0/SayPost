@@ -1,5 +1,6 @@
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.post_aggregates_shared;
+using SayPostMainService.Domain.common.post_aggregates_shared.post_content;
 using SayPostMainService.Domain.draft_post_aggregate;
 using SayPostMainService.Domain.published_post_aggregate.events;
 using SharedKernel.common.domain;

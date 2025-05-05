@@ -1,3 +1,4 @@
+using SayPostMainService.Domain.common.post_aggregates_shared.post_content;
 using SayPostMainService.Domain.draft_post_aggregate;
 
 namespace SayPostMainService.Api.contracts.draft_posts;
@@ -6,7 +7,7 @@ public record class DraftPostFullInfoResponse(
     string Id,
     string Title,
     bool IsPinned,
-    string Content,
+    PostContent Content,
     DateTime CreatedAt,
     DateTime LastModifiedAt,
     string[] Tags
@@ -16,7 +17,7 @@ public record class DraftPostFullInfoResponse(
         draftPost.Id.ToString(),
         draftPost.Title.ToString(),
         draftPost.IsPinned,
-        draftPost.Content.ToString(),
+        draftPost.Content,
         draftPost.CreatedAt,
         draftPost.LastModifiedAt,
         draftPost.Tags.Select(t => t.ToString()).ToArray()
