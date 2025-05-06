@@ -79,6 +79,12 @@ export class NewPostPageState {
                 lastModifiedAt: newVal.lastModifiedAt,
             };
         }
+        if(
+            this.draftPostsSortOption === DraftPostsSortOption.lastModified ||
+            this.draftPostsSortOption === DraftPostsSortOption.title
+        ) {
+            this.fetchDraftPosts();
+        }
     }
     updatePostPinnedState(postId: string, newIsPinnedState: boolean) {
         const cachedPost = this.draftPostCache.get(postId);

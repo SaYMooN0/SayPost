@@ -3,12 +3,16 @@
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
-    import type { PostContent } from "../../../../../ts/common/post-content-item";
-    import PostContentEditingSubheadingView from "./content_editing_view_components/PostContentEditingSubheadingView.svelte";
-    import PostContentEditingParagraphView from "./content_editing_view_components/PostContentEditingParagraphView.svelte";
-    import PostContentEditingQuoteView from "./content_editing_view_components/PostContentEditingQuoteView.svelte";
-    import PostContentEditingListView from "./content_editing_view_components/PostContentEditingListView.svelte";
-    import PostContentEditingHeadingView from "./content_editing_view_components/PostContentEditingHeadingView.svelte";
+    import {
+        copyPostContentItem,
+        type PostContent,
+    } from "../../../../../ts/common/post-content-item";
+    import PostContentEditingHeadingView from "./content_editing_view_components/content_items/PostContentEditingHeadingView.svelte";
+    import PostContentEditingListView from "./content_editing_view_components/content_items/PostContentEditingListView.svelte";
+    import PostContentEditingParagraphView from "./content_editing_view_components/content_items/PostContentEditingParagraphView.svelte";
+    import PostContentEditingQuoteView from "./content_editing_view_components/content_items/PostContentEditingQuoteView.svelte";
+    import PostContentEditingSubheadingView from "./content_editing_view_components/content_items/PostContentEditingSubheadingView.svelte";
+    import ContentEditingRightSideButtons from "./content_editing_view_components/ContentEditingRightSideButtons.svelte";
 
     let {
         postId,
@@ -30,15 +34,19 @@
         ) => void;
     }>();
     export function isInEditingState() {
-        return isEditing;
+        return unsavedCount > 0;
     }
-    let editableValue = $state("");
-    let isEditing = $state(false);
+    let editedValues = $state(content.items.map(copyPostContentItem));
+
+    let itemEditingStates = $state<boolean[]>(
+        Array(content.items.length).fill(false),
+    );
     let editingErrs: Err[] = $state([]);
-    let editingEl: HTMLTextAreaElement;
-    function deleteContentItem(index: number) {
-      
-    }
+
+    let unsavedCount = $derived(
+        itemEditingStates.filter((state) => state).length,
+    );
+    function deleteContentItem(index: number) {}
     async function saveContentChanges() {
         // const response = await ApiMain.fetchJsonResponse<{
         //     newPostContent: PostContent;
@@ -63,20 +71,57 @@
 <div class="content-editing-view">
     <p class="section-p">Post Content</p>
     {#each content.items as item, i}
-        {#if item.$type === "HeadingContentItem"}
-            <PostContentEditingHeadingView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
-        {:else if item.$type === "SubheadingContentItem"}
-            <PostContentEditingSubheadingView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
-        {:else if item.$type === "ParagraphContentItem"}
-            <PostContentEditingParagraphView value={item.value} deleteContentItem={() => deleteContentItem(i)} />
-        {:else if item.$type === "QuoteContentItem"}
-            <PostContentEditingQuoteView />
-        {:else if item.$type === "ListContentItem"}
-            <PostContentEditingListView />
-        {:else}
-            <p>Unknown post content item type</p>
-        {/if}
+        <div class="content-item">
+            {#if item.$type === "HeadingContentItem"}
+                <PostContentEditingHeadingView
+                    isEditing={itemEditingStates[i]}
+                    contentItem={item}
+                    bind:editingValue={editedValues[i]}
+                />
+            {:else if item.$type === "SubheadingContentItem"}
+                <PostContentEditingSubheadingView
+                isEditing={itemEditingStates[i]}
+                contentItem={item}
+                bind:editingValue={editedValues[i]}
+                />
+            {:else if item.$type === "ParagraphContentItem"}
+                <PostContentEditingParagraphView
+                isEditing={itemEditingStates[i]}
+                contentItem={item}
+                bind:editingValue={editedValues[i]}
+                />
+            {:else if item.$type === "QuoteContentItem"}
+                <PostContentEditingQuoteView
+                isEditing={itemEditingStates[i]}
+                contentItem={item}
+                bind:editingValue={editedValues[i]}
+                />
+            {:else if item.$type === "ListContentItem"}
+                <PostContentEditingListView
+                isEditing={itemEditingStates[i]}
+                contentItem={item}
+                bind:editingValue={editedValues[i]}
+                />
+            {:else}
+                <p>Unknown post content item type</p>
+            {/if}
+            <ContentEditingRightSideButtons
+                isEditing={itemEditingStates[i]}
+                startEditing={() => (itemEditingStates[i] = true)}
+                cancelEditing={() => (itemEditingStates[i] = false)}
+                deleteItem={() => deleteContentItem(i)}
+            />
+        </div>
     {/each}
+
+    <button class="add-item-btn" onclick={() => {}}>Add item</button>
+    {#if unsavedCount > 0}
+        <div class="unsave-changes-count">{unsavedCount}</div>
+    {/if}
+    <div class="unsave-changes-count">{JSON.stringify(content.items)}</div>
+    <div class="unsave-changes-count">{JSON.stringify(editedValues)}</div>
+
+    <div class="save-btn">Save</div>
 </div>
 
 <style>
@@ -89,25 +134,22 @@
         font-size: 1.25rem;
         grid-template-columns: auto 1fr;
     }
-
-    /* 
-    .section-p > button {
-        width: fit-content;
-        padding: 0.25rem 1.25rem;
-        border: none;
-        border-radius: 0.25rem;
-        background-color: var(--accent-main);
-        color: var(--back-main);
-        font-size: 1rem;
-        transition: all 0.12s ease-in;
-        cursor: pointer;
-        outline: none;
+    .content-item {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        border-left: 0.125rem solid var(--back-second);
+        padding-left: 0.25rem;
+        margin-top: 0.5rem;
     }
-
-    .section-p > button:hover {
-        background-color: var(--accent-hov);
+    .content-item.has-unsave {
+        border-color: var(--accent-main);
     }
-
+    .items-divider {
+        margin: 0.25rem 0;
+        width: 100%;
+        /* height: 2px; */
+        background-color: var(--back-second);
+    }
     .editing-state-container {
         display: flex;
         flex-direction: column;
@@ -130,7 +172,7 @@
         border-color: var(--accent-main);
         background-color: transparent;
     }
-
+    /*
     .btns-container {
         display: flex;
         flex-direction: row;

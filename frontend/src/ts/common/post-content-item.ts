@@ -30,6 +30,24 @@ export type PostContentItem =
     | ParagraphContentItem
     | ListContentItem
     | QuoteContentItem;
+
+
 export type PostContent ={
     items: PostContentItem[]
+}
+export function copyPostContentItem(item: PostContentItem): PostContentItem {
+    switch (item.$type) {
+        case 'HeadingContentItem':
+        case 'SubheadingContentItem':
+        case 'ParagraphContentItem':
+        case 'QuoteContentItem':
+            return { ...item };
+        case 'ListContentItem':
+            return {
+                ...item,
+                items: [...item.items],
+            };
+        default:
+            throw new Error(`Unknown content item type: ${(item as any).$type}`);
+    }
 }
