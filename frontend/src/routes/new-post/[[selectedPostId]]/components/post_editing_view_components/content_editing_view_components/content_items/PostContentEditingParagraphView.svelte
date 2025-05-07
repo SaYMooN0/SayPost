@@ -32,9 +32,9 @@
 
 <style>
     .paragraph {
+        position: relative;
         display: flex;
         flex-direction: column;
-        position: relative;
         gap: 0.5rem;
     }
 </style>

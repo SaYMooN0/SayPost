@@ -6,15 +6,15 @@
 
     let {
         isEditing,
-        contentItem,
+        initial,
         editingValue = $bindable<HeadingContentItem>(),
     }: {
         isEditing: boolean;
-        contentItem: HeadingContentItem;
+        initial: HeadingContentItem;
         editingValue: HeadingContentItem;
     } = $props<{
         isEditing: boolean;
-        contentItem: HeadingContentItem;
+        initial: HeadingContentItem;
         editingValue: PostContentItem;
     }>();
 </script>
@@ -26,15 +26,23 @@
             <textarea bind:value={editingValue.value} />
         </div>
     {:else}
-        <h2>{contentItem.value}</h2>
+        <h2>{initial.value}</h2>
     {/if}
 </div>
 
 <style>
     .heading {
+        position: relative;
         display: flex;
         flex-direction: column;
-        position: relative;
+
         gap: 0.5rem;
+    }
+    .heading:has(h2) {
+        justify-content: center;
+    }
+    .heading > h2 {
+        font-size: 2rem;
+        margin: 0;
     }
 </style>

@@ -128,7 +128,7 @@
         border-radius: 0.25rem;
         background-color: var(--back-second);
         color: var(--text);
-        font-size: 2rem;
+        font-size: 2.5rem;
         outline: none;
         resize: none;
         font-weight: 600;
@@ -177,13 +177,13 @@
 
     .post-title {
         margin: 0.5rem 0;
-        font-size: 2rem;
+        font-size: 2.5rem;
         word-break: break-all;
     }
 
     .post-title > svg {
-        width: 2rem;
-        height: 2rem;
+        width: 2.25rem;
+        height: 2.25rem;
         padding: 0.25rem;
         border: 0.125rem solid transparent;
         border-radius: 0.375rem;
