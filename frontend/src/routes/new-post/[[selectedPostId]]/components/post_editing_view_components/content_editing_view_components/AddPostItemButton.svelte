@@ -304,15 +304,15 @@
         height: 1.5rem;
     }
 
+    .add-btn:active {
+        transform: scale(0.96);
+    }
+
     .add-content-wrapper:hover .add-btn,
     .add-content-wrapper:has(.open) .add-btn {
         gap: 0.75rem;
         padding: 0.25rem 1.5rem;
         background-color: var(--accent-hov);
-    }
-
-    .add-btn:active {
-        transform: scale(0.96);
     }
 
     .menu {

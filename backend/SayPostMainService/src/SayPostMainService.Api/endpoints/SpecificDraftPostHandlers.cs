@@ -104,13 +104,12 @@ internal static class SpecificDraftPostHandlers
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<UpdateDraftPostContentRequest>();
 
-        UpdateDraftPostContentCommand command =
-            new UpdateDraftPostContentCommand(postId, request.GetParsedPostContent());
+        UpdateDraftPostContentCommand command = new (postId, request.GetParsedPostContent());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
             (newValues) => Results.Json(new {
-                NewPostContent = newValues.NewContent.ToString(),
+                NewPostContent = newValues.NewContent,
                 NewLastModified = newValues.NewLastModified
             })
         );

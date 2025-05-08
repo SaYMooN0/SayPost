@@ -12,6 +12,7 @@
         type PostContentItem,
     } from "../../../../../ts/common/post-content-item";
     import type { Err } from "../../../../../ts/common/errs/err";
+    import { ApiMain } from "../../../../../ts/backend-services";
 
     let {
         postId,
@@ -74,24 +75,34 @@
         }
         editingState.splice(index, 1);
     }
+    function cancelEditing() {
+        editingState = content.items.map((i) => ({
+            editing: copyPostContentItem(i),
+            initial: i,
+            isNewlyAdded: false,
+            isInEditingState: false,
+        }));
+        initialDeleted = 0;
+    }
     async function saveContentChanges() {
-        // const response = await ApiMain.fetchJsonResponse<{
-        //     newPostContent: PostContent;
-        //     newLastModified: Date;
-        // }>(
-        //     `/draft-posts/${postId}/update-content`,
-        //     ApiMain.requestJsonPostOptions(
-        //         { newPostContent: editableValue },
-        //         "PATCH",
-        //     ),
-        // );
-        // if (response.isSuccess) {
-        //     content = response.data.newPostContent;
-        //     isEditing = false;
-        //     updateParentValue(content, response.data.newLastModified);
-        // } else {
-        //     editingErrs = response.errors;
-        // }
+        const dataToSave = editingState.map((i) => i.editing);
+        console.log(JSON.stringify(dataToSave));
+        const response = await ApiMain.fetchJsonResponse<{
+            newPostContent: PostContent;
+            newLastModified: Date;
+        }>(
+            `/draft-posts/${postId}/update-content`,
+            ApiMain.requestJsonPostOptions(
+                { newPostContent: dataToSave },
+                "PATCH",
+            ),
+        );
+        if (response.isSuccess) {
+            content = response.data.newPostContent;
+            updateParentValue(content, response.data.newLastModified);
+        } else {
+            editingErrs = response.errors;
+        }
     }
 </script>
 
@@ -109,26 +120,30 @@
                         initial={item.initial}
                         bind:editingValue={editingState[i].editing}
                     />
-                    <!-- {:else if item.item.$type === "SubheadingContentItem"}
-                <PostContentEditingSubheadingView
-                    isEditing={itemEditingStates[i]}
-                    bind:editingValue={editedValues[i]}
-                />
-            {:else if item.item.$type === "ParagraphContentItem"}
-                <PostContentEditingParagraphView
-                    isEditing={itemEditingStates[i]}
-                    bind:editingValue={editedValues[i]}
-                />
-            {:else if item.item.$type === "QuoteContentItem"}
-                <PostContentEditingQuoteView
-                    isEditing={itemEditingStates[i]}
-                    bind:editingValue={editedValues[i]}
-                />
-            {:else if item.item.$type === "ListContentItem"}
-                <PostContentEditingListView
-                    isEditing={itemEditingStates[i]}
-                    bind:editingValue={editedValues[i]}
-                /> -->
+                {:else if item.initial.$type === "SubheadingContentItem"}
+                    <PostContentEditingSubheadingView
+                        isEditing={item.isInEditingState}
+                        initial={item.initial}
+                        bind:editingValue={editingState[i].editing}
+                    />
+                {:else if item.initial.$type === "ParagraphContentItem"}
+                    <PostContentEditingParagraphView
+                        isEditing={item.isInEditingState}
+                        initial={item.initial}
+                        bind:editingValue={editingState[i].editing}
+                    />
+                {:else if item.initial.$type === "QuoteContentItem"}
+                    <PostContentEditingQuoteView
+                        isEditing={item.isInEditingState}
+                        initial={item.initial}
+                        bind:editingValue={editingState[i].editing}
+                    />
+                {:else if item.initial.$type === "ListContentItem"}
+                    <PostContentEditingListView
+                        isEditing={item.isInEditingState}
+                        initial={item.initial}
+                        bind:editingValue={editingState[i].editing}
+                    />
                 {:else}
                     <p>Unknown post content item type</p>
                 {/if}
@@ -163,10 +178,40 @@
     {/if}
     <AddPostItemButton {addNewContentItem} />
     {#if anyUnsaved}
-        <label class="unsaved-label"
-            >Post content has some unsaved changes. Please save them
+        <label class="unsaved-label">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+            >
+                <path
+                    d="M5.32171 9.6829C7.73539 5.41196 8.94222 3.27648 10.5983 2.72678C11.5093 2.42437 12.4907 2.42437 13.4017 2.72678C15.0578 3.27648 16.2646 5.41196 18.6783 9.6829C21.092 13.9538 22.2988 16.0893 21.9368 17.8293C21.7376 18.7866 21.2469 19.6548 20.535 20.3097C19.241 21.5 16.8274 21.5 12 21.5C7.17265 21.5 4.75897 21.5 3.46496 20.3097C2.75308 19.6548 2.26239 18.7866 2.06322 17.8293C1.70119 16.0893 2.90803 13.9538 5.32171 9.6829Z"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                />
+                <path
+                    d="M11.992 16H12.001"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+                <path
+                    d="M12 13L12 8.99997"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                />
+            </svg>
+            Post content has some unsaved changes
         </label>
-        <button class="save-btn unselectable">Save</button>
+        <div class="save-cancel-btns unselectable">
+            <button class="cancel-btn" onclick={cancelEditing}>Cancel</button>
+            <button class="save-btn" onclick={() => saveContentChanges()}>
+                Save content changes
+            </button>
+        </div>
     {/if}
     <!-- 
     <div class="unsave-changes-count">{JSON.stringify(content.items)}</div>
@@ -179,36 +224,105 @@
         flex-direction: column;
         align-items: center;
     }
+
     .empty-content {
         display: grid;
-        grid-template-rows: 4rem auto;
+        color: var(--gray);
         font-size: 1.25rem;
         font-weight: 440;
+        grid-template-rows: 4rem auto;
         justify-items: center;
-        color: var(--gray);
     }
+
     .empty-content svg {
         height: 100%;
     }
+
     .content-item {
-        width: 100%;
         display: grid;
-        grid-template-columns: 1fr auto;
-        border-left: 0.125rem solid var(--back-second);
+        gap: 1rem;
+        width: 100%;
         padding-left: 0.25rem;
         margin-top: 0.5rem;
+        grid-template-columns: 1fr auto;
+        border-left: 0.125rem solid var(--back-second);
     }
+
     .content-item:hover,
     .content-item:focus-within,
     .content-item:focus {
         border-color: var(--gray);
     }
+
+    .content-item:hover :global(.btns-container),
+    .content-item:focus-within :global(.btns-container),
+    .content-item:focus :global(.btns-container) {
+        opacity: 1 !important;
+    }
+
     .content-item.unsaved {
         border-left-style: dashed;
         border-color: var(--accent-main);
     }
+
     .content-item.newly-added {
         border-left-style: solid;
         border-color: var(--accent-main);
+    }
+
+    .unsaved-label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.25rem 0;
+        margin-top: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--warning-yellow-back);
+        color: var(--warning-yellow);
+        font-size: 1.125rem;
+        font-weight: 420;
+    }
+
+    .unsaved-label > svg {
+        height: 1.5rem;
+        color: inherit;
+    }
+
+    .save-cancel-btns {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .save-cancel-btns button {
+        padding: 0.25rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        font-size: 1.375rem;
+        font-weight: 500;
+        transition: all 0.08s ease-in;
+        cursor: pointer;
+    }
+
+    .cancel-btn {
+        background-color: var(--back-second);
+        color: var(--gray);
+    }
+
+    .cancel-btn:hover {
+        background-color: var(--gray);
+        color: var(--back-main);
+    }
+
+    .save-btn {
+        background-color: var(--accent-main);
+        color: var(--back-main);
+    }
+
+    .save-btn:hover {
+        background-color: var(--accent-hov);
     }
 </style>

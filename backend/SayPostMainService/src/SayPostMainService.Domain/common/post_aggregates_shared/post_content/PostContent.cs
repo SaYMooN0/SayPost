@@ -9,7 +9,7 @@ namespace SayPostMainService.Domain.common.post_aggregates_shared.post_content;
 
 public class PostContent : ValueObject
 {
-    private const int MaxItems = 60;
+    public const int MaxItems = 60;
 
     public ImmutableArray<BasePostContentItem> Items { get; }
 

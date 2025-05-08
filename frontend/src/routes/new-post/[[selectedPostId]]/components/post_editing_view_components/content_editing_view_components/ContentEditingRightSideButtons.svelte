@@ -20,7 +20,7 @@
     }>();
 </script>
 
-<div class="btns-container">
+<div class="btns-container" class:show={isEditing}>
     {#if !isNewlyAdded && isEditing}
         <svg
             onclick={cancelEditing}
@@ -107,6 +107,12 @@
         display: flex;
         flex-direction: column;
         gap: 0.375rem;
+        opacity: 0;
+        transition: opacity 0.04s ease-in;
+    }
+
+    .btns-container.show {
+        opacity: 1;
     }
 
     .btns-container svg {

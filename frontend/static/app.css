@@ -2,14 +2,21 @@
     --accent-main: #6648f1;
     --accent-hov: #4e35f2;
     --text-main: #121222;
-    --back-main: #f5f5f5;
+    --back-main: #f7f7f7;
     --back-second: #ece7f3;
     --err-red: #dc2003;
     --err-red-back: #f5dcdc;
-    --warning-yellow: #f2bc46;
-    --warning-yellow-back: #f8e9d3;
+    --warning-yellow: #ffb730;
+    --warning-yellow-back: #ffeed7;
     --gray: #6f6b88;
-
+    --post-title-font-size: 2.75rem;
+    --post-title-font-weight: 600;
+    --post-content-heading-font-size: 2.25rem;
+    --post-content-heading-font-weight: 550;
+    --post-content-subheading-font-size: 1.875rem;
+    --post-content-subheading-font-weight: 500;
+    --post-content-paragraph-font-size: 1.5rem;
+    --post-content-paragraph-font-weight: 450;
 }
 
 body {
