@@ -12,18 +12,17 @@ public class QuoteContentItem : BasePostContentItem
     public string Text { get; }
     public string? Author { get; }
 
-    private QuoteContentItem(string text, string? author)
-    {
+    private QuoteContentItem(string text, string? author) {
         Text = text;
         Author = author;
     }
 
     public override ContentItemType ItemType => ContentItemType.Quote;
 
-    public static ErrOr<QuoteContentItem> Create(string text, string? author = null)
-    {
-        if (string.IsNullOrWhiteSpace(text))
+    public static ErrOr<QuoteContentItem> Create(string text, string? author = null) {
+        if (string.IsNullOrWhiteSpace(text)) {
             return ErrFactory.InvalidData("Quote cannot be empty");
+        }
 
         if (text.Length > MaxQuoteLength)
             return ErrFactory.InvalidData(
@@ -40,12 +39,19 @@ public class QuoteContentItem : BasePostContentItem
         return new QuoteContentItem(text, author);
     }
 
-    public override string ToStorageString() =>
-        JsonSerializer.Serialize((Text, Author));
+    public override string ToStorageString() => JsonSerializer.Serialize(
+        new StorageFormat() { Text = Text, Author = Author }
+    );
+
+    private class StorageFormat
+    {
+        public string Text { get; set; } = string.Empty;
+        public string? Author { get; set; } = null;
+    }
 
     public static QuoteContentItem FromStorageString(string storageStr) {
-        var tuple = JsonSerializer.Deserialize<(string Text, string? Author)>(storageStr);
-        return new QuoteContentItem(tuple.Text, tuple.Author);
+        var d = JsonSerializer.Deserialize<StorageFormat>(storageStr);
+        return new QuoteContentItem(d.Text, d.Author);
     }
 
     public override IEnumerable<object> GetEqualityComponents() => [Text, Author ?? ""];

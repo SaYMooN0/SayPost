@@ -89,7 +89,7 @@
         {#each initial.items as item}
             <div class="list-display-item">
                 <span class="bullet"></span>
-                <span class="text">{item}</span>
+                {item}
             </div>
         {/each}
     {/if}
@@ -109,6 +109,8 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+
+        word-break: break-all;
     }
 
     .bullet {
@@ -116,21 +118,16 @@
         width: 0.375rem;
         height: 0.375rem;
         margin-left: 0.25rem;
-        border-radius: 50%;
+        border-radius: 1rem;
         background-color: var(--accent-main);
         user-select: none;
     }
-
-    .text {
-        white-space: pre-wrap;
-    }
-
     input {
         padding: 0 0.5rem;
         border: 0.125rem solid var(--back-second);
         border-radius: 0.25rem;
         background-color: var(--back-main);
-        color: var(--text);
+        color: var(--text-main);
         font-size: inherit;
         font-weight: inherit;
         flex-grow: 1;

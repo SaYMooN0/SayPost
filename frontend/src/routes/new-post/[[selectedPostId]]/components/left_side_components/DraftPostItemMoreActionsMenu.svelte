@@ -208,7 +208,7 @@
         border: none;
         border-radius: 0.25rem;
         background: none;
-        color: var(--text);
+        color: var(--text-main);
         font-size: 1rem;
         text-align: left;
         transition: all 0.1s ease-in;

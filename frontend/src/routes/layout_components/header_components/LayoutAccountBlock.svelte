@@ -165,7 +165,7 @@
         width: 100%;
         padding: 0.125rem 0.5rem;
         border-radius: 0.25rem;
-        color: var(--text);
+        color: var(--text-main);
         font-size: 1rem;
         font-weight: 450;
         transition: all 0.1s ease-in;

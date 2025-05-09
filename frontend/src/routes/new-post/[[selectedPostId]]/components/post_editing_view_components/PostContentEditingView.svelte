@@ -11,8 +11,9 @@
         type PostContent,
         type PostContentItem,
     } from "../../../../../ts/common/post-content-item";
-    import type { Err } from "../../../../../ts/common/errs/err";
+    import { Err } from "../../../../../ts/common/errs/err";
     import { ApiMain } from "../../../../../ts/backend-services";
+    import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
 
     let {
         postId,
@@ -86,7 +87,6 @@
     }
     async function saveContentChanges() {
         const dataToSave = editingState.map((i) => i.editing);
-        console.log(JSON.stringify(dataToSave));
         const response = await ApiMain.fetchJsonResponse<{
             newPostContent: PostContent;
             newLastModified: Date;
@@ -100,6 +100,8 @@
         if (response.isSuccess) {
             content = response.data.newPostContent;
             updateParentValue(content, response.data.newLastModified);
+            editingErrs = [];
+            cancelEditing();
         } else {
             editingErrs = response.errors;
         }
@@ -213,9 +215,7 @@
             </button>
         </div>
     {/if}
-    <!-- 
-    <div class="unsave-changes-count">{JSON.stringify(content.items)}</div>
-    <div class="unsave-changes-count">{JSON.stringify(editingState)}</div> -->
+    <DefaultErrBlock errList={editingErrs} />
 </div>
 
 <style>
@@ -294,7 +294,7 @@
         display: flex;
         flex-direction: row;
         gap: 1rem;
-        margin-top: 0.5rem;
+        margin: 0.5rem 0;
     }
 
     .save-cancel-btns button {

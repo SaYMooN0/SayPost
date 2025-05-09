@@ -166,6 +166,7 @@
         transition: all 0.06s ease-in;
         cursor: pointer;
         outline: none;
+        font-weight: 550;
     }
 
     .auth-btns-container > button:hover {

@@ -159,7 +159,7 @@
     }
 
     .reset-button:hover {
-        color: var(--text);
+        color: var(--text-main);
     }
 
     .search-bar > input:not(:placeholder-shown) ~ .reset-button {

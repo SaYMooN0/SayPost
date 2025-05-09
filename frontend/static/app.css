@@ -27,6 +27,11 @@ body {
     color: var(--text-main);
 }
 
+input,
+textarea {
+    font-family: Rubik, sans-serif;
+}
+
 .unselectable {
     user-select: none;
 }

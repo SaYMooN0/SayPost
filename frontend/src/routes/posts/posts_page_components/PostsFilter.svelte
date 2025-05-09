@@ -16,7 +16,6 @@
     let iconElement: SVGElement;
 
     function toggleVisibility(event: MouseEvent) {
-        event.preventDefault();
         isVisible = !isVisible;
         if (iconElement) {
             iconElement.classList.remove("rotate-down", "rotate-up");
@@ -26,14 +25,14 @@
 </script>
 
 <div class="container">
-    <p class="always-shown">
+    <p class="always-shown unselectable" class:filter-not-hidden={isVisible}>
         Posts filter
         <svg
             bind:this={iconElement}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
-            onclick={toggleVisibility}
+            onclick={(e) => toggleVisibility(e)}
         >
             <path
                 d="M17.9998 15C17.9998 15 13.5809 9.00001 11.9998 9C10.4187 8.99999 5.99985 15 5.99985 15"
@@ -52,12 +51,22 @@
             />
             to: <input type="date" bind:value={postsFilter.dateTo} />
         </p>
-        <p class="filter-p">Include tags:</p>
+        <p class="filter-p">
+            Include tags:
+            {#if postsFilter.includeTags.length === 0}
+                <span class="no-tags-selected">(No tags selected)</span>
+            {/if}
+        </p>
         <FilterTagsSelection bind:selectedTags={postsFilter.includeTags} />
-        <p class="filter-p">Exclude tags:</p>
+        <p class="filter-p">
+            Exclude tags:
+            {#if postsFilter.excludeTags.length === 0}
+                <span class="no-tags-selected">(No tags selected)</span>
+            {/if}
+        </p>
         <FilterTagsSelection bind:selectedTags={postsFilter.excludeTags} />
         <div class="filter-btns">
-            <button class="reset" onclick={postsFilter.reset}>Reset</button>
+            <button class="reset" onclick={()=>postsFilter.reset()}>Reset</button>
             <button class="apply" onclick={applyFilter}>Apply</button>
         </div>
     </div>
@@ -77,9 +86,11 @@
         font-size: 1.5rem;
         grid-template-columns: 1fr auto;
         font-weight: 400;
-        transition: all 0.2s ease-in;
+        transition: padding-left 0.2s ease-in;
     }
-
+    .always-shown.filter-not-hidden {
+        padding-left: 2rem;
+    }
     .always-shown > svg {
         height: 1.75rem;
         transition: transform 0.17s ease-in;
@@ -98,9 +109,8 @@
     .filter {
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
         height: auto;
-        padding: 0.75rem;
+        padding: 0rem 1rem;
         margin: 0.5rem 0 0.75rem;
         border-radius: 1rem;
         background-color: var(--back-main);
@@ -123,11 +133,40 @@
             all 0.2s ease-in,
             opacity 0.04s ease-out;
     }
-
     .filter-p {
-        margin: 0;
+        margin: 0.75rem 0 0 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.25rem;
+        color: var(--text-main);
     }
 
+    .filter-p input[type="date"] {
+        padding: 0.25rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 440;
+        background-color: var(--back-second);
+        color: var(--text-main);
+        border: 0.125rem solid var(--back-second);
+        border-radius: 0.5rem;
+        outline: none;
+        transition: border-color 0.15s ease;
+    }
+
+    .filter-p input[type="date"]:hover {
+        border-color: var(--gray);
+    }
+
+    .filter-p input[type="date"]:focus {
+        border-color: var(--accent-main);
+        background-color: transparent;
+    }
+    .no-tags-selected {
+        color: var(--gray);
+        font-style: italic;
+        font-size: 1rem;
+    }
     .filter-btns {
         display: grid;
         justify-content: right;
@@ -138,6 +177,7 @@
     }
 
     .filter-btns button {
+        margin-top: 1rem;
         padding: 0.25rem 0.5rem;
         border: none;
         border-radius: 1rem;

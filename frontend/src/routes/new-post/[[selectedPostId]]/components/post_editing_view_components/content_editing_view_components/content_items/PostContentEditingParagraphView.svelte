@@ -62,7 +62,7 @@
         border: 0.125rem solid var(--back-second);
         border-radius: 0.25rem;
         background-color: var(--back-main);
-        color: var(--text);
+        color: var(--text-main);
         font-size: inherit;
         font-weight: inherit;
         box-sizing: border-box;
@@ -83,5 +83,6 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
+        word-break: break-all;
     }
 </style>

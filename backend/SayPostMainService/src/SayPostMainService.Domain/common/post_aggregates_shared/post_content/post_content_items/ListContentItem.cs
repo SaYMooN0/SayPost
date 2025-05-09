@@ -21,11 +21,15 @@ public class ListContentItem : BasePostContentItem
 
     public static ErrOr<ListContentItem> Create(IEnumerable<string> items) {
         var list = items.ToArray();
-
+        if (list.Length == 0) {
+            return ErrFactory.NoValue(
+                "List content item cannot be empty"
+            );
+        }
         if (list.Length > MaxItems)
             return ErrFactory.InvalidData(
                 "Too many list items",
-                $"List contains {list.Length} items. Maximum allowed is {MaxItems}."
+                $"List contains {list.Length} items. Maximum allowed is {MaxItems}"
             );
 
         for (int i = 0; i < list.Length; i++) {

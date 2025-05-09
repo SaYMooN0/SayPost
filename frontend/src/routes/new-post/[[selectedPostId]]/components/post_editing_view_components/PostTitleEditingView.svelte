@@ -127,7 +127,7 @@
         border: 0.125rem solid var(--back-second);
         border-radius: 0.25rem;
         background-color: var(--back-second);
-        color: var(--text);
+        color: var(--text-main);
         font-size: var(--post-title-font-size);
         outline: none;
         resize: none;

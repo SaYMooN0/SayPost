@@ -43,12 +43,12 @@
         />
         <label>Author: <input bind:value={editingValue.author} /> </label>
     {:else}
-        <blockquote>
+        <p class="quote-text">
             {initial.text}
-            {#if initial.author}
-                <br />— {initial.author}
-            {/if}
-        </blockquote>
+        </p>
+        {#if initial.author}
+            <label class="quote-author"> {initial.author}</label>
+        {/if}
     {/if}
 </div>
 
@@ -95,11 +95,24 @@
         border-color: var(--accent-main);
         background-color: transparent;
     }
-  
-    blockquote {
+
+    .quote-text {
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
         font-style: italic;
+        padding: 0.5rem;
+        max-width: 90%;
+        align-self: center;
+        box-sizing: border-box;
+        background-color: var(--back-second);
+        color: var(--text-main);
+        border-radius: 0.5rem;
+        word-break: break-all;
+    }
+    .quote-author {
+        color: var(--gray);
+        align-self: flex-end;
+        word-break: break-all;
     }
 </style>

@@ -134,7 +134,7 @@
     }
 
     .chosen-tags-label {
-        color: var(--text);
+        color: var(--text-main);
         font-size: 1.75rem;
         font-weight: 600;
     }
