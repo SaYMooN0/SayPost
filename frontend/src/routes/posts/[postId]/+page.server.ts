@@ -9,8 +9,6 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 		method: 'GET',
 	});
 
-	console.log(response);
-	console.log(fetch);
 	if (!response.isSuccess) {
 		throw new Error('Failed to fetch post');
 	}

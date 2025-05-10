@@ -20,6 +20,7 @@ internal class PostTagsRepository : IPostTagsRepository
                 SELECT "Id"
                 FROM "PostTags"
                 WHERE "Id" LIKE '%' || @searchQuery || '%'
+                  AND "Id" <> @searchQuery
                 ORDER BY "Id"
                 LIMIT @count
                 """,

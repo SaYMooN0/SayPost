@@ -39,7 +39,12 @@ internal class PublishDraftPostCommandHandler : IRequestHandler<PublishDraftPost
             );
         }
 
-        PublishedPost publishedPost = PublishedPost.CreateFromDraft(draftPost, _dateTimeProvider);
+        var postRes = PublishedPost.TryCreateFromDraft(draftPost, _dateTimeProvider);
+        if (postRes.IsErr(out var err)) {
+            return err;
+        }
+
+        var publishedPost = postRes.AsSuccess();
         await _publishedPostsRepository.Add(publishedPost);
 
         await _draftPostsRepository.Delete(draftPost);

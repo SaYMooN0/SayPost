@@ -54,13 +54,13 @@
 
 <style>
     .quote {
-        position: relative;
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         font-size: var(--post-content-paragraph-font-size);
         font-weight: var(--post-content-paragraph-font-weight);
     }
+
     .quote > label {
         display: flex;
         flex-direction: row;
@@ -68,6 +68,7 @@
         gap: 0.5rem;
         color: var(--gray);
     }
+
     textarea,
     input {
         width: 100%;
@@ -97,22 +98,26 @@
     }
 
     .quote-text {
+        max-width: 90%;
+        padding: 0.5rem;
         margin: 0;
+        border-radius: 0.5rem;
+        background-color: var(--back-second);
+        color: var(--text-main);
         font-size: inherit;
         font-weight: inherit;
         font-style: italic;
-        padding: 0.5rem;
-        max-width: 90%;
         align-self: center;
         box-sizing: border-box;
-        background-color: var(--back-second);
-        color: var(--text-main);
-        border-radius: 0.5rem;
-        word-break: break-all;
+        overflow-wrap: break-word; 
+        word-break: break-word; 
+        text-indent: 1.5em;
     }
+
     .quote-author {
         color: var(--gray);
         align-self: flex-end;
-        word-break: break-all;
+        overflow-wrap: break-word; 
+        word-break: break-word; 
     }
 </style>

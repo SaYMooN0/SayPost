@@ -84,11 +84,11 @@
                     <div class="tag">
                         {tag}
                         {#if selectedTags.includes(tag)}
-                            <div class="added">added</div>
+                            <div class="added unselectable">added</div>
                         {:else}
                             <div
                                 onclick={() => selectedTags.push(tag)}
-                                class="add-tag-btn"
+                                class="add-tag-btn unselectable"
                             >
                                 add
                             </div>
@@ -103,14 +103,14 @@
 
 <style>
     .adding-state {
+        display: flex;
+        flex-direction: column;
         padding: 0.5rem;
         margin: 0.5rem 0;
         border: 0.125rem solid var(--gray);
         border-radius: 0.5rem;
         background-color: var(--back-main);
         box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
     }
 
     .adding-state:focus-within,
@@ -127,68 +127,115 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        height: 2rem;
     }
 
     .adding-state:has(.tags-grid) .searched-tags {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 0.5rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.125rem;
         padding: 0 0.5rem;
         box-sizing: border-box;
+        height: fit-content;
     }
+
     .top-elements {
         display: grid;
         grid-template-columns: 1fr auto;
+        align-items: center;
         gap: 0.5rem;
     }
+
     input {
         width: 100%;
         box-sizing: border-box;
+        padding: 0.125rem 0.5rem;
+        outline: none;
+        border: 0.125rem solid var(--gray);
+        border-radius: 1.25rem;
+        font-size: 1.25rem;
+        transition: all 0.08s ease-in;
     }
+
+    input:hover {
+        border-color: var(--accent-main);
+        border-radius: 0.875rem;
+    }
+
+    input:focus,
+    input:active {
+        border-color: var(--accent-hov);
+        border-radius: 0.875rem;
+    }
+
     .close-btn {
         top: 0.25rem;
         right: 0.25rem;
-        height: 1.25rem;
+        height: 1.375rem;
         padding: 0.125rem;
         border-radius: 1rem;
         background-color: var(--gray);
         color: var(--back-main);
+        transition: all 0.06s ease-in;
         cursor: pointer;
         box-sizing: border-box;
-        transition: all 0.06s ease-in;
     }
+
     .close-btn:hover {
         transform: scale(1.08);
     }
+
     .tag {
-        height: 1.75rem;
         display: grid;
         align-items: center;
+        padding: 0.125rem 0.5rem;
+        transition: all 0.08s ease-in;
         grid-template-columns: 1fr 5rem;
         border-left: 0.125rem solid transparent;
-        padding-left: 0.5rem;
-        transition: all 0.08s ease-in;
+        box-sizing: border-box;
+        font-size: 1.25rem;
+        animation: show-tags 0.2s ease-in;
+        transition: border-left-color 0.02s ease-in;
     }
+
     .tag:hover {
         border-left-color: var(--accent-main);
     }
+
     .tag > div {
-        height: 100%;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        height: 100%;
         border-radius: 0.25rem;
         cursor: default;
     }
+
     .added {
         background-color: var(--back-second);
         color: var(--gray);
     }
+
     .add-tag-btn {
         background-color: var(--accent-main);
         color: var(--back-main);
     }
     .add-tag-btn:hover {
         background-color: var(--accent-hov);
+    }
+    @keyframes show-tags {
+        0% {
+            opacity: 0.1;
+            font-size: 0;
+        }
+
+        60% {
+            opacity: 0.2;
+            font-size: 0.75rem;
+        }
+
+        75% {
+            font-size: 1rem;
+        }
     }
 </style>

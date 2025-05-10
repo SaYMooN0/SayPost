@@ -32,14 +32,12 @@
 
 <div class="heading">
     {#if isEditing}
-        <div>
-            <textarea
-                bind:value={editingValue.value}
-                bind:this={editingEl}
-                rows="1"
-                oninput={() => adjustHeight()}
-            />
-        </div>
+        <textarea
+            bind:value={editingValue.value}
+            bind:this={editingEl}
+            rows="1"
+            oninput={() => adjustHeight()}
+        />
     {:else}
         <h2>{initial.value}</h2>
     {/if}
@@ -47,14 +45,9 @@
 
 <style>
     .heading {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.5rem;
+        align-content: center;
         font-size: var(--post-content-heading-font-size);
         font-weight: var(--post-content-heading-font-weight);
-
     }
 
     textarea {
@@ -68,6 +61,8 @@
         box-sizing: border-box;
         outline: none;
         resize: none;
+        text-indent: 1.5em;
+
     }
 
     textarea:hover {
@@ -83,6 +78,9 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        word-break: break-all;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        text-indent: 1.5em;
+
     }
 </style>

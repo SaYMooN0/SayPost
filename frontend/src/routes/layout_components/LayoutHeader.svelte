@@ -162,11 +162,10 @@
         border: 0.25rem solid var(--accent-main);
         border-radius: 2rem;
         font-size: var(--header-font-size);
-        font-weight: 420;
+        font-weight: 550;
         transition: all 0.06s ease-in;
         cursor: pointer;
         outline: none;
-        font-weight: 550;
     }
 
     .auth-btns-container > button:hover {

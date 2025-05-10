@@ -13,6 +13,9 @@ internal class UpdateDraftPostContentRequest : IRequestWithValidationNeeded
     public UpdatePostRequestContentItemDto[] NewPostContent { get; init; } = [];
 
     public RequestValidationResult Validate() {
+        if (NewPostContent.Length == 0) {
+            return ErrFactory.NoValue("Post content cannot be empty");
+        }
         if (NewPostContent.Length > PostContent.MaxItems) {
             return ErrFactory.LimitExceeded(
                 $"Too many post content items. Maximum allowed items is {PostContent.MaxItems}",

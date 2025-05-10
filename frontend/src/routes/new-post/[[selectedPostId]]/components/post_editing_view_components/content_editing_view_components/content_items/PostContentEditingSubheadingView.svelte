@@ -47,11 +47,9 @@
 
 <style>
     .subheading {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.5rem;
+        align-content: center;
+        text-indent: 1.5em;
+
         font-size: var(--post-content-subheading-font-size);
         font-weight: var(--post-content-subheading-font-weight);
     }
@@ -83,6 +81,8 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        word-break: break-all;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        text-indent: 1.5em;
     }
 </style>

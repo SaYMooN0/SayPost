@@ -73,4 +73,5 @@ public class DraftPost : AggregateRoot<DraftPostId>
     public void Pin() => IsPinned = true;
     public void Unpin() => IsPinned = false;
     public void Delete() => AddDomainEvent(new DraftPostDeletedEvent(Id, AuthorId));
+    public bool IsTitleDefault() => Title.ToString() == PostTitle.DefaultValue;
 }

@@ -47,11 +47,7 @@
 
 <style>
     .paragraph {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 0.5rem;
+        align-content: center;
         font-size: var(--post-content-paragraph-font-size);
         font-weight: var(--post-content-paragraph-font-weight);
     }
@@ -68,6 +64,7 @@
         box-sizing: border-box;
         outline: none;
         resize: none;
+        text-indent: 1.5em;
     }
 
     textarea:hover {
@@ -83,6 +80,8 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        word-break: break-all;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        text-indent: 1.5em;
     }
 </style>

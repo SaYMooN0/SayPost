@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.published_post_aggregate;
@@ -72,11 +73,13 @@ file static class PublishedPostsRepositoryExtensions
         HashSet<PostTagId> excludeTags
     ) {
         if (includeTags.Count > 0) {
-            posts = posts.Where(p => p.Tags.Any(t => includeTags.Contains(t)));
+            posts = posts.Where(p => p.Tags.IsSupersetOf(includeTags));
+            // the post must contain at least all tags from includeTags
         }
 
         if (excludeTags.Count > 0) {
-            posts = posts.Where(p => p.Tags.All(t => !excludeTags.Contains(t)));
+            posts = posts.Where(p => !p.Tags.Overlaps(excludeTags));
+            // the post must not contain any tags from excludeTags
         }
 
         return posts;

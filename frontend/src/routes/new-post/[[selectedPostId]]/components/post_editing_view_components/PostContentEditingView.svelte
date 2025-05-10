@@ -14,6 +14,7 @@
     import { Err } from "../../../../../ts/common/errs/err";
     import { ApiMain } from "../../../../../ts/backend-services";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
+    import ErrView from "../../../../../components/err_blocks/ErrView.svelte";
 
     let {
         postId,
@@ -54,7 +55,7 @@
 
     let editingErrs: Err[] = $state([]);
 
-    let initialDeleted = 0;
+    let initialDeleted = $state(0);
     let anyUnsaved = $derived(
         initialDeleted > 0
             ? true
@@ -77,13 +78,13 @@
         editingState.splice(index, 1);
     }
     function cancelEditing() {
+        initialDeleted = 0;
         editingState = content.items.map((i) => ({
             editing: copyPostContentItem(i),
             initial: i,
             isNewlyAdded: false,
             isInEditingState: false,
         }));
-        initialDeleted = 0;
     }
     async function saveContentChanges() {
         const dataToSave = editingState.map((i) => i.editing);
@@ -147,7 +148,7 @@
                         bind:editingValue={editingState[i].editing}
                     />
                 {:else}
-                    <p>Unknown post content item type</p>
+                    <ErrView err={new Err("Unknown post content item type")} />
                 {/if}
                 <ContentEditingRightSideButtons
                     isEditing={item.isInEditingState}
@@ -223,6 +224,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
     }
 
     .empty-content {
@@ -243,7 +245,6 @@
         gap: 1rem;
         width: 100%;
         padding-left: 0.25rem;
-        margin-top: 0.5rem;
         grid-template-columns: 1fr auto;
         border-left: 0.125rem solid var(--back-second);
     }

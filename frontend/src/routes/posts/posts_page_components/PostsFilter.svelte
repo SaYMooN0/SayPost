@@ -66,7 +66,9 @@
         </p>
         <FilterTagsSelection bind:selectedTags={postsFilter.excludeTags} />
         <div class="filter-btns">
-            <button class="reset" onclick={()=>postsFilter.reset()}>Reset</button>
+            <button class="reset" onclick={() => postsFilter.reset()}
+                >Reset</button
+            >
             <button class="apply" onclick={applyFilter}>Apply</button>
         </div>
     </div>
@@ -88,9 +90,11 @@
         font-weight: 400;
         transition: padding-left 0.2s ease-in;
     }
+
     .always-shown.filter-not-hidden {
         padding-left: 2rem;
     }
+
     .always-shown > svg {
         height: 1.75rem;
         transition: transform 0.17s ease-in;
@@ -110,7 +114,7 @@
         display: flex;
         flex-direction: column;
         height: auto;
-        padding: 0rem 1rem;
+        padding: 0 1rem;
         margin: 0.5rem 0 0.75rem;
         border-radius: 1rem;
         background-color: var(--back-main);
@@ -131,27 +135,40 @@
         opacity: 0;
         transition:
             all 0.2s ease-in,
-            opacity 0.04s ease-out;
+            opacity 0.08s ease-out;
     }
+
     .filter-p {
-        margin: 0.75rem 0 0 0;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 1.25rem;
+        margin: 0.75rem 0 0;
         color: var(--text-main);
+        font-size: 1.25rem;
+    }
+
+    .filter :global(*){
+        transition: inherit;
+    }
+
+    .hidden :global(*){
+        height: 0;
+        padding: 0;
+        margin: 0;
+        font-size: 0.25rem;
+
     }
 
     .filter-p input[type="date"] {
         padding: 0.25rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 440;
-        background-color: var(--back-second);
-        color: var(--text-main);
         border: 0.125rem solid var(--back-second);
         border-radius: 0.5rem;
-        outline: none;
+        background-color: var(--back-second);
+        color: var(--text-main);
+        font-size: 1rem;
+        font-weight: 440;
         transition: border-color 0.15s ease;
+        outline: none;
     }
 
     .filter-p input[type="date"]:hover {
@@ -162,11 +179,13 @@
         border-color: var(--accent-main);
         background-color: transparent;
     }
+
     .no-tags-selected {
         color: var(--gray);
         font-style: italic;
         font-size: 1rem;
     }
+
     .filter-btns {
         display: grid;
         justify-content: right;
@@ -177,8 +196,8 @@
     }
 
     .filter-btns button {
-        margin-top: 1rem;
         padding: 0.25rem 0.5rem;
+        margin-top: 1rem;
         border: none;
         border-radius: 1rem;
         font-size: 1.25rem;

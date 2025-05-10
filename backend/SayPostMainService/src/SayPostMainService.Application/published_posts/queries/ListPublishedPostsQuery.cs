@@ -74,17 +74,17 @@ internal class ListPostsWithCommentsQueryHandler
         var includeTags = ParseTags(r.IncludeTags);
         var excludeTags = ParseTags(r.ExcludeTags);
 
-        if (includeTags.Length > PostsQueryFilter.MaxTagsCount) {
+        if (includeTags.Count > PostsQueryFilter.MaxTagsCount) {
             return ErrFactory.InvalidData(
                 $"Cannot filter for more than {PostsQueryFilter.MaxTagsCount} tags set as included",
-                $"Maximum amount of tags to include is {PostsQueryFilter.MaxTagsCount}. Current count is {includeTags.Length}"
+                $"Maximum amount of tags to include is {PostsQueryFilter.MaxTagsCount}. Current count is {includeTags.Count}"
             );
         }
 
-        if (excludeTags.Length > PostsQueryFilter.MaxTagsCount) {
+        if (excludeTags.Count > PostsQueryFilter.MaxTagsCount) {
             return ErrFactory.InvalidData(
                 $"Cannot filter for more than {PostsQueryFilter.MaxTagsCount} tags set as excluded",
-                $"Maximum amount of tags to exclude is {PostsQueryFilter.MaxTagsCount}. Current count is {excludeTags.Length}"
+                $"Maximum amount of tags to exclude is {PostsQueryFilter.MaxTagsCount}. Current count is {excludeTags.Count}"
             );
         }
 
@@ -104,6 +104,14 @@ internal class ListPostsWithCommentsQueryHandler
             );
         }
 
+        var conflictingTags = includeTags.Intersect(excludeTags).ToArray();
+        if (conflictingTags.Length > 0) {
+            return ErrFactory.InvalidData(
+                "Cannot filter because some tags are marked both as included and excluded",
+                $"Conflicting tags: '{string.Join(", ", conflictingTags)}'"
+            );
+        }
+
         return new PostsQueryFilter(
             DateFrom: dateFrom,
             DateTo: dateTo,
@@ -112,9 +120,8 @@ internal class ListPostsWithCommentsQueryHandler
         );
     }
 
-    private static string[] ParseTags(string? rawTags) =>
-        rawTags?
-            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Where(t => !string.IsNullOrWhiteSpace(t))
-            .ToArray() ?? [];
+    private static HashSet<string> ParseTags(string? rawTags) => rawTags?
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        .Where(t => !string.IsNullOrWhiteSpace(t))
+        .ToHashSet() ?? [];
 }

@@ -59,7 +59,7 @@
                 </div>
             {/each}
         {:else}
-            <label class="empty-list-label"> Empty list</label>
+            <label class="empty-list-label">Empty list</label>
         {/if}
         <button
             class="add-btn unselectable"
@@ -106,14 +106,16 @@
 
     .list-display-item,
     .list-editing-item {
-        display: flex;
-        align-items: center;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         gap: 0.5rem;
-
-        word-break: break-all;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
 
     .bullet {
+        align-self: flex-start;
+        margin-top: calc((1em - 0.25rem) / 2);
         display: block;
         width: 0.375rem;
         height: 0.375rem;
@@ -122,6 +124,7 @@
         background-color: var(--accent-main);
         user-select: none;
     }
+
     input {
         padding: 0 0.5rem;
         border: 0.125rem solid var(--back-second);
@@ -173,11 +176,11 @@
     }
 
     .add-btn {
-        margin-left: auto;
-        margin-right: 0;
         display: flex;
         align-items: center;
         gap: 0.25rem;
+        margin-right: 0;
+        margin-left: auto;
         border: none;
         background-color: transparent;
         color: var(--accent-main);

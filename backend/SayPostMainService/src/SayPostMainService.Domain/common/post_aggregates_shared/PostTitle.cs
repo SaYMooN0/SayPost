@@ -17,12 +17,13 @@ public class PostTitle : ValueObject
         Value = value;
     }
 
-    public static PostTitle CreateNew() => new("New post");
+    public static PostTitle CreateNew() => new(DefaultValue);
 
     public static ErrOr<PostTitle> CreateFromString(string value) =>
         IsStringCorrectPostTitle(value).IsErr(out var err) ? err : new PostTitle(value);
 
     public override string ToString() => Value;
+    public const string DefaultValue = "New post";
 
     public static ErrOrNothing IsStringCorrectPostTitle(string value) {
         if (string.IsNullOrWhiteSpace(value)) {

@@ -53,6 +53,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
+        margin-top: 0.25rem;
     }
 
     .tag {
@@ -80,19 +81,22 @@
         color: var(--text-main);
         transform: scale(1.04);
     }
+
     .add-tags-btn {
-        margin: 0.25rem 0;
         padding: 0.25rem 0.75rem;
+        margin: 0.25rem 0;
+        border: none;
         border-radius: 0.25rem;
         background-color: var(--accent-main);
         color: var(--back-main);
         font-size: 1rem;
-        border: none;
         transition: all 0.2s ease-in;
     }
+
     .add-tags-btn:hover {
         background-color: var(--accent-hov);
     }
+
     .add-tags-btn:active {
         border-radius: 1rem;
     }
