@@ -49,7 +49,6 @@
     .subheading {
         align-content: center;
         text-indent: 1.5em;
-
         font-size: var(--post-content-subheading-font-size);
         font-weight: var(--post-content-subheading-font-weight);
     }
@@ -81,8 +80,7 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
     }
 </style>

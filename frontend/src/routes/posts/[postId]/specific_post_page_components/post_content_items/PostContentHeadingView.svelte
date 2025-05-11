@@ -12,11 +12,10 @@
 
 <style>
     h2 {
+        margin: 0;
         font-size: var(--post-content-heading-font-size);
         font-weight: var(--post-content-heading-font-weight);
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
-        margin: 0;
     }
 </style>

@@ -50,6 +50,6 @@ internal static class SpecificPostHandlers
         CommentPostCommand command = new(postId, request.Content, userId);
         var result = await mediator.Send(command);
 
-        return CustomResults.FromErrOr(result, (isPinned) => Results.Json(new { IsPostPinned = isPinned }));
+        return CustomResults.FromErrOr(result, (comment) => Results.Json(PostCommentData.FromComment(comment)));
     }
 }

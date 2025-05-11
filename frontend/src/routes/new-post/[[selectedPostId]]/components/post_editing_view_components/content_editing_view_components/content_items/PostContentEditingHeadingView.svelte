@@ -62,7 +62,6 @@
         outline: none;
         resize: none;
         text-indent: 1.5em;
-
     }
 
     textarea:hover {
@@ -78,9 +77,7 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
-
     }
 </style>

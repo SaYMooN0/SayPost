@@ -38,5 +38,11 @@ public class PublishedPostsConfigurations : IEntityTypeConfiguration<PublishedPo
 
         builder
             .Property(x => x.PublicationDate);
+
+        builder.Ignore(p => p.Comments);
+        builder
+            .HasMany<PostComment>("_comments")
+            .WithOne()
+            .HasForeignKey("PostId");
     }
 }

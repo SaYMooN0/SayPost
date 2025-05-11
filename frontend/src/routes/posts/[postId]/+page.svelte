@@ -10,6 +10,7 @@
 	import PostContentSubheadingView from "./specific_post_page_components/post_content_items/PostContentSubheadingView.svelte";
 
 	let { data }: PageProps = $props();
+	let comments = $state(data.post.comments);
 </script>
 
 <h1>{data.post.title}</h1>
@@ -18,6 +19,7 @@
 		{data.post.authorId}
 	</a>
 </p>
+<div class="divider"></div>
 <div class="post-content">
 	{#each data.post.content.items as item}
 		{#if item.$type === "HeadingContentItem"}
@@ -35,30 +37,37 @@
 		{/if}
 	{/each}
 </div>
-
-<CommentsSection bind:comments={data.post.comments} />
+<div class="divider"></div>
+<CommentsSection postId={data.post.id} bind:comments />
 
 <style>
 	h1 {
-		text-align: center;
 		font-size: var(--post-title-font-size);
 		font-weight: var(--post-title-font-weight);
-		overflow-wrap: break-word;
-		word-break: break-word;
+		text-align: center;
+		overflow-wrap: anywhere;
 		text-wrap: balance;
 	}
+
 	.author {
 		width: 100%;
 		color: var(--gray);
 		font-size: 1.25rem;
 		text-align: end;
 	}
+
 	.post-content {
 		display: flex;
 		flex-direction: column;
 		gap: 1.25rem;
 		max-width: 100ch;
 		margin: 0 auto;
-		border-top: 0.25rem solid var(--back-second);
+	}
+	.divider {
+		width: 100%;
+		height: 0.125rem;
+		background-color: var(--back-second);
+		margin: 1rem 0;
+		border-radius: 0.25rem;
 	}
 </style>

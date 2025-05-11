@@ -43,6 +43,7 @@
                 response.data.newTitle,
                 response.data.newLastModified,
             );
+            editingErrs = [];
         } else {
             editingErrs = response.errors;
         }
@@ -131,7 +132,7 @@
         font-size: var(--post-title-font-size);
         outline: none;
         resize: none;
-        font-weight: var( --post-title-font-weight);
+        font-weight: var(--post-title-font-weight);
     }
 
     .editing-state-container > textarea:focus {
@@ -178,7 +179,7 @@
     .post-title {
         margin: 0.5rem 0;
         font-size: var(--post-title-font-size);
-        font-weight: var( --post-title-font-weight);
+        font-weight: var(--post-title-font-weight);
         word-break: break-all;
     }
 

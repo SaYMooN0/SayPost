@@ -4,7 +4,11 @@
     import CommentView from "./comment_section_components/CommentView.svelte";
     import NewCommentInput from "./comment_section_components/NewCommentInput.svelte";
 
-    let { comments = $bindable() }: { comments: PostComment[] } = $props<{
+    let {
+        postId,
+        comments = $bindable(),
+    }: { postId: string; comments: PostComment[] } = $props<{
+        postId: string;
         comments: PostComment[];
     }>();
     function addComment(comment: PostComment) {
@@ -13,7 +17,7 @@
 </script>
 
 {#snippet authenticated()}
-    <NewCommentInput />
+    <NewCommentInput {postId} updateParentValue={addComment} />
 {/snippet}
 {#snippet unauthenticated()}
     <div class="auth-needed">To leave a comment, you need to be logged in</div>
@@ -31,8 +35,15 @@
 {/if}
 
 <style>
-.auth-needed{
-     background-color: var(--warning-yellow-back);
-     color: var(--warning-yellow);
-}
+    .auth-needed {
+        background-color: var(--back-second);
+        color: var(--text-main);
+    }
+
+    .no-comments {
+        color: var(--gray);
+        font-size: 1.5rem;
+        margin: 1rem auto 4rem auto;
+        text-align: center;
+    }
 </style>

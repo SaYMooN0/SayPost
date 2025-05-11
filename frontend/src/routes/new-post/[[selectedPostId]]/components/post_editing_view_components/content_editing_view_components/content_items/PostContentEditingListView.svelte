@@ -109,19 +109,18 @@
         display: grid;
         grid-template-columns: auto 1fr auto;
         gap: 0.5rem;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .bullet {
-        align-self: flex-start;
-        margin-top: calc((1em - 0.25rem) / 2);
         display: block;
         width: 0.375rem;
         height: 0.375rem;
+        margin-top: calc((1em - 0.25rem) / 2);
         margin-left: 0.25rem;
         border-radius: 1rem;
         background-color: var(--accent-main);
+        align-self: flex-start;
         user-select: none;
     }
 

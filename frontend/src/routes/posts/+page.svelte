@@ -62,6 +62,7 @@
 		box-sizing: border-box;
 		grid-template-rows: auto 1fr;
 	}
+
 	.page :global(.err-block) {
 		margin-top: 1rem;
 		margin-bottom: 4rem;

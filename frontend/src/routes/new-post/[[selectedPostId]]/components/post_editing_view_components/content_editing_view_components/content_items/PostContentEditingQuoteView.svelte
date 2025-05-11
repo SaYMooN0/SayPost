@@ -109,15 +109,13 @@
         font-style: italic;
         align-self: center;
         box-sizing: border-box;
-        overflow-wrap: break-word; 
-        word-break: break-word; 
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
     }
 
     .quote-author {
         color: var(--gray);
         align-self: flex-end;
-        overflow-wrap: break-word; 
-        word-break: break-word; 
+        overflow-wrap: anywhere;
     }
 </style>

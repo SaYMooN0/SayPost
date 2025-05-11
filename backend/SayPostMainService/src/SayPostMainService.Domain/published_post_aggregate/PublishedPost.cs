@@ -20,7 +20,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
     public PostContent Content { get; }
     public DateTime PublicationDate { get; }
     public HashSet<PostTagId> Tags { get; }
-    public ICollection<PostComment> _comments { get; }
+    private ICollection<PostComment> _comments { get; }
 
     public PublishedPost(
         PublishedPostId id, AppUserId authorId,

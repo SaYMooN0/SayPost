@@ -12,12 +12,10 @@
 
 <style>
     h3 {
+        margin: 0;
         font-size: var(--post-content-subheading-font-size);
         font-weight: var(--post-content-subheading-font-weight);
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
-        margin: 0;
-
     }
 </style>

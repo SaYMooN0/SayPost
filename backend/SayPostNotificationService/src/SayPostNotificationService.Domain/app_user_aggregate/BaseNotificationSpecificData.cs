@@ -6,6 +6,8 @@ namespace SayPostNotificationService.Domain.app_user_aggregate;
 
 [JsonDerivedType(typeof(TestPublishedNotificationSpecificData),
     typeDiscriminator: nameof(TestPublishedNotificationSpecificData))]
+[JsonDerivedType(typeof(CommentLeftNotificationSpecificData),
+    typeDiscriminator: nameof(CommentLeftNotificationSpecificData))]
 public abstract class BaseNotificationSpecificData : ValueObject
 {
     public abstract Dictionary<string, string> ToDictionary();

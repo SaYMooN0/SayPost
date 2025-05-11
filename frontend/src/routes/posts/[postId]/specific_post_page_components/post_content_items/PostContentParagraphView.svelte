@@ -12,9 +12,10 @@
 
 <style>
     p {
+        margin: 0;
         font-size: var(--post-content-paragraph-font-size);
         font-weight: var(--post-content-paragraph-font-weight);
-        margin: 0;
-
+        text-indent: 1.5em;
+        overflow-wrap: anywhere;
     }
 </style>

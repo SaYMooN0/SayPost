@@ -132,11 +132,11 @@
 
     .adding-state:has(.tags-grid) .searched-tags {
         display: grid;
-        grid-template-columns: 1fr 1fr;
         gap: 0.125rem;
-        padding: 0 0.5rem;
-        box-sizing: border-box;
         height: fit-content;
+        padding: 0 0.5rem;
+        grid-template-columns: 1fr 1fr;
+        box-sizing: border-box;
     }
 
     .top-elements {
@@ -189,13 +189,13 @@
         display: grid;
         align-items: center;
         padding: 0.125rem 0.5rem;
+        font-size: 1.25rem;
         transition: all 0.08s ease-in;
+        transition: border-left-color 0.02s ease-in;
+        animation: show-tags 0.2s ease-in;
         grid-template-columns: 1fr 5rem;
         border-left: 0.125rem solid transparent;
         box-sizing: border-box;
-        font-size: 1.25rem;
-        animation: show-tags 0.2s ease-in;
-        transition: border-left-color 0.02s ease-in;
     }
 
     .tag:hover {
@@ -220,18 +220,20 @@
         background-color: var(--accent-main);
         color: var(--back-main);
     }
+
     .add-tag-btn:hover {
         background-color: var(--accent-hov);
     }
+
     @keyframes show-tags {
         0% {
-            opacity: 0.1;
             font-size: 0;
+            opacity: 0.1;
         }
 
         60% {
-            opacity: 0.2;
             font-size: 0.75rem;
+            opacity: 0.2;
         }
 
         75% {

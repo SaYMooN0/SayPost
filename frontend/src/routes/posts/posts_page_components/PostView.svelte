@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { DateUtils } from "../../../ts/common/utils/date-utils";
     import type { PostPreview } from "../published-posts-previews";
 
     let { post }: { post: PostPreview } = $props<{ post: PostPreview }>();
@@ -6,7 +7,6 @@
 
 <div class="post-view">
     <h1 class="title">{post.title}</h1>
-    <label>{post.publicationDate}</label>
     {#if post.tags.length === 0}
         <div class="no-tags">(No tags)</div>
     {:else}
@@ -22,11 +22,14 @@
             {/each}
         </div>
     {/if}
-    <p class="comments-count">
-        {post.commentsCount === 0
-            ? "No comments"
-            : `${post.commentsCount} comments`}
-    </p>
+    <div class="date-comments-div">
+        <label>Published on {DateUtils.toLocale(post.publicationDate)}</label>
+        <p class="comments-count">
+            {post.commentsCount === 0
+                ? "No comments"
+                : `${post.commentsCount} comments`}
+        </p>
+    </div>
 
     <a
         data-sveltekit-preload-data="hover"
@@ -50,8 +53,9 @@
 
     .title {
         width: 100%;
-        margin-top: 0;
-        word-break: break-all;
+        overflow-wrap: anywhere;
+        text-indent: 0.5em;
+        margin: 0.25rem 0;
     }
 
     .no-tags {
@@ -82,5 +86,34 @@
     .tag:hover {
         text-decoration: underline;
         transform: scale(1.02);
+    }
+    .date-comments-div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+    }
+    .read-link {
+        background-color: var(--back-second);
+        width: 90%;
+        margin: 0 auto;
+        padding: 0.375rem 0;
+        border-radius: 0.25rem;
+        color: var(--accent-main);
+        font-size: 1.25rem;
+        text-decoration: none;
+        text-align: center;
+        transition:
+            background-color 0.08s ease-in,
+            border-radius 0.16s ease-in;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .read-link:hover {
+        background-color: var(--accent-main);
+        color: var(--back-main);
+    }
+    .read-link:active {
+        border-radius: 1.5rem;
     }
 </style>

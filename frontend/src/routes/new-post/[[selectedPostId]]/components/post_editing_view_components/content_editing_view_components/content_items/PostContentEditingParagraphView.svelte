@@ -80,8 +80,7 @@
         margin: 0;
         font-size: inherit;
         font-weight: inherit;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
         text-indent: 1.5em;
     }
 </style>

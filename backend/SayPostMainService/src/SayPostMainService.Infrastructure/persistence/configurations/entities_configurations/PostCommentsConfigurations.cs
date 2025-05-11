@@ -16,10 +16,13 @@ public class PostCommentsConfigurations : IEntityTypeConfiguration<PostComment>
             .Property(x => x.Id)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
-        
+
         builder
             .Property(x => x.AuthorId)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
+
+        builder.Property(x => x.Content);
+        builder.Property(x => x.CreatedAt);
     }
 }

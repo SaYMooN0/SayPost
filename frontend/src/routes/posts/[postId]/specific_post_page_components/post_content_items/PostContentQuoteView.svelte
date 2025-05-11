@@ -21,11 +21,9 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.125rem;
         font-size: var(--post-content-paragraph-font-size);
         font-weight: var(--post-content-paragraph-font-weight);
-        margin: 0;
-
     }
 
     .text {
@@ -40,11 +38,11 @@
         font-style: italic;
         align-self: center;
         box-sizing: border-box;
-        overflow-wrap: break-word;
-        word-break: break-word;
+        overflow-wrap: anywhere;
     }
 
     .author {
+        margin: 0;
         color: var(--gray);
         align-self: flex-end;
         word-break: break-all;
