@@ -87,32 +87,36 @@
         text-decoration: underline;
         transform: scale(1.02);
     }
+
     .date-comments-div {
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        flex-direction: row;
     }
+
     .read-link {
-        background-color: var(--back-second);
         width: 90%;
-        margin: 0 auto;
         padding: 0.375rem 0;
+        margin: 0 auto;
         border-radius: 0.25rem;
+        background-color: var(--back-second);
         color: var(--accent-main);
         font-size: 1.25rem;
-        text-decoration: none;
+        font-weight: 500;
         text-align: center;
+        text-decoration: none;
         transition:
             background-color 0.08s ease-in,
             border-radius 0.16s ease-in;
         cursor: pointer;
-        font-weight: 500;
     }
+
     .read-link:hover {
         background-color: var(--accent-main);
         color: var(--back-main);
     }
+
     .read-link:active {
         border-radius: 1.5rem;
     }

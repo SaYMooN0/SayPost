@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { Err } from "../../ts/common/errs/err";
+    import type { PlainErrType } from "../../ts/common/errs/t-plain-err";
     import ErrView from "./ErrView.svelte";
 
-    let { errList }: { errList: Err[] } = $props();
+    let { errList }: { errList: PlainErrType[] } = $props();
 </script>
 
 {#if errList.length > 0}

@@ -1,4 +1,5 @@
 import { Err, ErrWithExtraData } from "./common/errs/err";
+import type { PlainErrType } from "./common/errs/t-plain-err";
 import { DateUtils } from "./common/utils/date-utils";
 
 
@@ -8,6 +9,15 @@ export type ResponseResult<T> =
 export type ResponseVoidResult =
     | { isSuccess: true }
     | { isSuccess: false; errors: Err[] };
+
+
+export type ServerResponseResult<TData> =
+    | { isSuccess: true; data: TData }
+    | { isSuccess: false; errors: PlainErrType[] };
+
+export type ServerResponseVoidResult =
+    | { isSuccess: true }
+    | { isSuccess: false; errors: PlainErrType[] };
 
 class BackendService {
     private _baseUrl: string;
@@ -33,7 +43,7 @@ class BackendService {
                 return { isSuccess: true, data };
             }
 
-            const errors = await this.handleErrorResponse(response);
+            const errors = await this.parseErrResponse(response);
             return { isSuccess: false, errors };
 
         } catch (e: any) {
@@ -54,7 +64,7 @@ class BackendService {
                 return { isSuccess: true };
             }
 
-            const errors = await this.handleErrorResponse(response);
+            const errors = await this.parseErrResponse(response);
             return { isSuccess: false, errors };
 
         } catch (e: any) {
@@ -68,56 +78,51 @@ class BackendService {
         fetchFunc: typeof fetch,
         url: string,
         options: RequestInit
-    ): Promise<ResponseResult<T>> {
+    ): Promise<ServerResponseResult<T>> {
         try {
             const response = await fetchFunc(this._baseUrl + url, {
                 ...options,
                 credentials: 'include'
             });
-    
+
             if (response.ok) {
                 const text = await response.text();
                 const data = BackendService.parseWithDates<T>(text);
                 return { isSuccess: true, data };
             }
-    
-            const errors = await this.handleErrorResponse(response);
-            return { isSuccess: false, errors };
-    
-        } catch (e: any) {
-            return {
-                isSuccess: false,
-                errors: [new Err("Unknown error", -1, "Error: " + e.message)]
-            };
-        }
-    }
-    
-    public async serverFetchVoidResponse(
-        fetchFunc: typeof fetch,
-        url: string,
-        options: RequestInit
-    ): Promise<ResponseVoidResult> {
-        try {
-            const response = await fetchFunc(this._baseUrl + url, {
-                ...options,
-                credentials: 'include'
-            });
-    
-            if (response.ok) {
-                return { isSuccess: true };
+
+            const contentType = response.headers.get("content-type");
+            if (contentType?.includes("application/json")) {
+                const json = await response.json();
+                if (Array.isArray(json.errors)) {
+                    return {
+                        isSuccess: false,
+                        errors: json.errors as PlainErrType[]
+                    };
+                }
             }
-    
-            const errors = await this.handleErrorResponse(response);
-            return { isSuccess: false, errors };
-    
+
+            return {
+                isSuccess: false,
+                errors: [{
+                    message: "Unknown error",
+                    code: -1,
+                    details: "Response was not valid JSON with an 'errors' array"
+                }]
+            };
+
         } catch (e: any) {
             return {
                 isSuccess: false,
-                errors: [new Err("Unknown error", -1, "Error: " + e.message)]
+                errors: [{
+                    message: "Unknown error",
+                    code: -1,
+                    details: "Exception: " + e.message
+                }]
             };
         }
     }
-    
+
     static parseWithDates<T>(json: string): T {
         return JSON.parse(json, (key, value) => {
             if (typeof value === 'string' && DateUtils.isoDateRegex.test(value)) {
@@ -128,7 +133,7 @@ class BackendService {
     }
 
 
-    private async handleErrorResponse(response: Response): Promise<Err[]> {
+    private async parseErrResponse(response: Response): Promise<Err[]> {
         if (response.headers.get("content-type")?.includes("application/json")) {
             const json = await response.json();
 
@@ -136,18 +141,7 @@ class BackendService {
                 return [new Err("Invalid error format", -1, "Expected 'errors' array in response")];
             }
 
-            return json.errors.map((e: any) => {
-                if ("derivedErrType" in e) {
-                    switch (e.derivedErrType) {
-                        case "errWithExtraData":
-                            return new ErrWithExtraData(e.message, e.extraData, e.code, e.details);
-                        default:
-                            throw new Error("Unknown error type: " + e.derivedErrType);
-                    }
-                } else {
-                    return new Err(e.message, e.code, e.details);
-                }
-            });
+            return json.errors.map(Err.fromPlain);
         }
 
         return [new Err("Unknown error", -1, "Response not in JSON format")];

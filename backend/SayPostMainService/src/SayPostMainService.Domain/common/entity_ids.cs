@@ -11,7 +11,12 @@ public class DraftPostId(Guid value) : GuidBasedId(value)
     public static DraftPostId CreateNew() => new(Guid.CreateVersion7());
 }
 
-public class PostTagId : ValueObject, IComparable,  IEntityId
+public class UserProfileBannerId(Guid value) : GuidBasedId(value)
+{
+    public static UserProfileBannerId CreateNew() => new(Guid.CreateVersion7());
+}
+
+public class PostTagId : ValueObject, IComparable, IEntityId
 {
     public const int MaxTagLength = 30;
 
@@ -38,7 +43,8 @@ public class PostTagId : ValueObject, IComparable,  IEntityId
     }
 
     public override string ToString() => Value;
-    public int CompareTo(object? obj)  => obj switch {
+
+    public int CompareTo(object? obj) => obj switch {
         IEntityId ed => ToString().CompareTo(ed.ToString()),
         Guid guid => guid.CompareTo(Value),
         _ => -1

@@ -41,9 +41,9 @@
     }
 
     .no-comments {
+        margin: 1rem auto 4rem;
         color: var(--gray);
         font-size: 1.5rem;
-        margin: 1rem auto 4rem auto;
         text-align: center;
     }
 </style>

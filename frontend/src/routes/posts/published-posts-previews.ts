@@ -5,5 +5,4 @@ export type PostPreview = {
     tags: string[];
     commentsCount:number;
     authorId:string;
-
 }

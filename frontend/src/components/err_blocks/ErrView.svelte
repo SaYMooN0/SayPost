@@ -1,7 +1,11 @@
 <script lang="ts">
     import type { Err } from "../../ts/common/errs/err";
+    import {
+        PlainErrUtils,
+        type PlainErrType,
+    } from "../../ts/common/errs/t-plain-err";
 
-    const { err }: { err: Err } = $props<{ err: Err }>();
+    const { err }: { err: PlainErrType } = $props<{ err: PlainErrType }>();
     let showAdditional = $state(false);
 
     let iconElement: SVGElement;
@@ -19,8 +23,8 @@
 
 <div class="err-container">
     <div class="err-message">
-        {err.Message}
-        {#if err.HasSomethingExceptMessage()}
+        {err.message}
+        {#if PlainErrUtils.HasSomethingExceptMessage(err)}
             <svg
                 bind:this={iconElement}
                 xmlns="http://www.w3.org/2000/svg"
@@ -38,14 +42,14 @@
             </svg>
         {/if}
     </div>
-    {#if err.HasNonEmptyDetails()}
+    {#if PlainErrUtils.HasNonEmptyDetails(err)}
         <label class="err-additional" class:hidden={!showAdditional}>
-            Details: {err.Details}
+            Details: {err.details}
         </label>
     {/if}
-    {#if err.HasSpecifiedCode()}
+    {#if PlainErrUtils.HasSpecifiedCode(err)}
         <label class="err-additional" class:hidden={!showAdditional}>
-            Code: {err.Code}
+            Code: {err.code}
         </label>
     {/if}
 </div>

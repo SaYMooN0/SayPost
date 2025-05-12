@@ -20,11 +20,12 @@
 
 <style>
     .items-container {
-        margin: 0;
         display: flex;
         flex-direction: column;
         gap: 0.375rem;
+        margin: 0;
     }
+
     .list-display-item {
         display: flex;
         align-items: center;

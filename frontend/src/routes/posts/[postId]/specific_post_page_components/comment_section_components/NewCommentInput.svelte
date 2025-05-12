@@ -64,49 +64,52 @@
 
 <style>
     .container {
-        width: 100%;
-        gap: 0.5rem;
         display: flex;
         flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
     }
 
     textarea {
         width: 100%;
+        padding: 0.125rem 0.25rem 0;
         border: none;
-        border-bottom: 0.125rem solid var(--gray);
+        border-radius: 0.25rem 0.25rem 0.125rem 0.125rem;
         background-color: var(--back-second);
         color: var(--text-main);
         font-size: 1.25rem;
+        border-bottom: 0.125rem solid var(--gray);
         outline: none;
-        padding: 0.125rem 0.25rem 0 0.25rem;
-        border-radius: 0.25rem 0.25rem 0.125rem 0.125rem;
         resize: none;
     }
+
     textarea:focus {
         border-color: var(--accent-main);
         background-color: transparent;
     }
 
     .btns-container {
+        display: none;
         flex-direction: row;
-        grid-template-columns: 1fr 1fr;
         justify-content: right;
         gap: 0.5rem;
         height: 0;
-        display: none;
         opacity: 0;
-        interpolate-size: allow-keywords;
         transition: all 0.2s ease;
+        grid-template-columns: 1fr 1fr;
+        interpolate-size: allow-keywords;
     }
+
     .container:has(textarea:focus) .btns-container,
     .container:has(textarea:not(:placeholder-shown)) .btns-container {
-        height: auto;
         display: flex;
+        height: auto;
         opacity: 1;
     }
+
     .container:has(textarea:not(:empty)) .btns-container {
-        height: auto;
         display: flex;
+        height: auto;
         opacity: 1;
     }
 </style>

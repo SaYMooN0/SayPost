@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
 	import ErrView from "../../../components/err_blocks/ErrView.svelte";
 	import { Err } from "../../../ts/common/errs/err";
 	import type { PageProps } from "./$types";
@@ -10,35 +11,42 @@
 	import PostContentSubheadingView from "./specific_post_page_components/post_content_items/PostContentSubheadingView.svelte";
 
 	let { data }: PageProps = $props();
-	let comments = $state(data.post.comments);
+	// let comments = $state(data.post.comments); //fetch
 </script>
 
-<h1>{data.post.title}</h1>
-<p class="author">
-	by <a href="/users/{data.post.authorId}" data-sveltekit-preload-data="tap">
-		{data.post.authorId}
-	</a>
-</p>
-<div class="divider"></div>
-<div class="post-content">
-	{#each data.post.content.items as item}
-		{#if item.$type === "HeadingContentItem"}
-			<PostContentHeadingView heading={item} />
-		{:else if item.$type === "SubheadingContentItem"}
-			<PostContentSubheadingView subheading={item} />
-		{:else if item.$type === "ParagraphContentItem"}
-			<PostContentParagraphView paragraph={item} />
-		{:else if item.$type === "QuoteContentItem"}
-			<PostContentQuoteView quote={item} />
-		{:else if item.$type === "ListContentItem"}
-			<PostContentListView list={item} />
-		{:else}
-			<ErrView err={new Err("Unknown post content item type")} />
-		{/if}
-	{/each}
-</div>
-<div class="divider"></div>
-<CommentsSection postId={data.post.id} bind:comments />
+{#if data.errors}
+	<DefaultErrBlock errList={data.errors.ToErrInstances()} />
+{:else}
+	<h1>{data.post.title}</h1>
+	<p class="author">
+		by <a
+			href="/users/{data.post.authorId}"
+			data-sveltekit-preload-data="tap"
+		>
+			{data.post.authorId}
+		</a>
+	</p>
+	<div class="divider"></div>
+	<div class="post-content">
+		{#each data.post.content.items as item}
+			{#if item.$type === "HeadingContentItem"}
+				<PostContentHeadingView heading={item} />
+			{:else if item.$type === "SubheadingContentItem"}
+				<PostContentSubheadingView subheading={item} />
+			{:else if item.$type === "ParagraphContentItem"}
+				<PostContentParagraphView paragraph={item} />
+			{:else if item.$type === "QuoteContentItem"}
+				<PostContentQuoteView quote={item} />
+			{:else if item.$type === "ListContentItem"}
+				<PostContentListView list={item} />
+			{:else}
+				<ErrView err={new Err("Unknown post content item type")} />
+			{/if}
+		{/each}
+	</div>
+	<div class="divider"></div>
+	<!-- <CommentsSection postId={data.post.id} bind:comments /> -->
+{/if}
 
 <style>
 	h1 {
@@ -63,11 +71,12 @@
 		max-width: 100ch;
 		margin: 0 auto;
 	}
+
 	.divider {
 		width: 100%;
 		height: 0.125rem;
-		background-color: var(--back-second);
 		margin: 1rem 0;
 		border-radius: 0.25rem;
+		background-color: var(--back-second);
 	}
 </style>

@@ -11,19 +11,27 @@ export class Err {
         this._details = details;
     }
 
-    public get Message(): string {
+    public get message(): string {
         return this._message;
     }
-    public get Code(): number | null {
+    public get code(): number | null {
         return this._code;
     }
-    public get Details(): string | null {
+    public get details(): string | null {
         return this._details;
     }
-    public HasNonEmptyDetails(): boolean { return !StringUtils.isNullOrWhiteSpace(this._details); }
-    public HasSpecifiedCode(): boolean { return this._code != UnspecifiedErrCode; }
-    public HasSomethingExceptMessage(): boolean {
-        return this.HasNonEmptyDetails() || this.HasSpecifiedCode();
+  
+    public static fromPlain(e: any): Err {
+        if ("derivedErrType" in e) {
+            switch (e.derivedErrType) {
+                case "errWithExtraData":
+                    return new ErrWithExtraData(e.message, e.extraData, e.code, e.details);
+                default:
+                    throw new Error("Unknown error type: " + e.derivedErrType);
+            }
+        } else {
+            return new Err(e.message, e.code, e.details);
+        }
     }
 }
 export class ErrWithExtraData extends Err {

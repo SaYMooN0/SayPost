@@ -7,7 +7,6 @@ export type PublishedPost = {
     content: PostContent;
     publicationDate: Date;
     tags: string[];
-    comments: PostComment[];
 }
 export type PostComment = {
     id: string;
