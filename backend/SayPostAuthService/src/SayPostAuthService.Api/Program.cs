@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ApiShared;
 using ApiShared.extensions;
 using SayPostAuthService.Api.endpoints;
@@ -28,7 +29,10 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services
             .AddApplication(builder.Configuration)
-            .AddInfrastructure(builder.Configuration);
+            .AddInfrastructure(builder.Configuration)
+            .ConfigureHttpJsonOptions(options => {
+                options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
         var app = builder.Build();
         app.AddInfrastructureMiddleware();

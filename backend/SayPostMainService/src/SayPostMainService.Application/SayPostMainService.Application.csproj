@@ -11,8 +11,4 @@
         <ProjectReference Include="..\SayPostMainService.Domain\SayPostMainService.Domain.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="app_users\" />
-    </ItemGroup>
-
 </Project>

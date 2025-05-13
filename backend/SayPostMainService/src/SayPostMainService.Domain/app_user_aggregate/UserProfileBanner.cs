@@ -21,6 +21,7 @@ public class UserProfileBanner : Entity<UserProfileBannerId>
         BannerDesignVariant designVariant,
         HexColor[] colors
     ) {
+        Id = id;
         Scale = scale;
         Design = design;
         DesignVariant = designVariant;

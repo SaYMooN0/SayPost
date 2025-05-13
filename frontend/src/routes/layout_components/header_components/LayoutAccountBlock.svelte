@@ -3,7 +3,10 @@
     import LayoutNotificationsBlock from "./LayoutNotificationsBlock.svelte";
     import { goto } from "$app/navigation";
 
-    let { username } = $props<{ username: string }>();
+    let { username, userId }: { username: string; userId: string } = $props<{
+        username: string;
+        userId: string;
+    }>();
 
     let isAccountContextMenuOpen = $state(false);
     let buttonElement: HTMLElement;
@@ -47,7 +50,7 @@
         class="context-menu unselectable"
         class:open={isAccountContextMenuOpen}
     >
-        <div class="menu-action" onclick={() => goto("/account")}>
+        <div class="menu-action" onclick={() => goto(`/users/${userId}`)}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

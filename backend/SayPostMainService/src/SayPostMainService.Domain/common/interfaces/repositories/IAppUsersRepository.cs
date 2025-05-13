@@ -8,5 +8,6 @@ public interface IAppUsersRepository
     Task Add(AppUser appUser);
     Task Update(AppUser appUser);
     Task<AppUser?> GetById(AppUserId userId);
+    Task<AppUser?> GetWithBannerAsNoTracking(AppUserId userId);
     Task<bool> DoesUserExist(AppUserId userId);
 }

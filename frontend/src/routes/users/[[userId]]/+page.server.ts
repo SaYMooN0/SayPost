@@ -4,20 +4,13 @@ import type { UserProfile } from "./user-profile";
 
 export const load: PageServerLoad = async ({ params, fetch }) => {
     const { userId } = params;
-    try {
+    const response = await ApiMain.serverFetchJsonResponse<UserProfile>(fetch, `/users/${userId}/profile-data`, {
+        method: 'GET',
+    });
 
-        const response = await ApiMain.serverFetchJsonResponse<UserProfile>(fetch, `/users/${userId}`, {
-            method: 'GET',
-        });
-
-        if (!response.isSuccess) {
-            return { errors: response.errors };
-        }
-        return {
-            pageUser: response.data
-        };
+    if (!response.isSuccess) {
+        return { errors: response.errors };
     }
-    catch {
-        console.log("catch 2");
-    }
+    console.log(response.data);
+    return { pageUser: response.data };
 };

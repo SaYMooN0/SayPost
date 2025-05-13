@@ -5,21 +5,21 @@ export type UserProfile = {
 export type UserProfileBanner = {
     scale: number;
     design: BannerDesign;
-    DesignVariant: DesignVariant;
+    designVariant: DesignVariant;
     colors: string[];
 }
-enum BannerDesign {
-    Waves,
-    BlobScene,
-    LayeredPeaks,
-    LayeredWaves,
-    Steps
+export enum BannerDesign {
+    Waves = "waves",
+    BlobScene = "blobScene",
+    LayeredPeaks = "layeredPeaks",
+    LayeredWaves = "layeredWaves",
+    Steps = "steps"
 }
-enum DesignVariant {
-    Var1,
-    Var2,
-    Var3,
-    Var4,
-    Var5
+export enum DesignVariant {
+    Var1 = "var1",
+    Var2 = "var2",
+    Var3 = "var3",
+    Var4 = "var4",
+    Var5 = "var5"
 }
 //is following

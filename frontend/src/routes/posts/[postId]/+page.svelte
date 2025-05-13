@@ -15,7 +15,7 @@
 </script>
 
 {#if data.errors}
-	<DefaultErrBlock errList={data.errors.ToErrInstances()} />
+	<DefaultErrBlock errList={data.errors} />
 {:else}
 	<h1>{data.post.title}</h1>
 	<p class="author">

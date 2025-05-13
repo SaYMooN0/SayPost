@@ -27,6 +27,12 @@ internal class AppUsersRepository : IAppUsersRepository
     public async Task<AppUser?> GetById(AppUserId userId) =>
         await _db.AppUsers.FindAsync(userId);
 
+    public async Task<AppUser?> GetWithBannerAsNoTracking(AppUserId userId) =>
+        await _db.AppUsers
+            .AsNoTracking()
+            .Include(u => u.ProfileBanner)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
     public async Task<bool> DoesUserExist(AppUserId userId) =>
         await _db.AppUsers.AnyAsync(u => u.Id == userId);
 }

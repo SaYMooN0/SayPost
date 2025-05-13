@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using ApiShared;
 using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
@@ -29,7 +30,10 @@ public class Program
         builder.Services.AddOpenApi();
         builder.Services
             .AddApplication(builder.Configuration)
-            .AddInfrastructure(builder.Configuration);
+            .AddInfrastructure(builder.Configuration)
+            .ConfigureHttpJsonOptions(options => {
+                options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
         var app = builder.Build();
         app.AddInfrastructureMiddleware();
@@ -53,7 +57,7 @@ public class Program
         //     // db.AppUsers.Add(new(new(new("0196405c-0c03-7520-8da6-d17cdc334ba7"))));
         //     db.SaveChanges();
         // }
-        
+
         app.UseCors("AllowFrontend");
         app.Run();
     }
@@ -64,6 +68,6 @@ public class Program
         app.MapGroup("/draft-posts/{draftPostId}").MapSpecificDraftPostHandlers();
         app.MapGroup("/post-tags").MapPostTagsHandlers();
         app.MapGroup("/posts/{postId}").MapSpecificPostHandlers();
-
+        app.MapGroup("/users/{userId}").MapSpecificAppUserHandlers();
     }
 }

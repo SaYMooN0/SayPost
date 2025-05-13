@@ -95,7 +95,10 @@
 </div>
 
 {#snippet authenticated(authData: AuthStoreData)}
-    <LayoutAccountBlock username={authData.Username ?? ""} />
+    <LayoutAccountBlock
+        username={authData.Username ?? ""}
+        userId={authData.UserId ?? ""}
+    />
 {/snippet}
 {#snippet unauthenticated()}
     <div class="auth-btns-container">
@@ -105,7 +108,7 @@
 {/snippet}
 
 <style>
-    :global(*){
+    :global(*) {
         --layout-header-height: 3rem;
     }
 

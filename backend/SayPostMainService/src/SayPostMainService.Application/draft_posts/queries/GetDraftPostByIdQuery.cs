@@ -24,6 +24,7 @@ internal class GetDraftPostByIdQueryHandler : IRequestHandler<GetDraftPostByIdQu
         if (post is null) {
             return ErrFactory.NotFound($"Post with id {query.PostId} was not found");
         }
+
         return post;
     }
 }
