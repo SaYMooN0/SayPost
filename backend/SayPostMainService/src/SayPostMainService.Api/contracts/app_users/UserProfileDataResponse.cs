@@ -14,6 +14,7 @@ public record UserProfileDataResponse(
     );
 }
 
+
 public record UserProfileBannerResponseData(
     float Scale,
     BannerDesign Design,

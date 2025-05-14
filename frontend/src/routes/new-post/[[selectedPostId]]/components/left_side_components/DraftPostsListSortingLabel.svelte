@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { DraftPostsSortOption } from "../../draft-posts";
-    import DefaultSwitch from "../../../../../components/DefaultSwitch.svelte";
+    import DefaultSwitch from "../../../../../components/inputs/DefaultSwitch.svelte";
 
     let { sortOption = $bindable(), pinnedPostsOnTop = $bindable() } = $props<{
         sortOption: DraftPostsSortOption;

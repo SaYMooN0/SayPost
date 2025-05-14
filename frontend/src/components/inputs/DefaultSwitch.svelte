@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { StringUtils } from "../ts/common/utils/string-utils";
+    import { StringUtils } from "../../ts/common/utils/string-utils";
 
     let {
         fieldName = "",
