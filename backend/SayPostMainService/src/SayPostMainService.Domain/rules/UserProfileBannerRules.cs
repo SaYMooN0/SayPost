@@ -7,7 +7,7 @@ public static class UserProfileBannerRules
 {
     const int
         ScaleMinValue = 1,
-        ScaleMaxValue = 4;
+        ScaleMaxValue = 2;
 
     private const int ColorsCount = 5;
 

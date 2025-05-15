@@ -20,7 +20,7 @@
     }>();
 </script>
 
-<div class="slider-container">
+<div class="slider-container unselectable">
     <input class="slider" type="range" bind:value {min} {max} {step} />
 
     {#if labelMarks.length > 0}
@@ -58,13 +58,13 @@
     }
 
     .slider::-webkit-slider-thumb {
-        appearance: none;
         width: 1rem;
         height: 1rem;
         border-radius: 50%;
         background: var(--accent-main);
-        cursor: pointer;
         transition: background 0.2s ease;
+        cursor: pointer;
+        appearance: none;
     }
 
     .slider::-moz-range-thumb {
@@ -78,15 +78,15 @@
     .marks {
         display: flex;
         justify-content: space-between;
-        font-size: 0.8rem;
         color: var(--gray);
+        font-size: 0.8rem;
     }
 
     .mark {
         position: relative;
-        flex: 0 0 auto;
-        transform: translateX(-50%);
         text-align: center;
+        transform: translateX(-50%);
+        flex: 0 0 auto;
     }
 
     .slider-track {
