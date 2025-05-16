@@ -5,6 +5,7 @@
     import ProfileBannerDisplay from "./ProfileBannerDisplay.svelte";
     import NumberSliderInput from "../../../../components/inputs/NumberSliderInput.svelte";
     import BannerColorInput from "./banner_editing_dialog_components/BannerColorInput.svelte";
+    import DesignVariantInputButton from "./banner_editing_dialog_components/DesignVariantInputButton.svelte";
     let {
         scale,
         colors,
@@ -76,17 +77,14 @@
     <p class="section-label">Banner design variant</p>
     <div class="variants-container">
         {#each Object.keys(DesignVariant) as variant, i}
-            {@const enumVal =
-                DesignVariant[variant as keyof typeof DesignVariant]}
-            <div onclick={() => (chosenDesignVariant = enumVal)}>
-                Variant #{i + 1}
-                <ProfileBannerDisplay
-                    scale={1}
-                    colors={chosenColors}
-                    design={chosenDesign}
-                    designVariant={enumVal}
-                />
-            </div>
+            <DesignVariantInputButton
+                inputVal={variant}
+                labelText="Variant #{i + 1}"
+                choose={(val) => (chosenDesignVariant = val)}
+                isChosen={chosenDesignVariant == variant}
+                {chosenColors}
+                {chosenDesign}
+            />
         {/each}
     </div>
     <p class="section-label">Banner scale</p>
@@ -103,77 +101,88 @@
 <style>
     :global(#profile-banner-editing) {
         padding: 0 0.25rem;
-        background-color: var(--back-main);
         border-radius: 1rem;
+        background-color: var(--back-main);
         box-shadow:
-            rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-            rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            rgb(50 50 93 / 25%) 0 2px 5px -1px,
+            rgb(0 0 0 / 30%) 0 1px 3px -1px;
     }
+
     :global(#profile-banner-editing .dialog-content) {
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 50rem;
         width: 60rem;
+        height: 50rem;
         box-sizing: border-box;
         overflow-y: auto;
     }
+
     :global(#profile-banner-editing .close-button) {
         top: 1rem;
     }
 
     .banner-title {
-        font-size: 2rem;
         margin: 0.5rem 0;
+        font-size: 2rem;
     }
 
     .banner-preview-container {
         width: 100%;
     }
+
     .banner-preview-container > :global(svg) {
         border-radius: 0.25rem;
     }
+
     .section-label {
+        margin: 1rem 0 0.25rem;
+        color: var(--gray);
         font-size: 1rem;
         font-weight: 450;
-        color: var(--gray);
-        margin: 1rem 0 0.25rem 0;
     }
+
     .colors-container {
         display: flex;
         flex-direction: row;
         gap: 1rem;
     }
+
     .designs-container {
         display: flex;
         flex-direction: row;
         gap: 1rem;
     }
+
     .design-input {
-        height: 3rem;
-        width: 9rem;
         display: flex;
-        align-items: center;
         justify-content: center;
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 1px 4px;
-        cursor: pointer;
+        align-items: center;
+        width: 9rem;
+        height: 3rem;
         border-radius: 0.75rem;
+        box-shadow: rgb(0 0 0 / 15%) 0 1px 4px;
         transition: all 0.04s ease-in;
+        cursor: pointer;
     }
+
     .design-input:hover {
-        box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px;
+        box-shadow: rgb(0 0 0 / 25%) 0 1px 4px;
         transform: scale(1.02);
     }
+
     .design-input-chosen {
-        box-shadow: rgba(43, 15, 189, 0.35) 0px 1px 4px !important;
+        box-shadow: rgb(43 15 189 / 35%) 0 1px 4px !important;
         transform: scale(1.06) !important;
     }
+
     .variants-container {
         display: flex;
         flex-direction: row;
         gap: 1rem;
     }
+
     .save-btn {
-        margin: 1rem 0 0 0;
+        margin: 1rem 0 0;
     }
 </style>

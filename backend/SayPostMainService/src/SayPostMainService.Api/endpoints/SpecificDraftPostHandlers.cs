@@ -15,7 +15,8 @@ internal static class SpecificDraftPostHandlers
     internal static IEndpointRouteBuilder MapSpecificDraftPostHandlers(this RouteGroupBuilder endpoints) {
         endpoints
             .WithGroupAuthenticationRequired()
-            .WithGroupAccessToModifyDraftPostRequired();
+            .WithGroupAccessToModifyDraftPostRequired()
+            ;
 
 
         endpoints.MapGet("/", GetDraftPostFullInfo);

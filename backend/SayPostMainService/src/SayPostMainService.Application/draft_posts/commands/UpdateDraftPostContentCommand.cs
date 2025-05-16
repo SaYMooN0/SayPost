@@ -1,4 +1,5 @@
 using MediatR;
+using SayPostMainService.Application.mediatr_behavior.restrictors;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.common.post_aggregates_shared;
@@ -11,7 +12,7 @@ using SharedKernel.date_time_provider;
 namespace SayPostMainService.Application.draft_posts.commands;
 
 public record class UpdateDraftPostContentCommand(DraftPostId DraftPostId, PostContent NewContent) :
-    IRequest<ErrOr<(PostContent NewContent, DateTime NewLastModified)>>;
+    IRequest<ErrOr<(PostContent NewContent, DateTime NewLastModified)>>, IRequiresDraftPostAccessCheck;
 
 internal class UpdateDraftPostContentCommandHandler
     : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<(PostContent NewContent, DateTime NewLastModified)>>

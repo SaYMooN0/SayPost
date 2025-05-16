@@ -3,6 +3,7 @@ using ApiShared;
 using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
 using SayPostMainService.Application;
+using SayPostMainService.Application.application_layer_interfaces;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
@@ -28,6 +29,9 @@ public class Program
         });
 
         builder.Services.AddOpenApi();
+        
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped<ICurrentActorProvider, HttpContextCurrentUserProvider>();
         builder.Services
             .AddApplication(builder.Configuration)
             .AddInfrastructure(builder.Configuration)

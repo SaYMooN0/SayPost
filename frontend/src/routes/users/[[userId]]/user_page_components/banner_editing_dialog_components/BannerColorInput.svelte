@@ -64,16 +64,13 @@
         color: var(--text);
         outline: none;
         box-sizing: border-box;
+        color: var(--text-main);
     }
     .container:hover .text-input {
         border-color: var(--text-main);
     }
-    .text-input:hover,
-    .text-input:focus {
+    .text-input:focus,
+    .text-input:hover {
         border-color: var(--accent-main);
-    }
-
-    .text-input {
-        color: var(--text-main);
     }
 </style>

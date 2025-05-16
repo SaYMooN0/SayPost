@@ -1,15 +1,38 @@
 <script lang="ts">
-    import { DesignVariant } from "../../user-profile";
+    import { BannerDesign, DesignVariant } from "../../user-profile";
+    import ProfileBannerDisplay from "../ProfileBannerDisplay.svelte";
 
     let {
-        designVariant,
+        inputVal,
+        isChosen,
+        labelText,
         choose,
+        chosenColors,
+        chosenDesign,
     }: {
-        designVariant: DesignVariant;
+        inputVal: string;
+        isChosen: boolean;
+        labelText: string;
         choose: (variant: DesignVariant) => void;
+        chosenColors: string[];
+        chosenDesign: BannerDesign;
     } = $props<{
-        designVariant: DesignVariant;
+        inputVal: string;
+        isChosen: boolean;
+        labelText: string;
         choose: (variant: DesignVariant) => void;
+        chosenDesign: BannerDesign;
+        chosenColors: string[];
     }>();
-    const enumVal = DesignVariant[designVariant as keyof typeof DesignVariant];
+    const enumVal = DesignVariant[inputVal as keyof typeof DesignVariant];
 </script>
+
+<div class="container" class:chosen={isChosen} onclick={() => choose(enumVal)}>
+    <label>{labelText}</label>
+    <ProfileBannerDisplay
+        scale={1}
+        colors={chosenColors}
+        design={chosenDesign}
+        designVariant={enumVal}
+    />
+</div>

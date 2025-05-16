@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SayPostMainService.Application.mediatr_behavior.restrictors;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.draft_post_aggregate;
@@ -7,7 +8,7 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.draft_posts.commands;
 
-public record class PinDraftPostCommand(DraftPostId DraftPostId) : IRequest<ErrOr<bool>>;
+public record class PinDraftPostCommand(DraftPostId DraftPostId) : IRequest<ErrOr<bool>>, IRequiresDraftPostAccessCheck;
 
 internal class PinDraftPostCommandHandler : IRequestHandler<PinDraftPostCommand, ErrOr<bool>>
 {
