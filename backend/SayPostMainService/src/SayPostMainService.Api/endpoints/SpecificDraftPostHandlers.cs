@@ -14,9 +14,7 @@ internal static class SpecificDraftPostHandlers
 {
     internal static IEndpointRouteBuilder MapSpecificDraftPostHandlers(this RouteGroupBuilder endpoints) {
         endpoints
-            .WithGroupAuthenticationRequired()
-            .WithGroupAccessToModifyDraftPostRequired()
-            ;
+            .WithGroupAuthenticationRequired();
 
 
         endpoints.MapGet("/", GetDraftPostFullInfo);
@@ -105,7 +103,7 @@ internal static class SpecificDraftPostHandlers
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<UpdateDraftPostContentRequest>();
 
-        UpdateDraftPostContentCommand command = new (postId, request.GetParsedPostContent());
+        UpdateDraftPostContentCommand command = new(postId, request.GetParsedPostContent());
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
@@ -135,7 +133,7 @@ internal static class SpecificDraftPostHandlers
     ) {
         DraftPostId postId = httpContext.GetDraftPostIdFromRoute();
 
-        var command = new PublishDraftPostCommand(postId);
+        PublishDraftPostCommand command = new (postId);
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,

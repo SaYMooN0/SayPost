@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SayPostMainService.Application.mediatr_behavior.restrictors;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.draft_post_aggregate;
@@ -7,7 +8,9 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.draft_posts.commands;
 
-public record class DeleteDraftPostCommand(DraftPostId DraftPostId) : IRequest<ErrOrNothing>;
+public record class DeleteDraftPostCommand(DraftPostId DraftPostId) :
+    IRequest<ErrOrNothing>,
+    IRequiresDraftPostAccessCheck;
 
 internal class DeleteDraftPostCommandHandler : IRequestHandler<DeleteDraftPostCommand, ErrOrNothing>
 {

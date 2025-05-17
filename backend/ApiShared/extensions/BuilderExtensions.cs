@@ -22,7 +22,7 @@ public static class BuilderExtensions
                 "http://localhost:3100",
                 labels: [new LokiLabel() { Key = "app", Value = serviceName }])
             .CreateLogger();
-        
+            
         builder.Host.UseSerilog();
     }
 }

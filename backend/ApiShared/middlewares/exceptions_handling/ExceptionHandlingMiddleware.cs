@@ -22,6 +22,11 @@ internal class ExceptionHandlingMiddleware
         try {
             await _next(context);
         }
+        catch (PipelineBehaviourException ex) {
+            var errorResponse = CustomResults.ErrorResponse(ex.Errs);
+            await errorResponse.ExecuteAsync(context);
+            return;
+        }
         catch (ErrCausedException ex) {
             _logger.LogError(
                 "Caught ErrCausedException. error: {error}, inner exception: {innerException}, stack trace: {stackTrace}",

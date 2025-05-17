@@ -6,6 +6,7 @@
     import NumberSliderInput from "../../../../components/inputs/NumberSliderInput.svelte";
     import BannerColorInput from "./banner_editing_dialog_components/BannerColorInput.svelte";
     import DesignVariantInputButton from "./banner_editing_dialog_components/DesignVariantInputButton.svelte";
+    import DesignSelectInput from "./banner_editing_dialog_components/DesignSelectInput.svelte";
     let {
         scale,
         colors,
@@ -65,13 +66,11 @@
     <p class="section-label">Banner design</p>
     <div class="designs-container">
         {#each BannerDesign.valsWithNames() as { value, name }}
-            <div
-                class="design-input"
-                class:design-input-chosen={value == chosenDesign}
-                onclick={() => (chosenDesign = value)}
-            >
+            <DesignSelectInput
                 {name}
-            </div>
+                isChosen={chosenDesign == value}
+                choose={() => (chosenDesign = value)}
+            />
         {/each}
     </div>
     <p class="section-label">Banner design variant</p>
@@ -154,32 +153,14 @@
         gap: 1rem;
     }
 
-    .design-input {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 9rem;
-        height: 3rem;
-        border-radius: 0.75rem;
-        box-shadow: rgb(0 0 0 / 15%) 0 1px 4px;
-        transition: all 0.04s ease-in;
-        cursor: pointer;
-    }
-
-    .design-input:hover {
-        box-shadow: rgb(0 0 0 / 25%) 0 1px 4px;
-        transform: scale(1.02);
-    }
-
-    .design-input-chosen {
-        box-shadow: rgb(43 15 189 / 35%) 0 1px 4px !important;
-        transform: scale(1.06) !important;
-    }
-
     .variants-container {
         display: flex;
         flex-direction: row;
         gap: 1rem;
+    }
+    .dialog-content :global(.selection-indicator) {
+        height: 1rem;
+        width: 1rem;
     }
 
     .save-btn {

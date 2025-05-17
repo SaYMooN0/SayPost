@@ -10,7 +10,7 @@ public class ErrListOr<T>
         _errList = new ErrList();
     }
 
-    private ErrListOr(ErrList errList) {
+    public ErrListOr(ErrList errList) {
         _errList = errList;
         _successValue = default!;
     }

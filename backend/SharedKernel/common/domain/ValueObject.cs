@@ -23,4 +23,4 @@ public abstract class ValueObject
         left?.Equals(right) ?? right is null;
 
     public static bool operator !=(ValueObject? left, ValueObject? right) => !(left == right);
-}
+}   

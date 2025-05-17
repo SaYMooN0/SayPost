@@ -12,7 +12,8 @@ using SharedKernel.date_time_provider;
 namespace SayPostMainService.Application.draft_posts.commands;
 
 public record class UpdateDraftPostContentCommand(DraftPostId DraftPostId, PostContent NewContent) :
-    IRequest<ErrOr<(PostContent NewContent, DateTime NewLastModified)>>, IRequiresDraftPostAccessCheck;
+    IRequest<ErrOr<(PostContent NewContent, DateTime NewLastModified)>>,
+    IRequiresDraftPostAccessCheck;
 
 internal class UpdateDraftPostContentCommandHandler
     : IRequestHandler<UpdateDraftPostContentCommand, ErrOr<(PostContent NewContent, DateTime NewLastModified)>>

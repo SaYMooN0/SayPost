@@ -35,4 +35,5 @@
         design={chosenDesign}
         designVariant={enumVal}
     />
+    <div class="selection-indicator" class:selected={isChosen}></div>
 </div>

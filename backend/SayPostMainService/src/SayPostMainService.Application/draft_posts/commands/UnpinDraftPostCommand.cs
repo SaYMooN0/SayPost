@@ -8,7 +8,9 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.draft_posts.commands;
 
-public record class UnpinDraftPostCommand(DraftPostId DraftPostId) : IRequest<ErrOr<bool>>, IRequiresDraftPostAccessCheck;
+public record class UnpinDraftPostCommand(DraftPostId DraftPostId) :
+    IRequest<ErrOr<bool>>,
+    IRequiresDraftPostAccessCheck;
 
 internal class UnpinDraftPostCommandHandler : IRequestHandler<UnpinDraftPostCommand, ErrOr<bool>>
 {
