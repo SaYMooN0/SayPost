@@ -48,8 +48,8 @@
     }
 
     .color-picker {
-        width: 7rem;
-        height: 7rem;
+        width: 5rem;
+        height: 5rem;
         padding: 0;
         border: none;
         border-radius: 0.5rem;

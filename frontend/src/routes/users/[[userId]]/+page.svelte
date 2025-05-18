@@ -9,14 +9,13 @@
 
     let { data }: PageProps = $props();
     let isFollowing: null | boolean = $state(null);
-    let bannerEditingDialog:ProfileBannerEditingDialog;
+    let bannerEditingDialog: ProfileBannerEditingDialog;
 </script>
 
 {#if data.errors}
     <DefaultErrBlock errList={data.errors} />
 {:else}
     <div class="banner">
-        <p>{JSON.stringify(data.pageUser)}</p>
         <ProfileBannerDisplay
             scale={data.pageUser.profileBanner.scale}
             colors={data.pageUser.profileBanner.colors}
@@ -34,8 +33,12 @@
 
 {#snippet bannerAuthenticated(authData: AuthStoreData)}
     {#if authData.UserId == data.pageUser?.userId}
-        <button class="edit-banner-btn" onclick="{()=>bannerEditingDialog.open()}">Edit</button>
-        <ProfileBannerEditingDialog bind:this= {bannerEditingDialog}
+        <button
+            class="edit-banner-btn"
+            onclick={() => bannerEditingDialog.open()}>Edit</button
+        >
+        <ProfileBannerEditingDialog
+            bind:this={bannerEditingDialog}
             scale={data.pageUser?.profileBanner.scale || 1}
             colors={data.pageUser?.profileBanner.colors || []}
             design={data.pageUser?.profileBanner.design || BannerDesign.Waves}
@@ -56,6 +59,7 @@
         position: relative;
         width: 100%;
         aspect-ratio: 5 / 1;
+        border-radius: 0.75rem 0.75rem 0.25rem 0.25rem;
     }
 
     .banner > :global(svg) {

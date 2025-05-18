@@ -87,13 +87,15 @@
         {/each}
     </div>
     <p class="section-label">Banner scale</p>
-    <NumberSliderInput
-        bind:value={chosenScale}
-        min={1}
-        max={2}
-        step={0.01}
-        labelMarks={[1, 1.5, 2]}
-    />
+    <div class="scale-container">
+        <NumberSliderInput
+            bind:value={chosenScale}
+            min={1}
+            max={2}
+            step={0.01}
+            labelMarks={[1, 1.5, 2]}
+        />
+    </div>
     <button class="save-btn" onclick={() => save()}>Save</button>
 </BaseDialogWithCloseButton>
 
@@ -111,8 +113,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 60rem;
-        height: 50rem;
+        width: 72rem;
+        height: 55rem;
         box-sizing: border-box;
         overflow-y: auto;
     }
@@ -122,8 +124,8 @@
     }
 
     .banner-title {
-        margin: 0.5rem 0;
-        font-size: 2rem;
+        margin: 0.5rem 0 0 0;
+        font-size: 1.5rem;
     }
 
     .banner-preview-container {
@@ -158,12 +160,24 @@
         flex-direction: row;
         gap: 1rem;
     }
-    .dialog-content :global(.selection-indicator) {
-        height: 1rem;
-        width: 1rem;
+    :global(.dialog-content .selection-indicator) {
+        height: 0.75rem;
+        width: 0.5rem;
+        box-sizing: border-box;
+        border: 0.125rem solid var(--gray);
+        background-color: transparent;
+        padding: 0.25rem;
+        border-radius: 2rem;
+    }
+    :global(.dialog-content .selection-indicator.selected) {
+        border-color: var(--accent-main);
     }
 
     .save-btn {
         margin: 1rem 0 0;
+    }
+    .scale-container {
+        width: 40rem;
+        margin-bottom: 12rem;
     }
 </style>

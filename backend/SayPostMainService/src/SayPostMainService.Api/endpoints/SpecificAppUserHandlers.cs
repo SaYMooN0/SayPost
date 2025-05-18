@@ -11,8 +11,7 @@ internal static class SpecificAppUserHandlers
 {
     internal static IEndpointRouteBuilder MapSpecificAppUserHandlers(this RouteGroupBuilder endpoints) {
         endpoints.MapGet("/profile-data", GetAppUserProfileData);
-
-
+        
         return endpoints;
     }
 
@@ -27,5 +26,5 @@ internal static class SpecificAppUserHandlers
         return CustomResults.FromErrOr(result,
             (user) => Results.Json(UserProfileDataResponse.FromUser(user))
         );
-    }
+    } 
 }
