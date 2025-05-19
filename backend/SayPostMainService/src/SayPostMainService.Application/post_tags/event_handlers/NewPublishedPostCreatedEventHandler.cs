@@ -3,7 +3,7 @@ using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.post_tag_aggregate;
 using SayPostMainService.Domain.published_post_aggregate.events;
 
-namespace SayPostMainService.Application.post_tags.events;
+namespace SayPostMainService.Application.post_tags.event_handlers;
 
 public class NewPublishedPostCreatedEventHandler : INotificationHandler<NewPublishedPostCreatedEvent>
 {

@@ -33,6 +33,11 @@ internal class AppUsersRepository : IAppUsersRepository
             .Include(u => u.ProfileBanner)
             .FirstOrDefaultAsync(u => u.Id == userId);
 
+    public async Task<AppUser?> GetWithBanner(AppUserId userId) =>
+        await _db.AppUsers
+            .Include(u => u.ProfileBanner)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
     public async Task<bool> DoesUserExist(AppUserId userId) =>
         await _db.AppUsers.AnyAsync(u => u.Id == userId);
 }

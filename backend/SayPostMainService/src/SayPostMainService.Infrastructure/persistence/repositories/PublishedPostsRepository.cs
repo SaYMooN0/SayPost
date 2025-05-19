@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
+using SayPostMainService.Domain.post_comment_aggregate;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;
 
@@ -20,11 +21,10 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<PublishedPost[]> QueryPostsWithComments(PostsQueryFilter filter) =>
+    public async Task<PublishedPost[]> QueryPostsWithFilter(PostsQueryFilter filter) =>
         (await _db.PublishedPosts
             .AsNoTracking()
             .ApplyDateFilter(filter.DateFrom, filter.DateTo)
-            .Include(p => EF.Property<ICollection<PostComment>>(p, "_comments"))
             .ToArrayAsync()
         )
         .ApplyTagFilter(filter.IncludeTags, filter.ExcludeTags)
@@ -34,19 +34,16 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
     public async Task<bool> AnyPostWithId(PublishedPostId postId) =>
         await _db.PublishedPosts.AnyAsync(p => p.Id == postId);
 
-    public Task<PublishedPost?> AsNoTrackingWithCommentsById(PublishedPostId id) => _db.PublishedPosts
-        .AsNoTracking()
-        .Include(p => EF.Property<ICollection<PostComment>>(p, "_comments"))
-        .FirstOrDefaultAsync(p => p.Id == id);
-
-    public Task<PublishedPost?> GetWithCommentsById(PublishedPostId id) => _db.PublishedPosts
-        .Include(p => EF.Property<ICollection<PostComment>>(p, "_comments"))
-        .FirstOrDefaultAsync(p => p.Id == id);
-
     public async Task Update(PublishedPost post) {
         _db.PublishedPosts.Update(post);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<PublishedPost?> GetByIdAsNoTracking(PublishedPostId postId) =>
+        await _db.PublishedPosts.AsNoTracking().FirstOrDefaultAsync(p => p.Id == postId);
+
+    public async Task<PublishedPost?> GetById(PublishedPostId postId) =>
+        await _db.PublishedPosts.FindAsync(postId);
 }
 
 file static class PublishedPostsRepositoryExtensions

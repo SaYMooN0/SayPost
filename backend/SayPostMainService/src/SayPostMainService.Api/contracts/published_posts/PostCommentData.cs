@@ -1,4 +1,5 @@
-﻿using SayPostMainService.Domain.published_post_aggregate;
+﻿using SayPostMainService.Domain.post_comment_aggregate;
+using SayPostMainService.Domain.published_post_aggregate;
 
 namespace SayPostMainService.Api.contracts.published_posts;
 

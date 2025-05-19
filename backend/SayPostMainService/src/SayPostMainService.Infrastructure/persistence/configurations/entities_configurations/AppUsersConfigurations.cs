@@ -17,16 +17,24 @@ internal class AppUsersConfigurations : IEntityTypeConfiguration<AppUser>
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
 
-        builder.Ignore(x => x.DraftPostIds);
         builder
             .Property<HashSet<DraftPostId>>("_draftPostIds")
             .HasColumnName("DraftPostIds")
             .HasGuidBasedIdsHashSetConversion();
 
-        builder.Ignore(x => x.PublishedPostIds);
         builder
             .Property<HashSet<PublishedPostId>>("_publishedPostIds")
             .HasColumnName("PublishedPostIds")
+            .HasGuidBasedIdsHashSetConversion();
+        
+        builder
+            .Property<HashSet<PublishedPostId>>("_likedPostIds")
+            .HasColumnName("LikedPostIds")
+            .HasGuidBasedIdsHashSetConversion();
+        
+        builder
+            .Property<HashSet<PostCommentId>>("_leftCommentIds")
+            .HasColumnName("LeftCommentIds")
             .HasGuidBasedIdsHashSetConversion();
 
         builder

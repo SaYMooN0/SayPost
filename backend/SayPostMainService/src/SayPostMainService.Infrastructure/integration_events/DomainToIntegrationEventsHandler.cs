@@ -1,5 +1,6 @@
 ﻿using InfrastructureShared.integration_events.integration_events_publisher;
 using MediatR;
+using SayPostMainService.Domain.post_comment_aggregate.events;
 using SayPostMainService.Domain.published_post_aggregate.events;
 using SharedKernel.integration_events;
 

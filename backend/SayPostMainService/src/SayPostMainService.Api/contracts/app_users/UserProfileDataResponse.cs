@@ -1,16 +1,15 @@
 ﻿using SayPostMainService.Domain.app_user_aggregate;
-using SayPostMainService.Domain.app_user_aggregate.profile_banner;
 
 namespace SayPostMainService.Api.contracts.app_users;
 
 public record UserProfileDataResponse(
     string UserId,
-    UserProfileBannerResponseData ProfileBanner
+    UserProfileBannerResponse ProfileBanner
 )
 {
     public static UserProfileDataResponse FromUser(AppUser user) => new(
         user.Id.ToString(),
-        UserProfileBannerResponseData.FromProfileBanner(user.ProfileBanner)
+        UserProfileBannerResponse.FromProfileBanner(user.ProfileBanner)
     );
 }
 

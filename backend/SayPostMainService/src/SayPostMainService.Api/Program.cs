@@ -4,10 +4,8 @@ using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
 using SayPostMainService.Application;
 using SayPostMainService.Application.application_layer_interfaces;
-using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
-using Serilog;
 
 namespace SayPostMainService.Api;
 
@@ -29,7 +27,7 @@ public class Program
         });
 
         builder.Services.AddOpenApi();
-        
+
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<ICurrentActorProvider, HttpContextCurrentUserProvider>();
         builder.Services
@@ -73,5 +71,6 @@ public class Program
         app.MapGroup("/post-tags").MapPostTagsHandlers();
         app.MapGroup("/posts/{postId}").MapSpecificPostHandlers();
         app.MapGroup("/users/{userId}").MapSpecificAppUserHandlers();
+        app.MapGroup("/profile").MapUserProfileEndpoints();
     }
 }

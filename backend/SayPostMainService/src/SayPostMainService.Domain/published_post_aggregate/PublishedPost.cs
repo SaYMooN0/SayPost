@@ -1,7 +1,10 @@
+using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.post_aggregates_shared;
 using SayPostMainService.Domain.common.post_aggregates_shared.post_content;
 using SayPostMainService.Domain.draft_post_aggregate;
+using SayPostMainService.Domain.post_comment_aggregate;
+using SayPostMainService.Domain.post_comment_aggregate.events;
 using SayPostMainService.Domain.published_post_aggregate.events;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
@@ -20,7 +23,9 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
     public PostContent Content { get; }
     public DateTime PublicationDate { get; }
     public HashSet<PostTagId> Tags { get; }
-    private ICollection<PostComment> _comments { get; }
+    private HashSet<AppUserId> _likedByUserIds { get; }
+    public int CommentsCount { get; private set; }
+
 
     public PublishedPost(
         PublishedPostId id, AppUserId authorId,
@@ -33,7 +38,8 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         Content = content;
         PublicationDate = publicationDate;
         Tags = tags;
-        _comments = new List<PostComment>();
+        _likedByUserIds = [];
+        CommentsCount = 0;
     }
 
     public static ErrOr<PublishedPost> TryCreateFromDraft(DraftPost draftPost, IDateTimeProvider dateTimeProvider) {
@@ -57,14 +63,30 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         return publishedPost;
     }
 
-    public IReadOnlyCollection<PostComment> Comments => _comments.ToList();
 
-    public void AddComment(PostComment comment) {
-        _comments.Add(comment);
-        AddDomainEvent(new NewCommentToPostAddedEvent(
-            this.AuthorId,
-            this.Title,
-            comment.AuthorId
-        ));
+    public void AddComment(PostCommentId commentId, AppUserId commentAuthorId) {
+        CommentsCount = CommentsCount + 1;
+        AddDomainEvent(new NewCommentToPostAddedEvent(commentId, this.AuthorId, this.Title, commentAuthorId));
+    }
+
+    public int LikesCount => _likedByUserIds.Count;
+    public bool IsLikedBy(AppUserId userId) => _likedByUserIds.Contains(userId);
+
+    public ErrOrNothing Like(AppUserId userId) {
+        if (IsLikedBy(userId)) {
+            return ErrFactory.Conflict("This post is already liked by this user");
+        }
+
+        _likedByUserIds.Add(userId);
+        return ErrOrNothing.Nothing;
+    }
+
+    public ErrOrNothing Unlike(AppUserId userId) {
+        if (!IsLikedBy(userId)) {
+            return ErrFactory.Conflict("This post is not liked by this user");
+        }
+
+        _likedByUserIds.Remove(userId);
+        return ErrOrNothing.Nothing;
     }
 }

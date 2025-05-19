@@ -2,6 +2,7 @@ using InfrastructureShared.persistence.extensions;
 using InfrastructureShared.persistence.value_converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SayPostMainService.Domain.post_comment_aggregate;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;
 
@@ -19,6 +20,11 @@ public class PostCommentsConfigurations : IEntityTypeConfiguration<PostComment>
 
         builder
             .Property(x => x.AuthorId)
+            .ValueGeneratedNever()
+            .HasGuidBasedIdConversion();
+
+        builder
+            .Property(x => x.PostId)
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
 

@@ -6,8 +6,17 @@
     import type { PageProps } from "./$types";
     import ProfileBannerEditingDialog from "./user_page_components/ProfileBannerEditingDialog.svelte";
     import { BannerDesign, DesignVariant } from "./user-profile";
+    import UserStatisticsCard from "./user_page_components/UserStatisticsCard.svelte";
 
     let { data }: PageProps = $props();
+    let pageProfileBanner = $state(
+        data.pageUser?.profileBanner || {
+            scale: 2,
+            design: BannerDesign.Waves,
+            variant: DesignVariant.Var1,
+            colors: ["#000000", "#ffffff"],
+        },
+    );
     let isFollowing: null | boolean = $state(null);
     let bannerEditingDialog: ProfileBannerEditingDialog;
 </script>
@@ -17,10 +26,10 @@
 {:else}
     <div class="banner">
         <ProfileBannerDisplay
-            scale={data.pageUser.profileBanner.scale}
-            colors={data.pageUser.profileBanner.colors}
-            design={data.pageUser.profileBanner.design}
-            designVariant={data.pageUser.profileBanner.variant}
+            scale={pageProfileBanner.scale}
+            colors={pageProfileBanner.colors}
+            design={pageProfileBanner.design}
+            designVariant={pageProfileBanner.variant}
         />
         <div class="banner-item">
             <AuthView
@@ -29,21 +38,48 @@
             />
         </div>
     </div>
+    <div class="statistics-cards">
+        <UserStatisticsCard
+            label={"Posts published"}
+            value={(
+                data.pageUser.statistics?.postsPublished || 0
+            ).toString()}
+        >
+            <label>#</label>
+        </UserStatisticsCard>
+         <UserStatisticsCard
+            label={"Comments left"}
+            value={(
+                data.pageUser.statistics?.commentsLeft || 0
+            ).toString()}
+        >
+            <label>#</label>
+        </UserStatisticsCard>
+         <UserStatisticsCard
+            label={"Posts Liked"}
+            value={(
+                data.pageUser.statistics?.postsLiked || 0
+            ).toString()}
+        >
+            <label>#</label>
+        </UserStatisticsCard>
+    </div>
 {/if}
-
 {#snippet bannerAuthenticated(authData: AuthStoreData)}
-    {#if authData.UserId == data.pageUser?.userId}
+    {#if data.pageUser && authData.UserId == data.pageUser.userId}
         <button
             class="edit-banner-btn"
             onclick={() => bannerEditingDialog.open()}>Edit</button
         >
         <ProfileBannerEditingDialog
             bind:this={bannerEditingDialog}
-            scale={data.pageUser?.profileBanner.scale || 1}
-            colors={data.pageUser?.profileBanner.colors || []}
-            design={data.pageUser?.profileBanner.design || BannerDesign.Waves}
-            designVariant={data.pageUser?.profileBanner.variant ||
-                DesignVariant.Var1}
+            scale={pageProfileBanner.scale}
+            colors={pageProfileBanner.colors}
+            design={pageProfileBanner.design}
+            designVariant={pageProfileBanner.variant}
+            updateValuesOnPage={(newVal) => {
+                pageProfileBanner = newVal;
+            }}
         />
     {:else}
         <div class="is-following">Is following state</div>
@@ -56,6 +92,7 @@
 
 <style>
     .banner {
+        margin-top: 1rem;
         position: relative;
         width: 100%;
         aspect-ratio: 5 / 1;

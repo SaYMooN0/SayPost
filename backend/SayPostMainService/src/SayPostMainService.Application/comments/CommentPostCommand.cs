@@ -1,33 +1,40 @@
 ﻿using MediatR;
+using SayPostMainService.Application.application_layer_interfaces;
 using SayPostMainService.Domain.common.interfaces.repositories;
+using SayPostMainService.Domain.post_comment_aggregate;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;
 using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 using SharedKernel.date_time_provider;
 
-namespace SayPostMainService.Application.published_posts.commands;
+namespace SayPostMainService.Application.comments;
 
-public record class CommentPostCommand(PublishedPostId PostId, string Content, AppUserId CommentAuthor) :
+public record class CommentPostCommand(PublishedPostId PostId, string Content) :
     IRequest<ErrOr<PostComment>>;
 
 internal class CommentPostCommandHandler : IRequestHandler<CommentPostCommand, ErrOr<PostComment>>
 {
     private readonly IPublishedPostsRepository _publishedPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly ICurrentActorProvider _currentActorProvider;
+
 
     public CommentPostCommandHandler(
-        IPublishedPostsRepository publishedPostsRepository, IDateTimeProvider dateTimeProvider
+        IPublishedPostsRepository publishedPostsRepository,
+        IDateTimeProvider dateTimeProvider,
+        ICurrentActorProvider currentActorProvider
     ) {
         _publishedPostsRepository = publishedPostsRepository;
         _dateTimeProvider = dateTimeProvider;
+        _currentActorProvider = currentActorProvider;
     }
 
 
     public async Task<ErrOr<PostComment>> Handle(
         CommentPostCommand command, CancellationToken cancellationToken
     ) {
-        PublishedPost? post = await _publishedPostsRepository.GetWithCommentsById(command.PostId);
+        PublishedPost? post = await _publishedPostsRepository.GetById(command.PostId);
         if (post is null) {
             return ErrFactory.NotFound(
                 "Post not found",
@@ -35,14 +42,20 @@ internal class CommentPostCommandHandler : IRequestHandler<CommentPostCommand, E
             );
         }
 
-        var comment = PostComment.CreateNew(command.Content, command.CommentAuthor, _dateTimeProvider);
-        if (comment.IsErr(out var err)) {
+        var creationRes = PostComment.CreateNew(
+            command.Content,
+            command.PostId,
+            _currentActorProvider.AppUserId,
+            _dateTimeProvider
+        );
+
+        if (creationRes.IsErr(out var err)) {
             return err;
         }
 
-        post.AddComment(comment.AsSuccess());
+        var comment = creationRes.AsSuccess();
+        post.AddComment(comment.Id, comment.AuthorId);
         await _publishedPostsRepository.Update(post);
-
         return comment;
     }
 }

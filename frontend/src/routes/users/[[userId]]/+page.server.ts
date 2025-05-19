@@ -11,6 +11,5 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
     if (!response.isSuccess) {
         return { errors: response.errors };
     }
-    console.log(response.data);
     return { pageUser: response.data };
 };

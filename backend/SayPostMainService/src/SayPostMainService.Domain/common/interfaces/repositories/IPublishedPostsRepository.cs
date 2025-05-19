@@ -6,9 +6,9 @@ namespace SayPostMainService.Domain.common.interfaces.repositories;
 public interface IPublishedPostsRepository
 {
     Task Add(PublishedPost post);
-    Task<PublishedPost[]> QueryPostsWithComments(PostsQueryFilter filter);
+    Task<PublishedPost[]> QueryPostsWithFilter(PostsQueryFilter filter);
     Task<bool> AnyPostWithId(PublishedPostId postId);
-    Task<PublishedPost?> AsNoTrackingWithCommentsById(PublishedPostId id);
-    Task<PublishedPost?> GetWithCommentsById(PublishedPostId id);
     Task Update(PublishedPost post);
+    Task<PublishedPost?> GetByIdAsNoTracking(PublishedPostId postId);
+    Task<PublishedPost?> GetById(PublishedPostId postId);
 }

@@ -8,6 +8,7 @@ public record class PublishedPostPreviewResponse(
     DateTime PublicationDate,
     string[] Tags,
     int CommentsCount,
+    int LikesCount,
     string AuthorId
 )
 {
@@ -16,7 +17,8 @@ public record class PublishedPostPreviewResponse(
         post.Title.ToString(),
         post.PublicationDate,
         post.Tags.Select(t => t.ToString()).ToArray(),
-        post.Comments.Count,
+        post.CommentsCount,
+        post.LikesCount,
         post.AuthorId.ToString()
     );
 }

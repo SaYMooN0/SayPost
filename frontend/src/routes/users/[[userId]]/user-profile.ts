@@ -1,6 +1,7 @@
 export type UserProfile = {
     userId: string;
     profileBanner: UserProfileBanner;
+    statistics: UserProfileStatistics;
 }
 export type UserProfileBanner = {
     scale: number;
@@ -25,6 +26,13 @@ export enum DesignVariant {
 }
 //is following
 
+export type UserProfileStatistics = {
+    publishedPostsCount: number;
+    followersCount: number;
+    commentsLeftCount: number;
+    likedPostsCount: number;
+}
+
 export namespace BannerDesign {
     export function colorsInBannerDesignCount(design: BannerDesign): number {
         switch (design) {
@@ -39,7 +47,7 @@ export namespace BannerDesign {
                 return 0;
         }
     }
-    
+
     export function valsWithNames(): { value: BannerDesign, name: string }[] {
         const result: { value: BannerDesign, name: string }[] = [
             { value: BannerDesign.Waves, name: "Waves" },

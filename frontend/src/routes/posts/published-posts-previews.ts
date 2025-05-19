@@ -4,5 +4,6 @@ export type PostPreview = {
     publicationDate:Date;
     tags: string[];
     commentsCount:number;
+    likesCount:number;
     authorId:string;
 }

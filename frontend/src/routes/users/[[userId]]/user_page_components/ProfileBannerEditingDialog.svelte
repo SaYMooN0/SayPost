@@ -1,35 +1,41 @@
 <script lang="ts">
-    import { json } from "@sveltejs/kit";
     import BaseDialogWithCloseButton from "../../../../components/dialogs/BaseDialogWithCloseButton.svelte";
-    import { BannerDesign, DesignVariant } from "../user-profile";
+    import {
+        BannerDesign,
+        DesignVariant,
+        type UserProfileBanner,
+    } from "../user-profile";
     import ProfileBannerDisplay from "./ProfileBannerDisplay.svelte";
     import NumberSliderInput from "../../../../components/inputs/NumberSliderInput.svelte";
     import BannerColorInput from "./banner_editing_dialog_components/BannerColorInput.svelte";
     import DesignVariantInputButton from "./banner_editing_dialog_components/DesignVariantInputButton.svelte";
     import DesignSelectInput from "./banner_editing_dialog_components/DesignSelectInput.svelte";
+    import { ApiMain } from "../../../../ts/backend-services";
+    import type { Err } from "../../../../ts/common/errs/err";
+    import DefaultErrBlock from "../../../../components/err_blocks/DefaultErrBlock.svelte";
     let {
         scale,
         colors,
         design,
         designVariant,
+        updateValuesOnPage,
     }: {
         scale: number;
         colors: string[];
         design: BannerDesign;
         designVariant: DesignVariant;
+        updateValuesOnPage: (newVal: UserProfileBanner) => void;
     } = $props<{
         scale: number;
         colors: string[];
         design: BannerDesign;
         designVariant: DesignVariant;
+        updateValuesOnPage: (newVal: UserProfileBanner) => void;
     }>();
-    let chosenScale = $state(scale);
-    let chosenColors = $state(colors);
-    let chosenDesign = $state(design);
-    let chosenDesignVariant = $state(designVariant);
+    let inputs = $state({ scale, colors: [...colors], design, designVariant });
     let designColorIndexes = $derived(
         Array.from(
-            { length: BannerDesign.colorsInBannerDesignCount(chosenDesign) },
+            { length: BannerDesign.colorsInBannerDesignCount(inputs.design) },
             (_, i) => i,
         ),
     );
@@ -37,7 +43,20 @@
     export function open() {
         dialogEl.open();
     }
-    async function save() {}
+    async function save() {
+        console.log("a-----",{ ...inputs });
+        const response = await ApiMain.fetchJsonResponse<UserProfileBanner>(
+            `/profile/update-banner/`,
+            ApiMain.requestJsonPostOptions({ ...inputs }, "PATCH"),
+        );
+        if (response.isSuccess) {
+            updateValuesOnPage(response.data);
+            savingErrs = [];
+        } else {
+            savingErrs = response.errors;
+        }
+    }
+    let savingErrs: Err[] = $state([]);
 </script>
 
 <BaseDialogWithCloseButton
@@ -47,19 +66,14 @@
     <h2 class="banner-title">Profile banner editing</h2>
     <p class="section-label">Banner preview</p>
     <div class="banner-preview-container">
-        <ProfileBannerDisplay
-            scale={chosenScale}
-            colors={chosenColors}
-            design={chosenDesign}
-            designVariant={chosenDesignVariant}
-        />
+        <ProfileBannerDisplay {...inputs} />
     </div>
     <p class="section-label">Banner colors</p>
     <div class="colors-container">
         {#each designColorIndexes as colorI}
             <BannerColorInput
                 labelText={`Color #${colorI + 1}`}
-                bind:color={chosenColors[colorI]}
+                bind:color={inputs.colors[colorI]}
             />
         {/each}
     </div>
@@ -68,8 +82,8 @@
         {#each BannerDesign.valsWithNames() as { value, name }}
             <DesignSelectInput
                 {name}
-                isChosen={chosenDesign == value}
-                choose={() => (chosenDesign = value)}
+                isChosen={inputs.design == value}
+                choose={() => (inputs.design = value)}
             />
         {/each}
     </div>
@@ -79,23 +93,24 @@
             <DesignVariantInputButton
                 inputVal={variant}
                 labelText="Variant #{i + 1}"
-                choose={(val) => (chosenDesignVariant = val)}
-                isChosen={chosenDesignVariant == variant}
-                {chosenColors}
-                {chosenDesign}
+                choose={(val) => (inputs.designVariant = val)}
+                isChosen={inputs.designVariant == variant}
+                chosenColors={inputs.colors}
+                chosenDesign={inputs.design}
             />
         {/each}
     </div>
     <p class="section-label">Banner scale</p>
     <div class="scale-container">
         <NumberSliderInput
-            bind:value={chosenScale}
+            bind:value={inputs.scale}
             min={1}
             max={2}
             step={0.01}
             labelMarks={[1, 1.5, 2]}
         />
     </div>
+    <DefaultErrBlock errList={savingErrs} />
     <button class="save-btn" onclick={() => save()}>Save</button>
 </BaseDialogWithCloseButton>
 
@@ -113,8 +128,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 72rem;
-        height: 55rem;
+        width: 68rem;
+        height: min(55rem, 90vh);
         box-sizing: border-box;
         overflow-y: auto;
     }
@@ -160,6 +175,25 @@
         flex-direction: row;
         gap: 1rem;
     }
+    .scale-container {
+        width: 40rem;
+    }
+
+    .save-btn {
+        margin-top: 2rem;
+        background-color: var(--accent-main);
+        color: var(--back-main);
+        border: none;
+        border-radius: 0.25rem;
+        padding: 0.25rem 1rem;
+        font-size: 1.25rem;
+        font-weight: 520;
+        cursor: pointer;
+        transition: all 0.04s ease-in;
+    }
+    .save-btn:hover {
+        background-color: var(--accent-hov);
+    }
     :global(.dialog-content .selection-indicator) {
         height: 0.75rem;
         width: 0.5rem;
@@ -172,12 +206,8 @@
     :global(.dialog-content .selection-indicator.selected) {
         border-color: var(--accent-main);
     }
-
-    .save-btn {
-        margin: 1rem 0 0;
-    }
-    .scale-container {
-        width: 40rem;
-        margin-bottom: 12rem;
+    :global(.dialog-content .err-block) {
+        margin: 2rem 2rem 0 2rem;
+        box-sizing: border-box;
     }
 </style>

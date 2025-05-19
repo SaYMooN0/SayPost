@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SayPostMainService.Domain.published_post_aggregate;
 using SayPostMainService.Infrastructure.persistence.configurations.value_converters;
+using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
@@ -39,10 +40,10 @@ public class PublishedPostsConfigurations : IEntityTypeConfiguration<PublishedPo
         builder
             .Property(x => x.PublicationDate);
 
-        builder.Ignore(p => p.Comments);
+        builder.Ignore(p => p.LikesCount);
         builder
-            .HasMany<PostComment>("_comments")
-            .WithOne()
-            .HasForeignKey("PostId");
+            .Property<HashSet<AppUserId>>("_likedByUserIds")
+            .HasColumnName("LikedByUserIds")
+            .HasGuidBasedIdsHashSetConversion();
     }
 }
