@@ -1,13 +1,13 @@
 ﻿using ApiShared;
 using ApiShared.extensions;
 using MediatR;
+using SayPostMainService.Api.contracts.post_comments;
 using SayPostMainService.Api.contracts.published_posts;
 using SayPostMainService.Api.extensions;
 using SayPostMainService.Application.comments;
-using SayPostMainService.Application.draft_posts.commands;
+using SayPostMainService.Application.comments.queries;
 using SayPostMainService.Application.published_posts.commands;
 using SayPostMainService.Application.published_posts.queries;
-using SayPostMainService.Domain.common;
 using SharedKernel.common.domain.ids;
 using SharedKernel.configs;
 
@@ -19,11 +19,15 @@ internal static class SpecificPostHandlers
         endpoints
             .WithGroupEnsurePostExistsRequired();
 
-
         endpoints.MapGet("/", GetPostData);
-        endpoints.MapPost("/comment", CommentPost)
+        endpoints.MapGet("/comments", GetPostComments);
+        endpoints.MapPost("/add-comment", CommentPost)
             .WithAuthenticationRequired()
             .WithRequestValidation<CommentPostRequest>();
+        endpoints.MapPatch("/like", LikePost)
+            .WithAuthenticationRequired();
+        endpoints.MapPatch("/unlike", UnlikePost)
+            .WithAuthenticationRequired();
 
 
         return endpoints;
@@ -45,16 +49,50 @@ internal static class SpecificPostHandlers
             });
     }
 
+    private static async Task<IResult> GetPostComments(
+        HttpContext httpContext, ISender mediator, string sortOption = "newest"
+    ) {
+        PublishedPostId postId = httpContext.GetPublishedPostIdFromRoute();
+
+        CommentsForPostQuery query = new(postId, sortOption);
+        var result = await mediator.Send(query);
+
+        return CustomResults.FromErrOr(result, (comments) =>
+            Results.Json(ListPostCommentsResponse.FromComments(comments)));
+    }
+
     private static async Task<IResult> CommentPost(
         HttpContext httpContext, ISender mediator
     ) {
-        AppUserId userId = httpContext.GetAuthenticatedUserId();
         PublishedPostId postId = httpContext.GetPublishedPostIdFromRoute();
         var request = httpContext.GetValidatedRequest<CommentPostRequest>();
 
-        CommentPostCommand command = new(postId, request.Content);
+        AddCommentToPostCommand command = new(postId, request.Content);
         var result = await mediator.Send(command);
 
-        return CustomResults.FromErrOr(result, (comment) => Results.Json(PostCommentData.FromComment(comment)));
+        return CustomResults.FromErrOr(result, (comment) =>
+            Results.Json(PostCommentResponse.FromComment(comment)));
+    }
+
+    private static async Task<IResult> LikePost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        PublishedPostId postId = httpContext.GetPublishedPostIdFromRoute();
+
+        LikePostCommand command = new(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result, (likesCount) => Results.Ok(new { LikesCount = likesCount }));
+    }
+
+    private static async Task<IResult> UnlikePost(
+        HttpContext httpContext, ISender mediator
+    ) {
+        PublishedPostId postId = httpContext.GetPublishedPostIdFromRoute();
+
+        UnlikePostCommand command = new(postId);
+        var result = await mediator.Send(command);
+
+        return CustomResults.FromErrOr(result, (likesCount) => Results.Ok(new { LikesCount = likesCount }));
     }
 }

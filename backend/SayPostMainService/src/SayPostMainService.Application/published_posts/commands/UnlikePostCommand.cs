@@ -8,9 +8,9 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostMainService.Application.published_posts.commands;
 
-public record class UnlikePostCommand(PublishedPostId PostId) : IRequest<ErrOrNothing>;
+public record class UnlikePostCommand(PublishedPostId PostId) : IRequest<ErrOr<int>>;
 
-internal class UnlikePostCommandHandler : IRequestHandler<UnlikePostCommand, ErrOrNothing>
+internal class UnlikePostCommandHandler : IRequestHandler<UnlikePostCommand, ErrOr<int>>
 {
     private readonly IPublishedPostsRepository _publishedPostsRepository;
     private readonly ICurrentActorProvider _currentActorProvider;
@@ -24,7 +24,7 @@ internal class UnlikePostCommandHandler : IRequestHandler<UnlikePostCommand, Err
     }
 
 
-    public async Task<ErrOrNothing> Handle(
+    public async Task<ErrOr<int>> Handle(
         UnlikePostCommand command, CancellationToken cancellationToken
     ) {
         PublishedPost? post = await _publishedPostsRepository.GetById(command.PostId);
@@ -41,6 +41,6 @@ internal class UnlikePostCommandHandler : IRequestHandler<UnlikePostCommand, Err
         }
 
         await _publishedPostsRepository.Update(post);
-        return ErrOrNothing.Nothing;
+        return post.LikesCount;
     }
 }

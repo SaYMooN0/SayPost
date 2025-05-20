@@ -10,17 +10,17 @@ using SharedKernel.date_time_provider;
 
 namespace SayPostMainService.Application.comments;
 
-public record class CommentPostCommand(PublishedPostId PostId, string Content) :
+public record class AddCommentToPostCommand(PublishedPostId PostId, string Content) :
     IRequest<ErrOr<PostComment>>;
 
-internal class CommentPostCommandHandler : IRequestHandler<CommentPostCommand, ErrOr<PostComment>>
+internal class AddCommentToPostCommandHandler : IRequestHandler<AddCommentToPostCommand, ErrOr<PostComment>>
 {
     private readonly IPublishedPostsRepository _publishedPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICurrentActorProvider _currentActorProvider;
 
 
-    public CommentPostCommandHandler(
+    public AddCommentToPostCommandHandler(
         IPublishedPostsRepository publishedPostsRepository,
         IDateTimeProvider dateTimeProvider,
         ICurrentActorProvider currentActorProvider
@@ -32,7 +32,7 @@ internal class CommentPostCommandHandler : IRequestHandler<CommentPostCommand, E
 
 
     public async Task<ErrOr<PostComment>> Handle(
-        CommentPostCommand command, CancellationToken cancellationToken
+        AddCommentToPostCommand command, CancellationToken cancellationToken
     ) {
         PublishedPost? post = await _publishedPostsRepository.GetById(command.PostId);
         if (post is null) {

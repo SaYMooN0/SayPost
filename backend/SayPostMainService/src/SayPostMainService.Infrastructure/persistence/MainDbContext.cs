@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.draft_post_aggregate;
+using SayPostMainService.Domain.post_comment_aggregate;
 using SayPostMainService.Domain.post_tag_aggregate;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain;
@@ -18,6 +19,7 @@ public class MainDbContext : DbContext
     public DbSet<DraftPost> DraftPosts { get; init; } = null!;
     public DbSet<PublishedPost> PublishedPosts { get; init; } = null!;
     public DbSet<PostTag> PostTags { get; init; } = null!;
+    public DbSet<PostComment> PostComments { get; init; } = null!;
 
 
     public MainDbContext(DbContextOptions<MainDbContext> options, IPublisher publisher) : base(options) {

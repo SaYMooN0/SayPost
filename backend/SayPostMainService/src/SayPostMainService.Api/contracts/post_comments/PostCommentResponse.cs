@@ -1,16 +1,15 @@
 ﻿using SayPostMainService.Domain.post_comment_aggregate;
-using SayPostMainService.Domain.published_post_aggregate;
 
-namespace SayPostMainService.Api.contracts.published_posts;
+namespace SayPostMainService.Api.contracts.post_comments;
 
-public record class PostCommentData(
+public record class PostCommentResponse(
     string Id,
     string Content,
     DateTime CreatedAt,
     string AuthorId
 )
 {
-    public static PostCommentData FromComment(PostComment comment) => new(
+    public static PostCommentResponse FromComment(PostComment comment) => new(
         comment.Id.ToString(),
         comment.Content,
         comment.CreatedAt,

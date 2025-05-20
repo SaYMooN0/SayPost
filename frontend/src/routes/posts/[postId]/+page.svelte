@@ -1,9 +1,12 @@
 <script lang="ts">
 	import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
 	import ErrView from "../../../components/err_blocks/ErrView.svelte";
+	import CubeLoader from "../../../components/loaders/CubeLoader.svelte";
 	import { Err } from "../../../ts/common/errs/err";
 	import type { PageProps } from "./$types";
+	import type { PostComment } from "./published-posts";
 	import CommentsSection from "./specific_post_page_components/CommentsSection.svelte";
+    import LikesSection from "./specific_post_page_components/LikesSection.svelte";
 	import PostContentHeadingView from "./specific_post_page_components/post_content_items/PostContentHeadingView.svelte";
 	import PostContentListView from "./specific_post_page_components/post_content_items/PostContentListView.svelte";
 	import PostContentParagraphView from "./specific_post_page_components/post_content_items/PostContentParagraphView.svelte";
@@ -11,7 +14,7 @@
 	import PostContentSubheadingView from "./specific_post_page_components/post_content_items/PostContentSubheadingView.svelte";
 
 	let { data }: PageProps = $props();
-	// let comments = $state(data.post.comments); //fetch
+
 </script>
 
 {#if data.errors}
@@ -45,7 +48,8 @@
 		{/each}
 	</div>
 	<div class="divider"></div>
-	<!-- <CommentsSection postId={data.post.id} bind:comments /> -->
+	<LikesSection likesCount={data.post.likesCount} isLikedByViewer={data.post.isLikedByActor ?? false} />
+	<CommentsSection postId={data.post.id}  />
 {/if}
 
 <style>

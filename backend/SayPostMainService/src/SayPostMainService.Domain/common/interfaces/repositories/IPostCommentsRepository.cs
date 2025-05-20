@@ -1,0 +1,11 @@
+﻿using SayPostMainService.Domain.post_comment_aggregate;
+using SharedKernel.common.domain.ids;
+
+namespace SayPostMainService.Domain.common.interfaces.repositories;
+
+public interface IPostCommentsRepository
+{
+    Task<IReadOnlyCollection<PostComment>> GetCommentsForPostAsNoTracking(
+        PublishedPostId postId, CommentsSortOption sortOption
+    );
+}

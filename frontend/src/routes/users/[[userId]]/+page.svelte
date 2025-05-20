@@ -92,11 +92,11 @@
 
 <style>
     .banner {
-        margin-top: 1rem;
         position: relative;
         width: 100%;
-        aspect-ratio: 5 / 1;
+        margin-top: 1rem;
         border-radius: 0.75rem 0.75rem 0.25rem 0.25rem;
+        aspect-ratio: 5 / 1;
     }
 
     .banner > :global(svg) {

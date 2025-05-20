@@ -139,7 +139,7 @@
     }
 
     .banner-title {
-        margin: 0.5rem 0 0 0;
+        margin: 0.5rem 0 0;
         font-size: 1.5rem;
     }
 
@@ -175,39 +175,44 @@
         flex-direction: row;
         gap: 1rem;
     }
+
     .scale-container {
         width: 40rem;
     }
 
     .save-btn {
+        padding: 0.25rem 1rem;
         margin-top: 2rem;
-        background-color: var(--accent-main);
-        color: var(--back-main);
         border: none;
         border-radius: 0.25rem;
-        padding: 0.25rem 1rem;
+        background-color: var(--accent-main);
+        color: var(--back-main);
         font-size: 1.25rem;
         font-weight: 520;
-        cursor: pointer;
         transition: all 0.04s ease-in;
+        cursor: pointer;
     }
+
     .save-btn:hover {
         background-color: var(--accent-hov);
     }
+
     :global(.dialog-content .selection-indicator) {
-        height: 0.75rem;
         width: 0.5rem;
-        box-sizing: border-box;
-        border: 0.125rem solid var(--gray);
-        background-color: transparent;
+        height: 0.75rem;
         padding: 0.25rem;
+        border: 0.125rem solid var(--gray);
         border-radius: 2rem;
+        background-color: transparent;
+        box-sizing: border-box;
     }
+
     :global(.dialog-content .selection-indicator.selected) {
         border-color: var(--accent-main);
     }
+
     :global(.dialog-content .err-block) {
-        margin: 2rem 2rem 0 2rem;
+        margin: 2rem 2rem 0;
         box-sizing: border-box;
     }
 </style>

@@ -16,3 +16,7 @@ export type PostComment = {
     authorId: string;
     createdAt: Date;
 }
+export enum CommentsSortOption {
+    Newest = "newest",
+    Oldest = "oldest"
+}

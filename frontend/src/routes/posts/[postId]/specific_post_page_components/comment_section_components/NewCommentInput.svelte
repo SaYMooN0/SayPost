@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount, tick } from "svelte";
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
@@ -19,7 +20,7 @@
     }>();
     async function saveComment() {
         const response = await ApiMain.fetchJsonResponse<PostComment>(
-            `/posts/${postId}/comment`,
+            `/posts/${postId}/add-comment`,
             ApiMain.requestJsonPostOptions({ content: commentValue }, "POST"),
         );
         if (response.isSuccess) {
@@ -37,12 +38,16 @@
         }
         if (!inputEl) return;
         inputEl.style.height = "auto";
-        inputEl.style.height = inputEl.scrollHeight + "px";
+        inputEl.style.height = inputEl.scrollHeight + 4 + "px";
+        console.log("dsa");
     }
     function cancelEditing() {
         commentValue = "";
         saveErrs = [];
     }
+    onMount(() => {
+        onCommentInput();
+    });
 </script>
 
 <div class="container">
@@ -74,17 +79,21 @@
         width: 100%;
         padding: 0.125rem 0.25rem 0;
         border: none;
-        border-radius: 0.25rem 0.25rem 0.125rem 0.125rem;
-        background-color: var(--back-second);
+        border: 0.125rem solid var(--back-main);
+        border-radius: 0;
+        background-color: var(--back-main);
         color: var(--text-main);
         font-size: 1.25rem;
-        border-bottom: 0.125rem solid var(--gray);
+        transition: all 0.12s ease-in;
+        box-sizing: border-box;
+        border-bottom-color: var(--gray);
         outline: none;
         resize: none;
     }
 
     textarea:focus {
-        border-color: var(--accent-main);
+        border: 0.125rem solid var(--accent-main);
+        border-radius: 0.25rem;
         background-color: transparent;
     }
 

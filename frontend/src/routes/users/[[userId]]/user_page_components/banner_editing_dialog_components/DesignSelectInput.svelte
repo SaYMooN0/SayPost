@@ -10,19 +10,19 @@
 <style>
     .design-input {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
         gap: 0.25rem;
         width: 9rem;
         height: 3.25rem;
+        border: 0.125rem solid transparent;
+        border-radius: 0.75rem;
         font-size: 1rem;
         font-weight: 500;
-        border-radius: 0.75rem;
         box-shadow: rgb(0 0 0 / 15%) 0 1px 4px;
         transition: all 0.04s ease-in;
         cursor: pointer;
-        border: 0.125rem solid transparent;
     }
 
     .design-input:hover {
@@ -31,8 +31,8 @@
     }
 
     .design-input.chosen {
+        border-color: var(--accent-main);
         box-shadow: rgb(43 15 189 / 35%) 0 1px 4px;
         transform: scale(1.06);
-        border-color: var(--accent-main);
     }
 </style>
