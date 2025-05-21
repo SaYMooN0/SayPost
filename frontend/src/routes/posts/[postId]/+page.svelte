@@ -4,32 +4,23 @@
 	import CubeLoader from "../../../components/loaders/CubeLoader.svelte";
 	import { Err } from "../../../ts/common/errs/err";
 	import type { PageProps } from "./$types";
-	import type { PostComment } from "./published-posts";
 	import CommentsSection from "./specific_post_page_components/CommentsSection.svelte";
-    import LikesSection from "./specific_post_page_components/LikesSection.svelte";
+	import LikesSection from "./specific_post_page_components/AuthorAndLikesSection.svelte";
 	import PostContentHeadingView from "./specific_post_page_components/post_content_items/PostContentHeadingView.svelte";
 	import PostContentListView from "./specific_post_page_components/post_content_items/PostContentListView.svelte";
 	import PostContentParagraphView from "./specific_post_page_components/post_content_items/PostContentParagraphView.svelte";
 	import PostContentQuoteView from "./specific_post_page_components/post_content_items/PostContentQuoteView.svelte";
 	import PostContentSubheadingView from "./specific_post_page_components/post_content_items/PostContentSubheadingView.svelte";
+	import AuthorAndLikesSection from "./specific_post_page_components/AuthorAndLikesSection.svelte";
 
 	let { data }: PageProps = $props();
-
 </script>
 
 {#if data.errors}
 	<DefaultErrBlock errList={data.errors} />
 {:else}
 	<h1>{data.post.title}</h1>
-	<p class="author">
-		by <a
-			href="/users/{data.post.authorId}"
-			data-sveltekit-preload-data="tap"
-		>
-			{data.post.authorId}
-		</a>
-	</p>
-	<div class="divider"></div>
+
 	<div class="post-content">
 		{#each data.post.content.items as item}
 			{#if item.$type === "HeadingContentItem"}
@@ -48,8 +39,13 @@
 		{/each}
 	</div>
 	<div class="divider"></div>
-	<LikesSection likesCount={data.post.likesCount} isLikedByViewer={data.post.isLikedByActor ?? false} />
-	<CommentsSection postId={data.post.id}  />
+	<AuthorAndLikesSection
+		postId={data.post.id}
+		authorId={data.post.authorId}
+		likesCount={data.post.likesCount}
+		isLikedByViewer={data.post.isLikedByActor ?? false}
+	/>
+	<CommentsSection postId={data.post.id} />
 {/if}
 
 <style>
@@ -59,13 +55,6 @@
 		text-align: center;
 		overflow-wrap: anywhere;
 		text-wrap: balance;
-	}
-
-	.author {
-		width: 100%;
-		color: var(--gray);
-		font-size: 1.25rem;
-		text-align: end;
 	}
 
 	.post-content {

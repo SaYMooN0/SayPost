@@ -24,6 +24,11 @@ internal class PostCommentsRepository : IPostCommentsRepository
                 .ToListAsync()
         )
         .AsReadOnly();
+
+    public async Task Add(PostComment comment) {
+        _db.PostComments.Add(comment);
+        await _db.SaveChangesAsync();
+    }
 }
 
 file static class PostCommentsRepositoryExtension

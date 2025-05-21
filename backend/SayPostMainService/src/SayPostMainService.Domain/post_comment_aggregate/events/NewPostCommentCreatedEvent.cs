@@ -5,6 +5,7 @@ using SharedKernel.common.domain.ids;
 namespace SayPostMainService.Domain.post_comment_aggregate.events;
 
 public record class NewPostCommentCreatedEvent(
+    PostCommentId CommentId,
     PublishedPostId PostId,
     AppUserId CommentAuthorId
 ) : IDomainEvent;

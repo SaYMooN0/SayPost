@@ -4,6 +4,7 @@
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
     import type { PostComment } from "../../published-posts";
+    import { StringUtils } from "../../../../../ts/common/utils/string-utils";
 
     let commentValue = $state("");
     let saveErrs: Err[] = $state([]);
@@ -60,8 +61,12 @@
     />
     <div class="btns-container">
         <button class="cancel-btn" onclick={cancelEditing}> Cancel </button>
-        <button class="save-btn" onclick={() => saveComment()}>
-            Add a comment
+        <button
+            class="save-btn"
+            disabled={StringUtils.isNullOrWhiteSpace(commentValue)}
+            onclick={() => saveComment()}
+        >
+            Comment
         </button>
     </div>
     <DefaultErrBlock errList={saveErrs} />
@@ -98,27 +103,61 @@
     }
 
     .btns-container {
-        display: none;
+        display: flex;
         flex-direction: row;
         justify-content: right;
         gap: 0.5rem;
         height: 0;
+        margin-top: -0.5rem;
         opacity: 0;
-        transition: all 0.2s ease;
+        transition: all 0.12s ease;
         grid-template-columns: 1fr 1fr;
         interpolate-size: allow-keywords;
     }
 
-    .container:has(textarea:focus) .btns-container,
+    .btns-container button {
+        padding: 0;
+        border: none;
+        border-radius: 0.25rem;
+        font-size: 0;
+        transition: inherit;
+    }
+
+    .container:focus-within .btns-container,
     .container:has(textarea:not(:placeholder-shown)) .btns-container {
-        display: flex;
         height: auto;
+        margin-top: 0;
         opacity: 1;
     }
 
-    .container:has(textarea:not(:empty)) .btns-container {
-        display: flex;
-        height: auto;
-        opacity: 1;
+    .container:focus-within .btns-container button,
+    .container:has(textarea:not(:placeholder-shown)) .btns-container button {
+        padding: 0.25rem 0.5rem;
+        font-size: 1rem;
+    }
+
+    .btns-container button:active {
+        transform: scale(0.95);
+    }
+
+    .cancel-btn {
+        background-color: var(--gray);
+        color: var(--back-main);
+    }
+
+    .save-btn {
+        background-color: var(--accent-main);
+        color: var(--back-main);
+    }
+
+    .save-btn:hover {
+        background-color: var(--accent-main);
+        color: var(--back-main);
+    }
+
+    .save-btn:disabled {
+        background-color: var(--back-second);
+        color: var(--gray);
+        cursor: not-allowed;
     }
 </style>

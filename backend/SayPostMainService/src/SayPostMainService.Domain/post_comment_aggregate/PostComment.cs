@@ -47,7 +47,7 @@ public class PostComment : AggregateRoot<PostCommentId>
         }
 
         var comment = new PostComment(PostCommentId.CreateNew(), text, postId, authorId, dateTimeProvider.Now);
-        comment.AddDomainEvent(new NewPostCommentCreatedEvent(postId, authorId));
+        comment.AddDomainEvent(new NewPostCommentCreatedEvent(comment.Id, postId, authorId));
         return comment;
     }
 }

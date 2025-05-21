@@ -23,7 +23,7 @@
         const url = `/posts/${postId}/comments?sortOption=${sortOption}`;
         const response = await ApiMain.fetchJsonResponse<{
             comments: PostComment[];
-        }>(`/posts/${postId}/comments`, { method: "GET" });
+        }>(url, { method: "GET" });
 
         if (response.isSuccess) {
             comments = response.data.comments;
@@ -39,39 +39,49 @@
     <NewCommentInput {postId} updateParentValue={addComment} />
 {/snippet}
 {#snippet unauthenticated()}
-    <div class="auth-needed">To leave a comment, you need to be logged in</div>
+    <div class="auth-needed">To leave a comment you need to be logged in</div>
 {/snippet}
 
-<AuthView {authenticated} {unauthenticated} />
-{#await fetchComments()}
-    <div class="no-comments loader-wrapper">
-        Loading comments
-        <CubeLoader />
-    </div>
-{:then}
-    {#if comments.length == 0}
-        <div class="no-comments">
-            This comment has no comments yet. Be the first
+<div class="comments-section">
+    <AuthView {authenticated} {unauthenticated} />
+    {#await fetchComments()}
+        <div class="no-comments loader-wrapper">
+            Loading comments
+            <CubeLoader />
         </div>
-    {:else}
-        <div class="comments-list-header">
-            <label class="comments-count">{comments.length} comments</label>
-            <SelectCommentsSorting bind:sortOption={sortOption} />
-        </div>
-        {#if commentsFetchingErrs.length === 0}
-            {#each comments as c}
-                <CommentView comment={c} />
-            {/each}
+    {:then}
+        {#if comments.length == 0}
+            <div class="no-comments">
+                This comment has no comments yet. Be the first
+            </div>
         {:else}
-            <DefaultErrBlock errList={commentsFetchingErrs} />
+            <SelectCommentsSorting
+                bind:sortOption
+                commentsCount={comments.length}
+            />
+            {#if commentsFetchingErrs.length === 0}
+                {#each comments as c}
+                    <CommentView comment={c} />
+                {/each}
+            {:else}
+                <DefaultErrBlock errList={commentsFetchingErrs} />
+            {/if}
         {/if}
-    {/if}
-{/await}
+    {/await}
+</div>
 
 <style>
+    .comments-section {
+        margin: 1rem 0 4rem;
+    }
+
     .auth-needed {
+        width: fit-content;
+        padding: 0.25rem 2rem;
+        border-radius: 0.25rem;
         background-color: var(--back-second);
         color: var(--text-main);
+        justify-self: center;
     }
 
     .no-comments {
@@ -79,7 +89,6 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin: 2rem 0 4rem;
         color: var(--gray);
         font-size: 1.5rem;
         font-weight: 440;

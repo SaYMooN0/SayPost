@@ -8,7 +8,7 @@ using SharedKernel.common.errs;
 using SharedKernel.common.errs.utils;
 using SharedKernel.date_time_provider;
 
-namespace SayPostMainService.Application.comments;
+namespace SayPostMainService.Application.comments.commands;
 
 public record class AddCommentToPostCommand(PublishedPostId PostId, string Content) :
     IRequest<ErrOr<PostComment>>;
@@ -18,16 +18,19 @@ internal class AddCommentToPostCommandHandler : IRequestHandler<AddCommentToPost
     private readonly IPublishedPostsRepository _publishedPostsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly ICurrentActorProvider _currentActorProvider;
+    private readonly IPostCommentsRepository _postCommentsRepository;
 
 
     public AddCommentToPostCommandHandler(
         IPublishedPostsRepository publishedPostsRepository,
         IDateTimeProvider dateTimeProvider,
-        ICurrentActorProvider currentActorProvider
+        ICurrentActorProvider currentActorProvider,
+        IPostCommentsRepository postCommentsRepository
     ) {
         _publishedPostsRepository = publishedPostsRepository;
         _dateTimeProvider = dateTimeProvider;
         _currentActorProvider = currentActorProvider;
+        _postCommentsRepository = postCommentsRepository;
     }
 
 
@@ -54,8 +57,7 @@ internal class AddCommentToPostCommandHandler : IRequestHandler<AddCommentToPost
         }
 
         var comment = creationRes.AsSuccess();
-        post.AddComment(comment.Id, comment.AuthorId);
-        await _publishedPostsRepository.Update(post);
+        await _postCommentsRepository.Add(comment);
         return comment;
     }
 }

@@ -5,6 +5,7 @@ using SayPostMainService.Api.contracts.post_comments;
 using SayPostMainService.Api.contracts.published_posts;
 using SayPostMainService.Api.extensions;
 using SayPostMainService.Application.comments;
+using SayPostMainService.Application.comments.commands;
 using SayPostMainService.Application.comments.queries;
 using SayPostMainService.Application.published_posts.commands;
 using SayPostMainService.Application.published_posts.queries;

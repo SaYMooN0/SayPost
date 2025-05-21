@@ -2,10 +2,13 @@
     import { onMount } from "svelte";
     import { CommentsSortOption } from "../../published-posts";
 
-    let { sortOption = $bindable() }: { sortOption: CommentsSortOption } =
-        $props<{
-            sortOption: CommentsSortOption;
-        }>();
+    let {
+        sortOption = $bindable(),
+        commentsCount,
+    }: { sortOption: CommentsSortOption; commentsCount: number } = $props<{
+        sortOption: CommentsSortOption;
+        commentsCount: number;
+    }>();
     let isSelectMenuOpen = $state(false);
     let buttonElement: HTMLElement;
     function sortOptionBtnClick(e: MouseEvent, newOption: CommentsSortOption) {
@@ -30,6 +33,7 @@
     onclick={() => (isSelectMenuOpen = !isSelectMenuOpen)}
     bind:this={buttonElement}
 >
+    {commentsCount} comments
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
         <path
             d="M11.0001 8L19.0001 8.00006"
@@ -92,16 +96,86 @@
         position: relative;
         display: inline-flex;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
-        padding: 0.25rem 1.25rem;
-        margin: 0.25em 0.75rem;
-        color: var(--text-main);
+        gap: 0.5rem;
+        margin-top: 0.5rem;
         font-size: 1.25rem;
         font-weight: 500;
-        transition: all 0.12s ease-in;
+    }
+
+    .sorting-label > svg {
+        width: 2rem;
+        height: 2rem;
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        background-color: var(--back-second);
         box-sizing: border-box;
-        border-bottom: 0.125rem solid transparent;
-        cursor: pointer;
-    } 
+    }
+
+    .sorting-label > svg:hover {
+        color: var(--accent-hov);
+    }
+
+    .sorting-label > svg:active {
+        color: var(--accent-hov);
+    }
+
+    .context-menu {
+        position: absolute;
+        top: -50%;
+        left: calc(100% + 0.5rem);
+        z-index: 1000;
+        display: none;
+        width: 14rem;
+        padding: 0.25rem;
+        border: 0.125rem solid var(--back-second);
+        border-radius: 0.5rem;
+        background: var(--back-main);
+        box-sizing: border-box;
+    }
+
+    .context-menu.open {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .context-menu.open > * {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .sort-option {
+        display: grid;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        transition: all 0.08s ease-in;
+        grid-template-columns: 1fr auto;
+    }
+
+    .sort-option > span {
+        display: inline;
+        width: 0.875rem;
+        height: 0.875rem;
+        border: 0.125rem solid var(--back-second);
+        border-radius: 0.75rem;
+        background-color: var(--back-second);
+        transition: inherit;
+        box-sizing: border-box;
+    }
+
+    .sort-option.chosen > span {
+        border-color: var(--accent-main);
+        background-color: var(--accent-main);
+    }
+
+    .sort-option:hover {
+        padding-left: 0.75rem;
+        background-color: var(--back-second);
+    }
+
+    .sort-option:hover > span {
+        border-color: var(--accent-main);
+    }
 </style>

@@ -8,4 +8,6 @@ public interface IPostCommentsRepository
     Task<IReadOnlyCollection<PostComment>> GetCommentsForPostAsNoTracking(
         PublishedPostId postId, CommentsSortOption sortOption
     );
+
+    Task Add(PostComment comment);
 }
