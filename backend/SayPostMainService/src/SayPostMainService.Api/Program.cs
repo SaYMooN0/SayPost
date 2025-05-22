@@ -3,7 +3,7 @@ using ApiShared;
 using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
 using SayPostMainService.Application;
-using SayPostMainService.Application.application_layer_interfaces;
+using SayPostMainService.Application.interfaces;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
 

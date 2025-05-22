@@ -42,6 +42,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiShared", "ApiShared\ApiS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureShared", "InfrastructureShared\InfrastructureShared.csproj", "{3FED53A5-DFA8-447C-AD29-B42D33086167}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SayPostFollowingsService", "SayPostFollowingsService", "{287E0BA9-3966-45A9-A1DB-EE67EF7F6C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostFollowingsService.Api", "SayPostFollowingsService\SayPostFollowingsService.Api\SayPostFollowingsService.Api.csproj", "{266F91D7-E89F-48B5-9A3C-F96F6F53874B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FollowingsQueryLib", "FollowingsQueryLib\FollowingsQueryLib.csproj", "{2678D372-C59C-458D-9190-101AF03CD15A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostFollowingsService.Infrastructure", "SayPostFollowingsService\SayPostFollowingsService.Infrastructure\SayPostFollowingsService.Infrastructure.csproj", "{557973FB-84DB-4D71-B423-42C052A15C3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostFollowingsService.Application", "SayPostFollowingsService\SayPostFollowingsService.Application\SayPostFollowingsService.Application.csproj", "{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SayPostFollowingsService.Domain", "SayPostFollowingsService\SayPostFollowingsService.Domain\SayPostFollowingsService.Domain.csproj", "{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +75,10 @@ Global
 		{C36A248A-4AE8-4DD0-A134-FFB43582C202} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
 		{CA610521-6D36-4DC0-A663-0D10F4965DEC} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
 		{A87702F0-94BB-46D4-8F3D-369B46CC6316} = {39D3031C-B050-4739-8E2C-FF12CD44DCE7}
+		{266F91D7-E89F-48B5-9A3C-F96F6F53874B} = {287E0BA9-3966-45A9-A1DB-EE67EF7F6C1B}
+		{557973FB-84DB-4D71-B423-42C052A15C3E} = {287E0BA9-3966-45A9-A1DB-EE67EF7F6C1B}
+		{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9} = {287E0BA9-3966-45A9-A1DB-EE67EF7F6C1B}
+		{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F} = {287E0BA9-3966-45A9-A1DB-EE67EF7F6C1B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{586F1533-695E-410D-AC27-4F14A8340386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -125,5 +141,25 @@ Global
 		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FED53A5-DFA8-447C-AD29-B42D33086167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266F91D7-E89F-48B5-9A3C-F96F6F53874B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266F91D7-E89F-48B5-9A3C-F96F6F53874B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266F91D7-E89F-48B5-9A3C-F96F6F53874B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266F91D7-E89F-48B5-9A3C-F96F6F53874B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2678D372-C59C-458D-9190-101AF03CD15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2678D372-C59C-458D-9190-101AF03CD15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2678D372-C59C-458D-9190-101AF03CD15A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2678D372-C59C-458D-9190-101AF03CD15A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{557973FB-84DB-4D71-B423-42C052A15C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{557973FB-84DB-4D71-B423-42C052A15C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{557973FB-84DB-4D71-B423-42C052A15C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{557973FB-84DB-4D71-B423-42C052A15C3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2F572A-A17C-4BBD-A1FB-28F20F586EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8EFE1F-B8AC-41F4-901D-0BFEE151976F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

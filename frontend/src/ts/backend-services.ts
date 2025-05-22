@@ -152,3 +152,4 @@ class BackendService {
 export const ApiAuth = new BackendService('/api/auth');
 export const ApiNotifications = new BackendService('/api/notifications');
 export const ApiMain = new BackendService('/api/main');
+export const ApiFollowings = new BackendService('/api/followings');

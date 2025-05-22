@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SayPostMainService.Application.application_layer_interfaces;
+using SayPostMainService.Application.interfaces;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;

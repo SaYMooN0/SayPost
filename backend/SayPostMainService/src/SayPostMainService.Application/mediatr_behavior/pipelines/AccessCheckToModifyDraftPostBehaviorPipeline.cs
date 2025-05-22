@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using SayPostMainService.Application.application_layer_interfaces;
+using SayPostMainService.Application.interfaces;
 using SayPostMainService.Application.mediatr_behavior.restrictors;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SharedKernel.common.errs.utils;

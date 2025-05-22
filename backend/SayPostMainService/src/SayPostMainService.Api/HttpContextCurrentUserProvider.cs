@@ -1,5 +1,5 @@
 ﻿using ApiShared.extensions;
-using SayPostMainService.Application.application_layer_interfaces;
+using SayPostMainService.Application.interfaces;
 using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Api;

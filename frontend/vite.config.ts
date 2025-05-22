@@ -25,6 +25,12 @@ export default defineConfig({
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api\/notifications/, '')
 			},
+			'^/api/followings': {
+				target: 'http://localhost:5250/',
+				secure: false,
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api\/followings/, '')
+			},
 
 		},
 		port: 5173
