@@ -7,7 +7,7 @@ using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class PublishedPostsConfigurations : IEntityTypeConfiguration<PublishedPost>
+internal class PublishedPostsConfigurations : IEntityTypeConfiguration<PublishedPost>
 {
     public void Configure(EntityTypeBuilder<PublishedPost> builder) {
         builder

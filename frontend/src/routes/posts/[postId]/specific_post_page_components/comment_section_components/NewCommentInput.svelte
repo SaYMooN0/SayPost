@@ -22,7 +22,7 @@
     async function saveComment() {
         const response = await ApiMain.fetchJsonResponse<PostComment>(
             `/posts/${postId}/add-comment`,
-            ApiMain.requestJsonPostOptions({ content: commentValue }, "POST"),
+            ApiMain.requestJsonOptions({ content: commentValue }, "POST"),
         );
         if (response.isSuccess) {
             commentValue = "";

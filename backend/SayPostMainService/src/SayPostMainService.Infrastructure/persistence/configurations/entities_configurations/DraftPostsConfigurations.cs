@@ -6,7 +6,7 @@ using SayPostMainService.Infrastructure.persistence.configurations.value_convert
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
+internal class DraftPostsConfigurations : IEntityTypeConfiguration<DraftPost>
 {
     public void Configure(EntityTypeBuilder<DraftPost> builder) {
         builder

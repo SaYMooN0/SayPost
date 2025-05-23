@@ -30,7 +30,7 @@
             newLastModified: Date;
         }>(
             `/draft-posts/${postId}/update-tags`,
-            ApiMain.requestJsonPostOptions({ newTags: chosenTags }, "PATCH"),
+            ApiMain.requestJsonOptions({ newTags: chosenTags }, "PATCH"),
         );
 
         if (response.isSuccess) {

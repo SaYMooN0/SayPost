@@ -1,4 +1,5 @@
 ﻿using ApiShared;
+using ApiShared.extensions;
 using MediatR;
 using SayPostMainService.Api.contracts.app_users;
 using SayPostMainService.Api.extensions;
@@ -11,7 +12,7 @@ internal static class SpecificAppUserHandlers
 {
     internal static IEndpointRouteBuilder MapSpecificAppUserHandlers(this RouteGroupBuilder endpoints) {
         endpoints.MapGet("/profile-data", GetAppUserProfileData);
-        
+
         return endpoints;
     }
 
@@ -20,11 +21,9 @@ internal static class SpecificAppUserHandlers
     ) {
         AppUserId userId = httpContext.GetUserIdFromRoute();
 
-        GetUserWithProfileBannerQuery query = new(userId);
+        GetUserFullProfileDataQuery query = new(userId);
         var result = await mediator.Send(query);
 
-        return CustomResults.FromErrOr(result,
-            (user) => Results.Json(UserProfileDataResponse.FromUser(user))
-        );
-    } 
+        return CustomResults.FromErrOr(result, (vm) => Results.Json(UserProfileDataResponse.Create(vm)));
+    }
 }

@@ -6,7 +6,7 @@ using SayPostMainService.Infrastructure.persistence.configurations.value_convert
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class UserProfileBannerConfigurations : IEntityTypeConfiguration<UserProfileBanner>
+internal class UserProfileBannerConfigurations : IEntityTypeConfiguration<UserProfileBanner>
 {
     public void Configure(EntityTypeBuilder<UserProfileBanner> builder) {
         builder

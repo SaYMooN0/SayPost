@@ -1,8 +1,10 @@
 using SayPostFollowingsService.Application;
 using SayPostFollowingsService.Infrastructure;
-using SayPostFollowingsService.Infrastructure.persistence;
 using System.Text.Json.Serialization;
 using ApiShared;
+using SayPostFollowingsService.Api.endpoints;
+using SayPostFollowingsService.Application.interfaces;
+using SayPostFollowingsService.Infrastructure.persistence;
 
 namespace SayPostFollowingsService.Api;
 
@@ -23,6 +25,10 @@ public class Program
 
         builder.Services.AddOpenApi();
 
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped<ICurrentActorProvider, HttpContextCurrentUserProvider>();
+
+        
         builder.Services
             .AddApplication(builder.Configuration)
             .AddInfrastructure(builder.Configuration)
@@ -43,11 +49,22 @@ public class Program
         app.AddExceptionHandlingMiddleware();
 
         MapHandlers(app);
-
+        using (var serviceScope = app.Services.CreateScope()) {
+            var db = serviceScope.ServiceProvider.GetRequiredService<FollowingDbContext>();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.AppUsers.Add(new(new(new("01964f73-b7e9-71c7-8b45-9f63b58df9e6"))));
+            // db.AppUsers.Add(new(new(new("0196405c-0c03-7520-8da6-d17cdc334ba7"))));
+            db.SaveChanges();
+        }
 
         app.UseCors("AllowFrontend");
         app.Run();
     }
 
-    private static void MapHandlers(WebApplication app) { }
+    private static void MapHandlers(WebApplication app) {
+        app.MapGroup("/users/{userId}").MapSpecificAppUserHandlers();
+
+
+    }
 }

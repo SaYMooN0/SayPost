@@ -6,7 +6,7 @@ namespace FollowingsQueryLib;
 
 public class UserRelationsDbContext : DbContext
 {
-    internal DbSet<FollowingsLibAppUser> Users { get; set; } = null!;
+    internal DbSet<AppUserWithFollowingsData> Users { get; set; } = null!;
     public UserRelationsDbContext(DbContextOptions<UserRelationsDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {

@@ -24,7 +24,7 @@ class BackendService {
     constructor(baseUrl: string) {
         this._baseUrl = baseUrl;
     }
-    public requestJsonPostOptions(data: any, method = "POST"): RequestInit {
+    public requestJsonOptions(data: any, method = "POST"): RequestInit {
         return {
             method,
             headers: { 'Content-Type': 'application/json' },

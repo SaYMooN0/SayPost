@@ -9,7 +9,7 @@
     async function confirmRegistration() {
         return ApiAuth.fetchVoidResponse(
             "/confirm-registration",
-            ApiAuth.requestJsonPostOptions({ userId, confirmationCode }),
+            ApiAuth.requestJsonOptions({ userId, confirmationCode }),
         );
     }
 </script>

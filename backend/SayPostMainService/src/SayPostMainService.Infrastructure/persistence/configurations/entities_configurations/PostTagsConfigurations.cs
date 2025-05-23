@@ -5,7 +5,7 @@ using SayPostMainService.Infrastructure.persistence.configurations.value_convert
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class PostTagsConfigurations : IEntityTypeConfiguration<PostTag>
+internal class PostTagsConfigurations : IEntityTypeConfiguration<PostTag>
 {
     public void Configure(EntityTypeBuilder<PostTag> builder) {
         builder

@@ -6,7 +6,7 @@ using SayPostAuthService.Infrastructure.persistence.configurations.value_convert
 
 namespace SayPostAuthService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class UnconfirmedAppUsersConfigurations : IEntityTypeConfiguration<UnconfirmedAppUser>
+internal class UnconfirmedAppUsersConfigurations : IEntityTypeConfiguration<UnconfirmedAppUser>
 {
     public void Configure(EntityTypeBuilder<UnconfirmedAppUser> builder) {
         builder

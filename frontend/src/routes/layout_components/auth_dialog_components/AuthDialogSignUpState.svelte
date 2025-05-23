@@ -54,7 +54,7 @@
         }
         const response = await ApiAuth.fetchJsonResponse<{ email: string }>(
             "/register",
-            ApiAuth.requestJsonPostOptions({
+            ApiAuth.requestJsonOptions({
                 email,
                 password,
                 confirmPassword,

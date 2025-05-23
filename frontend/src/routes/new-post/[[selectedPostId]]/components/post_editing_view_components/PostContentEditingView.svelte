@@ -93,7 +93,7 @@
             newLastModified: Date;
         }>(
             `/draft-posts/${postId}/update-content`,
-            ApiMain.requestJsonPostOptions(
+            ApiMain.requestJsonOptions(
                 { newPostContent: dataToSave },
                 "PATCH",
             ),

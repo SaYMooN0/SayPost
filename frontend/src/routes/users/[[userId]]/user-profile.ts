@@ -1,5 +1,6 @@
 export type UserProfile = {
     userId: string;
+    isViewerFollowing: boolean;
     profileBanner: UserProfileBanner;
     statistics: UserProfileStatistics;
 }
@@ -24,11 +25,11 @@ export enum DesignVariant {
     Var4 = "Var4",
     Var5 = "Var5"
 }
-//is following
 
 export type UserProfileStatistics = {
     publishedPostsCount: number;
     followersCount: number;
+    followingsCount: number;
     commentsLeftCount: number;
     likedPostsCount: number;
 }

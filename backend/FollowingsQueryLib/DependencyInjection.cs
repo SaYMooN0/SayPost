@@ -7,14 +7,14 @@ namespace FollowingsQueryLib;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddSharedUserRelationsContext(
+    public static IServiceCollection AddUserFollowingsReadRepository(
         this IServiceCollection services,
         IConfiguration configuration
     ) {
-        var dbConnectionString = configuration.GetConnectionString("UserRelationsDb")
+        var dbConnectionString = configuration.GetConnectionString("FollowingServiceDb")
                                 ?? throw new Exception("Database connection string is not provided.");
         services.AddDbContext<UserRelationsDbContext>(options => options.UseNpgsql(dbConnectionString));
-        services.AddScoped<IUserFollowingsRepository, UserFollowingsRepository>();
+        services.AddScoped<IUserFollowingsReadRepository, UserFollowingsReadRepository>();
 
         return services;
     }

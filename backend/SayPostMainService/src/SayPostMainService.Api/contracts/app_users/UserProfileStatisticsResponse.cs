@@ -1,4 +1,4 @@
-﻿using SayPostMainService.Domain.app_user_aggregate;
+﻿using SayPostMainService.Application.app_users.queries;
 
 namespace SayPostMainService.Api.contracts.app_users;
 
@@ -10,11 +10,11 @@ public record UserProfileStatisticsResponse(
     int LikedPostsCount
 )
 {
-    public static UserProfileStatisticsResponse Create(AppUser user, int followersCount, int followingsCount) => new(
-        user.PublishedPostsCount,
-        followersCount,
-        followingsCount,
-        user.LeftCommentsCount,
-        user.LikedPostsCount
+    public static UserProfileStatisticsResponse Create(UserFullProfileDataVm vm) => new(
+        vm.PublishedPostsCount,
+        vm.FollowersCount,
+        vm.FollowingsCount,
+        vm.CommentsCount,
+        vm.LikedPostsCount
     );
 }

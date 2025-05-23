@@ -47,7 +47,7 @@
         console.log("a-----",{ ...inputs });
         const response = await ApiMain.fetchJsonResponse<UserProfileBanner>(
             `/profile/update-banner/`,
-            ApiMain.requestJsonPostOptions({ ...inputs }, "PATCH"),
+            ApiMain.requestJsonOptions({ ...inputs }, "PATCH"),
         );
         if (response.isSuccess) {
             updateValuesOnPage(response.data);

@@ -17,7 +17,6 @@
             colors: ["#000000", "#ffffff"],
         },
     );
-    let isFollowing: null | boolean = $state(null);
     let bannerEditingDialog: ProfileBannerEditingDialog;
 </script>
 
@@ -42,27 +41,14 @@
         <UserStatisticsCard
             label={"Posts published"}
             value={(
-                data.pageUser.statistics?.postsPublished || 0
+                data.pageUser.statistics?.publishedPostsCount || 0
             ).toString()}
         >
             <label>#</label>
         </UserStatisticsCard>
-         <UserStatisticsCard
-            label={"Comments left"}
-            value={(
-                data.pageUser.statistics?.commentsLeft || 0
-            ).toString()}
-        >
-            <label>#</label>
-        </UserStatisticsCard>
-         <UserStatisticsCard
-            label={"Posts Liked"}
-            value={(
-                data.pageUser.statistics?.postsLiked || 0
-            ).toString()}
-        >
-            <label>#</label>
-        </UserStatisticsCard>
+        <p>
+            {JSON.stringify(data.pageUser.statistics, null, 2)}
+        </p>
     </div>
 {/if}
 {#snippet bannerAuthenticated(authData: AuthStoreData)}
@@ -87,7 +73,7 @@
 {/snippet}
 
 {#snippet bannerUnauthenticated()}
-    <label>Log in to follow users</label>
+    <label class="logging-to-follow-msg">Log in to follow users</label>
 {/snippet}
 
 <style>

@@ -28,15 +28,5 @@ public static class HttpContextExtensions
 
         return new PublishedPostId(guid);
     }
-    public static AppUserId GetUserIdFromRoute(this HttpContext context) {
-        var userIdStr = context.Request.RouteValues["userId"]?.ToString() ?? "";
-        if (!Guid.TryParse(userIdStr, out var guid)) {
-            throw new ErrCausedException(ErrFactory.InvalidData(
-                "Invalid user id",
-                $"Couldn't parse user id from route. Given value: {userIdStr}"
-            ));
-        }
-
-        return new AppUserId(guid);
-    }
+    
 }

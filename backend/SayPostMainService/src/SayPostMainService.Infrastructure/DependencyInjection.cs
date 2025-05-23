@@ -1,4 +1,5 @@
-﻿using InfrastructureShared.integration_events.background_service;
+﻿using FollowingsQueryLib;
+using InfrastructureShared.integration_events.background_service;
 using InfrastructureShared.integration_events.integration_events_publisher;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public static class DependencyInjection
             .AddPersistence(configuration)
             .AddMediatR()
             .AddDateTimeService()
+            .AddUserFollowingsReadRepository(configuration)
             ;
 
         return services;

@@ -8,7 +8,7 @@ using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Infrastructure.persistence.configurations.entities_configurations;
 
-public class PostCommentsConfigurations : IEntityTypeConfiguration<PostComment>
+internal class PostCommentsConfigurations : IEntityTypeConfiguration<PostComment>
 {
     public void Configure(EntityTypeBuilder<PostComment> builder) {
         builder

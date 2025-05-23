@@ -27,6 +27,8 @@ public class Program
         });
 
         builder.Services.AddOpenApi();
+        
+
         builder.Services
             .AddApplication(builder.Configuration)
             .AddInfrastructure(builder.Configuration)

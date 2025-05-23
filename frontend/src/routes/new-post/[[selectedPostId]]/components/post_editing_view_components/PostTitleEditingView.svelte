@@ -32,7 +32,7 @@
             newLastModified: Date;
         }>(
             `/draft-posts/${postId}/update-title`,
-            ApiMain.requestJsonPostOptions(
+            ApiMain.requestJsonOptions(
                 { newPostTitle: editableValue },
                 "PATCH",
             ),

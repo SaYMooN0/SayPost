@@ -46,7 +46,7 @@
         }
         const response = await ApiAuth.fetchVoidResponse(
             "/login",
-            ApiAuth.requestJsonPostOptions({ email, password }),
+            ApiAuth.requestJsonOptions({ email, password }),
         );
         if (response.isSuccess) {
             closeDialog();
