@@ -1,6 +1,6 @@
 export type UserProfile = {
     userId: string;
-    isViewerFollowing: boolean;
+    isFollowedByViewer: boolean;
     profileBanner: UserProfileBanner;
     statistics: UserProfileStatistics;
 }

@@ -1,6 +1,6 @@
-﻿using SharedKernel.common.domain;
+﻿using SayPostFollowingsService.Domain.app_user_aggregate.events;
+using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
-using SharedKernel.common.errs;
 
 namespace SayPostFollowingsService.Domain.app_user_aggregate;
 
@@ -16,9 +16,21 @@ public class AppUser : AggregateRoot<AppUserId>
         _followingIds = [];
     }
 
-    public bool AddFollower(AppUserId newFollowerId) => _followerIds.Add(newFollowerId);
+    public bool AddFollower(AppUserId newFollowerId) {
+        var changeMade = _followerIds.Add(newFollowerId);
+        if (changeMade) {
+            AddDomainEvent(new UserBecomeFollowerEvent());
+        }
+        return changeMade;
+    }
 
-    public bool RemoveFollower(AppUserId followerToRemoveId) => _followingIds.Remove(followerToRemoveId);
+    public bool RemoveFollower(AppUserId followerToRemoveId) {
+        var changeMade = _followerIds.Remove(followerToRemoveId);
+        if (changeMade) {
+            AddDomainEvent(new UserUnfollowedEvent());
+        }
+        return changeMade;
+    }
 
     public bool IsFollowedBy(AppUserId appUserId) => _followerIds.Contains(appUserId);
 }

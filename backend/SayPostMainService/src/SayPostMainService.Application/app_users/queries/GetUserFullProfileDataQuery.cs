@@ -55,9 +55,9 @@ internal class
         }
 
         bool osFollowedByViewer = false;
-        AppUserId viewerId = _currentActorProvider.AppUserId;
-        if (viewerId != query.UserId) {
-            osFollowedByViewer = followingsData.IsFollowedBy(_currentActorProvider.AppUserId);
+        var viewerIdRes = _currentActorProvider.UserId;
+        if (viewerIdRes.IsSuccess(out var viewerId) && viewerId != query.UserId) {
+            osFollowedByViewer = followingsData.IsFollowedBy(viewerId);
         }
 
         return new UserFullProfileDataVm(

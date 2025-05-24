@@ -7,4 +7,6 @@ public interface IAppUsersRepository
 {
     Task<AppUser?> GetById(AppUserId userId);
     Task Update(AppUser user);
+    Task Add(AppUser appUser);
+
 }

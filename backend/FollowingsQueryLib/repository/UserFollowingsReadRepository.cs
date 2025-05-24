@@ -15,5 +15,5 @@ internal class UserFollowingsReadRepository : IUserFollowingsReadRepository
 
 
     public Task<AppUserWithFollowingsData?> GetUser(AppUserId userId) =>
-        _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
+        _db.AppUsers.AsNoTracking(). FirstOrDefaultAsync(u => u.Id == userId);
 }

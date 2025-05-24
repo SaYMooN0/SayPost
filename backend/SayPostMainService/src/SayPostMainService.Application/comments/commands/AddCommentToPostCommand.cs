@@ -45,14 +45,16 @@ internal class AddCommentToPostCommandHandler : IRequestHandler<AddCommentToPost
             );
         }
 
+        var commentAuthor = _currentActorProvider.UserId;
+        if (commentAuthor.IsErr(out var err)) {
+            return err;
+        }
+
         var creationRes = PostComment.CreateNew(
-            command.Content,
-            command.PostId,
-            _currentActorProvider.AppUserId,
-            _dateTimeProvider
+            command.Content, command.PostId, commentAuthor.AsSuccess(), _dateTimeProvider
         );
 
-        if (creationRes.IsErr(out var err)) {
+        if (creationRes.IsErr(out err)) {
             return err;
         }
 

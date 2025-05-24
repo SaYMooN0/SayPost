@@ -23,10 +23,12 @@ public class AccessCheckToModifyDraftPostBehaviorPipeline<TRequest, TResponse>
     }
 
     public async Task<TResponse> Handle(
-        TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
-    {
+        TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken) {
         var draftPostId = request.DraftPostId;
-        var currentUserId = _currentActorProvider.AppUserId;
+        var currentUserId = _currentActorProvider.UserId;
+        if (currentUserId.IsErr()) {
+            throw new PipelineBehaviourException(ErrFactory.NoAccess("To edit posts you need to be authenticated"));
+        }
 
         var postAuthorGetRes = await _draftPostsRepository.GetPostAuthor(draftPostId);
 
@@ -35,8 +37,7 @@ public class AccessCheckToModifyDraftPostBehaviorPipeline<TRequest, TResponse>
 
         var postAuthorId = postAuthorGetRes.AsSuccess();
 
-        if (postAuthorId != currentUserId)
-        {
+        if (postAuthorId != currentUserId.AsSuccess()) {
             var noAccessErr = ErrFactory.NoAccess(
                 "You cannot modify this draft post",
                 "You need to be the author of the post"

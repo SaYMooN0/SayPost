@@ -7,6 +7,7 @@
     import ProfileBannerEditingDialog from "./user_page_components/ProfileBannerEditingDialog.svelte";
     import { BannerDesign, DesignVariant } from "./user-profile";
     import UserStatisticsCard from "./user_page_components/UserStatisticsCard.svelte";
+    import UserPageFollowButton from "./user_page_components/UserPageFollowButton.svelte";
 
     let { data }: PageProps = $props();
     let pageProfileBanner = $state(
@@ -52,23 +53,28 @@
     </div>
 {/if}
 {#snippet bannerAuthenticated(authData: AuthStoreData)}
-    {#if data.pageUser && authData.UserId == data.pageUser.userId}
-        <button
-            class="edit-banner-btn"
-            onclick={() => bannerEditingDialog.open()}>Edit</button
-        >
-        <ProfileBannerEditingDialog
-            bind:this={bannerEditingDialog}
-            scale={pageProfileBanner.scale}
-            colors={pageProfileBanner.colors}
-            design={pageProfileBanner.design}
-            designVariant={pageProfileBanner.variant}
-            updateValuesOnPage={(newVal) => {
-                pageProfileBanner = newVal;
-            }}
-        />
-    {:else}
-        <div class="is-following">Is following state</div>
+    {#if data.pageUser}
+        {#if authData.UserId == data.pageUser.userId}
+            <button
+                class="edit-banner-btn"
+                onclick={() => bannerEditingDialog.open()}>Edit</button
+            >
+            <ProfileBannerEditingDialog
+                bind:this={bannerEditingDialog}
+                scale={pageProfileBanner.scale}
+                colors={pageProfileBanner.colors}
+                design={pageProfileBanner.design}
+                designVariant={pageProfileBanner.variant}
+                updateValuesOnPage={(newVal) => {
+                    pageProfileBanner = newVal;
+                }}
+            />
+        {:else}
+            <UserPageFollowButton
+                userId={data.pageUser.userId}
+                isFollowedByViewer={data.pageUser.isFollowedByViewer}
+            />
+        {/if}
     {/if}
 {/snippet}
 
@@ -93,5 +99,11 @@
         position: absolute;
         right: 2rem;
         bottom: 2rem;
+    }
+    .logging-to-follow-msg {
+        background-color: var(--back-second);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        font-weight: 450;
     }
 </style>

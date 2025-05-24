@@ -10,10 +10,10 @@ internal static class SpecificAppUserHandlers
 {
     internal static IEndpointRouteBuilder MapSpecificAppUserHandlers(this IEndpointRouteBuilder endpoints) {
         endpoints
-            .MapPost("/follow", HandleUserFollow)
+            .MapPatch("/follow", HandleUserFollow)
             .WithAuthenticationRequired();
         endpoints
-            .MapPost("/unfollow", HandleUserUnfollow)
+            .MapPatch("/unfollow", HandleUserUnfollow)
             .WithAuthenticationRequired();
 
 

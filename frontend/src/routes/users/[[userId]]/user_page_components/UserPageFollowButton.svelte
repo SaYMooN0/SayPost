@@ -11,6 +11,7 @@
     async function toggleFollow() {
         const url =
             `/users/${userId}/` + (isFollowedByViewer ? "unfollow" : "follow");
+            console.log(url);
         const response = await ApiFollowings.fetchJsonResponse<{
             isFollowed: boolean;
         }>(url, {

@@ -35,7 +35,12 @@ internal class LikePostCommandHandler : IRequestHandler<LikePostCommand, ErrOr<i
             );
         }
 
-        var res = post.Like(_currentActorProvider.AppUserId);
+        var likeAuthor = _currentActorProvider.UserId;
+        if (likeAuthor.IsErr()) {
+            return ErrFactory.AuthRequired("To like posts you need to be logged in");
+        }
+
+        var res = post.Like(likeAuthor.AsSuccess());
         if (res.IsErr(out var err)) {
             return err;
         }
