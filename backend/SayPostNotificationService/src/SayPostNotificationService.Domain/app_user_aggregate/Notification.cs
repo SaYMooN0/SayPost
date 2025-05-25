@@ -6,7 +6,7 @@ using SharedKernel.date_time_provider;
 
 namespace SayPostNotificationService.Domain.app_user_aggregate;
 
-public class Notification : Entity<NotificationId>
+public class Notification : Entity<NotificationId> 
 {
     private Notification() { }
     public DateTime CreatedAt { get; }
@@ -19,7 +19,8 @@ public class Notification : Entity<NotificationId>
         TypeSpecificData = typeSpecificData;
         Viewed = false;
     }
-    public void View()=> Viewed = true;
+
+    public void View() => Viewed = true;
 
     public static Notification CreateNewTestPublished(
         IDateTimeProvider dateTimeProvider,
@@ -29,12 +30,27 @@ public class Notification : Entity<NotificationId>
         NotificationId.CreateNew(), dateTimeProvider.Now,
         new TestPublishedNotificationSpecificData(postId, postAuthorId)
     );
+
     public static Notification CreateNewCommentLeft(
         IDateTimeProvider dateTimeProvider,
         string postTitle,
         AppUserId commentAuthorId
-    ) => new(
-        NotificationId.CreateNew(), dateTimeProvider.Now,
+    ) => new(NotificationId.CreateNew(), dateTimeProvider.Now,
         new CommentLeftNotificationSpecificData(postTitle, commentAuthorId)
+    );
+
+    public static Notification CreateNewPostLiked(
+        IDateTimeProvider dateTimeProvider,
+        PublishedPostId postId,
+        AppUserId userThatLikedId
+    ) => new(NotificationId.CreateNew(), dateTimeProvider.Now,
+        new PostLikedNotificationSpecificData(postId, userThatLikedId)
+    );
+
+    public static Notification CreateNewUserGotFollower(
+        IDateTimeProvider dateTimeProvider,
+        AppUserId followerId
+    ) => new(NotificationId.CreateNew(), dateTimeProvider.Now,
+        new UserGotFollowerNotificationSpecificData(followerId)
     );
 }

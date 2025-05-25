@@ -2,6 +2,8 @@
     import { page } from "$app/state";
     import CubeLoader from "../../../../components/loaders/CubeLoader.svelte";
     import { ApiAuth } from "../../../../ts/backend-services";
+    import { Err } from "../../../../ts/common/errs/err";
+    import { PlainErrUtils } from "../../../../ts/common/errs/t-plain-err";
 
     let userId: string = page.params.userId;
     let confirmationCode: string = page.params.confirmationCode;
@@ -27,12 +29,12 @@
         {:else}
             <h1 class="error-h">An error has occurred during confirmation</h1>
             <div class="err-view">
-                {response.errors[0].Message}
-                {#if response.errors[0].HasNonEmptyDetails()}
-                    <p>Details: {response.errors[0].Details}</p>
+                {response.errors[0].message}
+                {#if PlainErrUtils.HasNonEmptyDetails(response.errors[0])}
+                    <p>Details: {response.errors[0].details}</p>
                 {/if}
-                {#if response.errors[0].HasSpecifiedCode()}
-                    <p>Code: {response.errors[0].Code}</p>
+                {#if PlainErrUtils.HasSpecifiedCode(response.errors[0])}
+                    <p>Code: {response.errors[0].code}</p>
                 {/if}
             </div>
         {/if}

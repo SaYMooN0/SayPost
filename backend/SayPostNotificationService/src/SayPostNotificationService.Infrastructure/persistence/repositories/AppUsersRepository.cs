@@ -24,7 +24,8 @@ internal class AppUsersRepository : IAppUsersRepository
         await _db.SaveChangesAsync();
     }
 
-    public Task<AppUser[]> GetAllWithNotifications() => _db.AppUsers
+    public Task<AppUser[]> GetUsersWithNotifications(AppUserId[] userIds) => _db.AppUsers
+        .Where(u => userIds.Contains(u.Id))
         .Include(u => EF.Property<ICollection<Notification>>(u, "_notifications"))
         .ToArrayAsync();
 

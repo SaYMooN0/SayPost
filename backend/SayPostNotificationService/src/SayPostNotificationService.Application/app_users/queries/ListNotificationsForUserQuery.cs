@@ -37,12 +37,12 @@ internal class
         if (request.ShowOnlyNotViewed) {
             return user.Notifications
                 .Where(n => !n.Viewed)
-                .OrderByDescending(n => n.TypeSpecificData)
+                .OrderByDescending(n => n.CreatedAt)
                 .ToArray();
         }
 
         return user.Notifications
-            .OrderByDescending(n => n.TypeSpecificData)
+            .OrderByDescending(n => n.CreatedAt)
             .ToArray();
     }
 }

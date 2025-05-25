@@ -26,8 +26,12 @@ public class AccessCheckToModifyDraftPostBehaviorPipeline<TRequest, TResponse>
         TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken) {
         var draftPostId = request.DraftPostId;
         var currentUserId = _currentActorProvider.UserId;
+
         if (currentUserId.IsErr()) {
-            throw new PipelineBehaviourException(ErrFactory.NoAccess("To edit posts you need to be authenticated"));
+            throw new PipelineBehaviourException(ErrFactory.AuthRequired(
+                "To edit draft posts you need to be authenticated",
+                "Pleas log into your account "
+            ));
         }
 
         var postAuthorGetRes = await _draftPostsRepository.GetPostAuthor(draftPostId);
@@ -38,11 +42,10 @@ public class AccessCheckToModifyDraftPostBehaviorPipeline<TRequest, TResponse>
         var postAuthorId = postAuthorGetRes.AsSuccess();
 
         if (postAuthorId != currentUserId.AsSuccess()) {
-            var noAccessErr = ErrFactory.NoAccess(
+            throw new PipelineBehaviourException(ErrFactory.NoAccess(
                 "You cannot modify this draft post",
                 "You need to be the author of the post"
-            );
-            throw new PipelineBehaviourException(noAccessErr);
+            ));
         }
 
         return await next();

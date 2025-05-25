@@ -39,7 +39,7 @@ internal class UnlikePostCommandHandler : IRequestHandler<UnlikePostCommand, Err
         if (likeAuthor.IsErr()) {
             return ErrFactory.AuthRequired("To manage your likes you need to be logged in");
         }
-
+        
         var res = post.Unlike(likeAuthor.AsSuccess());
         if (res.IsErr(out var err)) {
             return err;

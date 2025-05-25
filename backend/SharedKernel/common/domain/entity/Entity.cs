@@ -2,7 +2,7 @@ using SharedKernel.common.domain.ids;
 
 namespace SharedKernel.common.domain.entity;
 
-public abstract class Entity<IdType> where IdType : IEntityId
+public abstract class Entity<IdType> : IComparable where IdType : IEntityId
 {
     public IdType Id { get; protected init; }
     protected Entity() { }
@@ -18,4 +18,6 @@ public abstract class Entity<IdType> where IdType : IEntityId
 
     public override int GetHashCode() =>
         Id.GetHashCode();
+
+    public int CompareTo(object? obj) => (obj is Entity<IdType> entity) ? Id.CompareTo(entity.Id) : -1;
 }

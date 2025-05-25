@@ -7,9 +7,9 @@ namespace FollowingsQueryLib.entities;
 public class AppUserWithFollowingsData : AggregateRoot<AppUserId>
 {
     private AppUserWithFollowingsData() { }
-    private ImmutableHashSet<AppUserId> _followerIds { get; }
-    private ImmutableHashSet<AppUserId> _followingIds { get; }
-    public bool IsFollowedBy(AppUserId followerId) => _followerIds.Contains(followerId);
-    public int FollowersCount => _followerIds.Count;
-    public int FollowingsCount => _followingIds.Count;
+    public ImmutableHashSet<AppUserId> FollowerIds { get; }
+    private ImmutableHashSet<AppUserId> FollowingIds { get; }
+    public bool IsFollowedBy(AppUserId followerId) => FollowerIds.Contains(followerId);
+    public int FollowersCount => FollowerIds.Count;
+    public int FollowingsCount => FollowingIds.Count;
 }

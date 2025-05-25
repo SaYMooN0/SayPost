@@ -7,6 +7,6 @@ public interface IAppUsersRepository
 {
     Task Add(AppUser appUser);
     Task Update(AppUser appUser);
-    Task<AppUser[]> GetAllWithNotifications();
+    Task<AppUser[]> GetUsersWithNotifications(AppUserId[] userIds);
     Task<AppUser?> GetByIdWithNotifications(AppUserId appUserId);
 }

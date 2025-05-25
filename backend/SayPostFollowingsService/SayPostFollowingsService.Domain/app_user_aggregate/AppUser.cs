@@ -19,18 +19,24 @@ public class AppUser : AggregateRoot<AppUserId>
     public bool AddFollower(AppUserId newFollowerId) {
         var changeMade = _followerIds.Add(newFollowerId);
         if (changeMade) {
-            AddDomainEvent(new UserBecomeFollowerEvent());
+            AddDomainEvent(new UserGotNewFollowingEvent(newFollowerId, FollowingId: Id));
         }
+
         return changeMade;
     }
 
     public bool RemoveFollower(AppUserId followerToRemoveId) {
         var changeMade = _followerIds.Remove(followerToRemoveId);
         if (changeMade) {
-            AddDomainEvent(new UserUnfollowedEvent());
+            AddDomainEvent(new UserLostFollowingEvent(followerToRemoveId, FollowingId: Id));
         }
+
         return changeMade;
     }
 
     public bool IsFollowedBy(AppUserId appUserId) => _followerIds.Contains(appUserId);
+
+    public bool AddFollowing(AppUserId followingUserId) =>_followingIds.Add(followingUserId);
+    public bool RemoveFollowing(AppUserId followingUserId) =>_followingIds.Remove(followingUserId);
+
 }

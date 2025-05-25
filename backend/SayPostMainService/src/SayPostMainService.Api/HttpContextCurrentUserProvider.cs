@@ -9,13 +9,14 @@ namespace SayPostMainService.Api;
 public class HttpContextCurrentUserProvider : ICurrentActorProvider
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly JwtTokenConfig _jwtConfig;
+    private readonly JwtTokenConfig jwtTokenConfig;
 
-    public HttpContextCurrentUserProvider(IHttpContextAccessor httpContextAccessor, JwtTokenConfig jwtConfig) {
+    public HttpContextCurrentUserProvider(
+        IHttpContextAccessor httpContextAccessor, JwtTokenConfig jwtTokenConfig
+    ) {
         _httpContextAccessor = httpContextAccessor;
-        _jwtConfig = jwtConfig;
+        this.jwtTokenConfig = jwtTokenConfig;
     }
 
-    public ErrOr<AppUserId> UserId =>
-        _httpContextAccessor.HttpContext.ParseUserIdFromJwtToken(_jwtConfig);
+    public ErrOr<AppUserId> UserId => _httpContextAccessor.HttpContext.ParseUserIdFromJwtToken(jwtTokenConfig);
 }

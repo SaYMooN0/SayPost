@@ -3,7 +3,7 @@ using SayPostNotificationService.Domain.app_user_aggregate;
 using SayPostNotificationService.Domain.common.interfaces.repositories;
 using SharedKernel.integration_events;
 
-namespace SayPostNotificationService.Application.app_users.integration_events;
+namespace SayPostNotificationService.Application.app_users.integration_event_handlers;
 
 internal class NewAppUserCreatedIntegrationEventHandler : INotificationHandler<NewAppUserCreatedIntegrationEvent>
 {

@@ -5,15 +5,14 @@ using SharedKernel.common.errs.utils;
 using SharedKernel.date_time_provider;
 using SharedKernel.integration_events;
 
-namespace SayPostNotificationService.Application.app_users.integration_events;
+namespace SayPostNotificationService.Application.app_users.integration_event_handlers;
 
-internal class NewCommentUnderPostLeftIntegrationEventHandler :
-    INotificationHandler<NewCommentUnderPostLeftIntegrationEvent>
+internal class PostLikedIntegrationEventHandler : INotificationHandler<PostLikedIntegrationEvent>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public NewCommentUnderPostLeftIntegrationEventHandler(
+    public PostLikedIntegrationEventHandler(
         IAppUsersRepository appUsersRepository,
         IDateTimeProvider dateTimeProvider
     ) {
@@ -21,10 +20,7 @@ internal class NewCommentUnderPostLeftIntegrationEventHandler :
         _dateTimeProvider = dateTimeProvider;
     }
 
-
-    public async Task Handle(
-        NewCommentUnderPostLeftIntegrationEvent notification, CancellationToken cancellationToken
-    ) {
+    public async Task Handle(PostLikedIntegrationEvent notification, CancellationToken cancellationToken) {
         AppUser? postAuthor = await _appUsersRepository.GetByIdWithNotifications(notification.PostAuthorId);
         if (postAuthor is null) {
             throw new ErrCausedException(ErrFactory.NotFound(
@@ -32,9 +28,7 @@ internal class NewCommentUnderPostLeftIntegrationEventHandler :
             );
         }
 
-        var n = Notification.CreateNewCommentLeft(
-            _dateTimeProvider, notification.PostTitle, notification.CommentAuthorId
-        );
+        var n = Notification.CreateNewPostLiked(_dateTimeProvider, notification.PostId, notification.UserThatLikedId);
         postAuthor.AddNotification(n);
         await _appUsersRepository.Update(postAuthor);
     }

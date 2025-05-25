@@ -1,6 +1,6 @@
 ﻿namespace SharedKernel.common.domain.ids;
 
-public abstract class GuidBasedId : ValueObject, IComparable, IEntityId
+public abstract class GuidBasedId : ValueObject, IEntityId
 {
     public Guid Value { get; }
     protected GuidBasedId(Guid value) => Value = value;

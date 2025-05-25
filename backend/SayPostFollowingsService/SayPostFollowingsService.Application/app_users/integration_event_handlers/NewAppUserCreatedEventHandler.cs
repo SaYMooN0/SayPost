@@ -3,7 +3,7 @@ using SayPostFollowingsService.Domain.app_user_aggregate;
 using SayPostFollowingsService.Domain.common.interfaces.repositories;
 using SharedKernel.integration_events;
 
-namespace SayPostFollowingsService.Application.app_users.integration_events;
+namespace SayPostFollowingsService.Application.app_users.integration_event_handlers;
 
 internal class NewAppUserCreatedEventHandler : INotificationHandler<NewAppUserCreatedIntegrationEvent>
 {

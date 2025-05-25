@@ -28,7 +28,7 @@ internal static class NotificationsHandlers
     ) {
         AppUserId userId = httpContext.GetAuthenticatedUserId();
 
-        ListNotificationsForUserQuery query = new(userId, showOnlyNotViewed);
+            ListNotificationsForUserQuery query = new(userId, showOnlyNotViewed);
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,

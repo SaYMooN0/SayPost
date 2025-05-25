@@ -17,13 +17,13 @@ internal class AppUserWithFollowingsDataConfigurations : IEntityTypeConfiguratio
             .HasConversion(id => id.Value, str => new AppUserId(str));
         
         builder
-            .Property<ImmutableHashSet<AppUserId>>("_followerIds")
+            .Property<ImmutableHashSet<AppUserId>>("FollowerIds")
             .HasColumnName("FollowerIds")
             .HasConversion(new AppUserIdHashSetConverter(), new AppUserIdHashSetComparer());
 
         
         builder
-            .Property<ImmutableHashSet<AppUserId>>("_followingIds")
+            .Property<ImmutableHashSet<AppUserId>>("FollowingIds")
             .HasColumnName("FollowingIds")
             .HasConversion(new AppUserIdHashSetConverter(), new AppUserIdHashSetComparer());
     }
