@@ -2,35 +2,55 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
     import { ApiNotifications } from "../../../ts/backend-services";
+    import type { NotificationItem } from "./notifications";
+    import type { Err } from "../../../ts/common/errs/err";
+    import NotificationsList from "./notifications_block_components/NotificationItemsList.svelte";
+    import NotificationItemsList from "./notifications_block_components/NotificationItemsList.svelte";
+    import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
 
-    let anyUnread = false;
-
+    let anyUnread = $state(false);
     let notificationsListOpen = $state(false);
+    let fetchingErrs: Err[] = $state([]);
+    let notifications: NotificationItem[] = $state([]);
     let buttonElement: SVGElement;
     function handleClickOutside(event: any) {
         if (!buttonElement.contains(event.target)) {
             notificationsListOpen = false;
         }
     }
+    async function fetchNotifications() {
+        const res = await ApiNotifications.fetchJsonResponse<{
+            notifications: NotificationItem[];
+        }>("/notifications", { method: "GET" });
+        console.log(res);
+        if (res.isSuccess) {
+            notifications = res.data.notifications;
+            anyUnread = notifications.some((n) => !n.viewed);
+            fetchingErrs = [];
+        } else {
+            fetchingErrs = res.errors;
+            notifications = [];
+        }
+    }
+    function openButtonClicked() {
+        if (!notificationsListOpen) {
+            fetchNotifications();
+            notificationsListOpen = true;
+        }
+    }
     onMount(() => {
         document.addEventListener("click", handleClickOutside);
+        fetchNotifications();
+
         return () => {
             document.removeEventListener("click", handleClickOutside);
         };
     });
-    async function fetchNotifications() {
-        const res = await ApiNotifications.fetchJsonResponse<any>(
-            "/notifications",
-            { method: "GET" },
-        );
-        console.log(res);
-    }
-    fetchNotifications();
 </script>
 
 <svg
     class="block-item unselectable"
-    onclick={() => (notificationsListOpen = !notificationsListOpen)}
+    onclick={() => openButtonClicked()}
     bind:this={buttonElement}
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +101,11 @@
 </svg>
 
 <div class="context-menu unselectable" class:open={notificationsListOpen}>
+    {#if fetchingErrs.length > 0}
+        <DefaultErrBlock errList={fetchingErrs} />
+    {:else}
+        <NotificationItemsList {notifications} />
+    {/if}
     <div class="settings-link" onclick={() => goto("/notifications-settings")}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
             <path
@@ -134,7 +159,6 @@
         padding: 0.125rem 0.5rem;
         border-radius: 0.25rem;
         color: var(--accent-main);
-
         font-size: 1rem;
         font-weight: 450;
         transition: all 0.1s ease-in;
@@ -142,6 +166,7 @@
         box-sizing: border-box;
         grid-template-columns: auto 1fr;
     }
+
     .settings-link:hover {
         background-color: var(--back-second);
     }
@@ -150,9 +175,10 @@
         color: var(--accent-hov);
         font-weight: 500;
     }
+
     .settings-link > svg {
-        box-sizing: border-box;
-        padding: 0.125rem;
         height: 1.625rem;
+        padding: 0.125rem;
+        box-sizing: border-box;
     }
 </style>

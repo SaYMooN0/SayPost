@@ -28,7 +28,7 @@ public class Notification : Entity<NotificationId>
         AppUserId postAuthorId
     ) => new(
         NotificationId.CreateNew(), dateTimeProvider.Now,
-        new TestPublishedNotificationSpecificData(postId, postAuthorId)
+        new PostPublishedNotificationSpecificData(postId, postAuthorId)
     );
 
     public static Notification CreateNewCommentLeft(

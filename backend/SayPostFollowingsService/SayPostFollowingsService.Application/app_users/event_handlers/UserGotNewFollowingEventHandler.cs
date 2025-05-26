@@ -15,11 +15,11 @@ public class UserGotNewFollowingEventHandler : INotificationHandler<UserGotNewFo
     }
 
     public async Task Handle(UserGotNewFollowingEvent notification, CancellationToken cancellationToken) {
-        AppUser? user = await _appUsersRepository.GetById(notification.UserId);
+        AppUser? user = await _appUsersRepository.GetById(notification.UserThatFollowedId);
         if (user is null) {
             throw new ErrCausedException(ErrFactory.NotFound(
                 "Unable to follow because the follower was not found",
-                $"User id: {notification.UserId}"
+                $"User id: {notification.UserThatFollowedId}"
             ));
         }
 

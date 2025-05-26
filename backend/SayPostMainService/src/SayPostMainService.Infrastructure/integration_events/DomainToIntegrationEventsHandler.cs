@@ -8,7 +8,8 @@ namespace SayPostMainService.Infrastructure.integration_events;
 
 internal class DomainToIntegrationEventsHandler :
     INotificationHandler<NewPublishedPostCreatedEvent>,
-    INotificationHandler<NewCommentToPostAddedEvent>
+    INotificationHandler<NewCommentToPostAddedEvent>,
+    INotificationHandler<PostLikedEvent>
 // and all other domain events that need to be published as integration events
 {
     private readonly IIntegrationEventsPublisher _integrationEventsPublisher;
@@ -27,6 +28,15 @@ internal class DomainToIntegrationEventsHandler :
             notification.PostAuthorId,
             notification.PostTitle.ToString(),
             notification.CommentAuthorId
+        );
+        await _integrationEventsPublisher.PublishEvent(integrationEvent);
+    }
+
+    public async Task Handle(PostLikedEvent notification, CancellationToken cancellationToken) {
+        var integrationEvent = new PostLikedIntegrationEvent(
+            notification.PostId,
+            notification.PostAuthorId,
+            notification.UserThatLikedId
         );
         await _integrationEventsPublisher.PublishEvent(integrationEvent);
     }

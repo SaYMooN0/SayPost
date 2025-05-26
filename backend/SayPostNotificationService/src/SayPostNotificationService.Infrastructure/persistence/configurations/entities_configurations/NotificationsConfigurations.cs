@@ -16,10 +16,11 @@ internal class NotificationsConfigurations : IEntityTypeConfiguration<Notificati
             .ValueGeneratedNever()
             .HasGuidBasedIdConversion();
 
+        builder.Property(x => x.CreatedAt);
+
         builder
-            .Property(x=>x.TypeSpecificData)
+            .Property(x => x.TypeSpecificData)
             .HasConversion<NotificationSpecificDataConverter>()
             .HasColumnType("jsonb");
-           
     }
 }

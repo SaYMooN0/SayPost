@@ -14,11 +14,11 @@ public class PostLikedEventHandler : INotificationHandler<PostLikedEvent>
     }
 
     public async Task Handle(PostLikedEvent notification, CancellationToken cancellationToken) {
-        AppUser? user = await _appUsersRepository.GetById(notification.UserId);
+        AppUser? user = await _appUsersRepository.GetById(notification.UserThatLikedId);
         if (user is null) {
             throw new ErrCausedException(ErrFactory.NotFound(
                 "Unable to like the post because user was not found",
-                $"User id: {notification.UserId}"
+                $"User id: {notification.UserThatLikedId}"
             ));
         }
         user.AddLikedPost(notification.PostId);

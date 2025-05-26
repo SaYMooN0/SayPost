@@ -4,15 +4,17 @@ namespace SayPostNotificationService.Api.contracts;
 
 public record NotificationsDataResponse(
     string Id,
-    DateTime CreatedAt,
     bool Viewed,
+    DateTime DateTime,
+    NotificationType Type,
     Dictionary<string, string> TypeSpecificData
 )
 {
     public static NotificationsDataResponse FromNotification(Notification notification) => new(
         notification.Id.ToString(),
-        notification.CreatedAt,
         notification.Viewed,
+        notification.CreatedAt,
+        notification.TypeSpecificData.Type(),
         notification.TypeSpecificData.ToDictionary()
     );
 }

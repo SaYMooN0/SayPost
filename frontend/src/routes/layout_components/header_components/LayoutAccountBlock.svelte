@@ -118,8 +118,8 @@
     }
 
     :global(.layout-account-block > .block-item) {
-        border: 0.125rem solid var(--back-second);
         height: 2.5rem;
+        border: 0.125rem solid var(--back-second);
         border-radius: 0.5rem;
         background-color: var(--back-second);
         color: var(--accent-main);

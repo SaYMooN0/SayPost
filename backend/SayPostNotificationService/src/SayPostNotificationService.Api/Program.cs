@@ -51,8 +51,8 @@ public class Program
         //     var db = serviceScope.ServiceProvider.GetRequiredService<NotificationDbContext>();
         //     db.Database.EnsureDeleted();
         //     db.Database.EnsureCreated();
-        //     // db.AppUsers.Add(new(new(new("01964f73-b7e9-71c7-8b45-9f63b58df9e6"))));
-        //     db.AppUsers.Add(new(new(new("0196405c-0c03-7520-8da6-d17cdc334ba7"))));
+        //     db.AppUsers.Add(new(new(new("01970867-a7ad-76ea-894f-2f6e6b45dc8b"))));
+        //     db.AppUsers.Add(new(new(new("01970865-8808-70fc-829d-bc096bfc27f2"))));
         //     db.SaveChanges();
         // }
 

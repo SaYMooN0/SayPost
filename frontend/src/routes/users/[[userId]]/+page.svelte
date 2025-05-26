@@ -100,10 +100,11 @@
         right: 2rem;
         bottom: 2rem;
     }
+
     .logging-to-follow-msg {
-        background-color: var(--back-second);
         padding: 0.375rem 0.75rem;
         border-radius: 0.25rem;
+        background-color: var(--back-second);
         font-weight: 450;
     }
 </style>

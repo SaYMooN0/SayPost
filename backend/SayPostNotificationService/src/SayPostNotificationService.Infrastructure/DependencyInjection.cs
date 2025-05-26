@@ -22,7 +22,6 @@ public static class DependencyInjection
             .AddMediatR()
             .AddDateTimeService()
             .AddUserFollowingsReadRepository(configuration)
-
             ;
 
         return services;

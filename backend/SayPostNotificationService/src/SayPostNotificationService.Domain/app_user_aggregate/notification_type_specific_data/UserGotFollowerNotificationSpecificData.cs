@@ -4,16 +4,16 @@ namespace SayPostNotificationService.Domain.app_user_aggregate.notification_type
 
 public class UserGotFollowerNotificationSpecificData : BaseNotificationSpecificData
 {
-    public UserGotFollowerNotificationSpecificData(AppUserId followerId) {
+    public override NotificationType Type() => NotificationType.UserGotFollower;
+
+    public AppUserId FollowerId { get; }
+
+    public UserGotFollowerNotificationSpecificData(AppUserId followerId) : base() {
         FollowerId = followerId;
     }
 
-    public AppUserId FollowerId { get; private init; }
 
-
-    public override IEnumerable<object> GetEqualityComponents() {
-        yield return FollowerId;
-    }
+    public override IEnumerable<object> GetEqualityComponents() => [FollowerId];
 
     public override Dictionary<string, string> ToDictionary() => new() {
         ["FollowerId"] = FollowerId.ToString(),

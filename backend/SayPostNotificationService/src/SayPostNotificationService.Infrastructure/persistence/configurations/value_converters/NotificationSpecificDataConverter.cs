@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SayPostNotificationService.Domain.app_user_aggregate;
 
@@ -16,4 +17,6 @@ public class NotificationSpecificDataConverter : ValueConverter<BaseNotification
 
     private static BaseNotificationSpecificData FromJson(string v) =>
         JsonSerializer.Deserialize<BaseNotificationSpecificData>(v);
+
+    
 }
