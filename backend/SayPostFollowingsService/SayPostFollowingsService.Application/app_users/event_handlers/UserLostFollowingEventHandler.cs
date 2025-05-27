@@ -23,7 +23,7 @@ public class UserLostFollowingEventHandler : INotificationHandler<UserLostFollow
             ));
         }
 
-        var changesMade = user.RemoveFollower(notification.FollowingId);
+        var changesMade = user.RemoveFollowing(notification.FollowingId);
         if (changesMade) {
             await _appUsersRepository.Update(user);
         }

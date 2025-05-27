@@ -23,8 +23,11 @@ body {
     padding: 0;
     margin: 0;
     background-color: var(--back-main);
-    font-family: Rubik, sans-serif;
     color: var(--text-main);
+}
+
+* {
+    font-family: Rubik, sans-serif;
 }
 
 input,

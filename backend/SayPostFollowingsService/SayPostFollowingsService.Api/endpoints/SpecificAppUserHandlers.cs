@@ -1,6 +1,7 @@
 ﻿using ApiShared;
 using ApiShared.extensions;
 using MediatR;
+using SayPostFollowingsService.Api.contracts;
 using SayPostFollowingsService.Application.app_users.commands;
 using SharedKernel.configs;
 
@@ -28,7 +29,9 @@ internal static class SpecificAppUserHandlers
         FollowUserCommand command = new(userId);
         var result = await mediator.Send(command);
 
-        return CustomResults.FromErrOr(result, (isFollowed) => Results.Json(new { isFollowed = isFollowed }));
+        return CustomResults.FromErrOr(result, (data) => Results.Json(
+            new PatchFollowingStateResponse(data.Item1, data.Item2)
+        ));
     }
 
     private static async Task<IResult> HandleUserUnfollow(
@@ -39,6 +42,8 @@ internal static class SpecificAppUserHandlers
         UnfollowUserCommand command = new(userId);
         var result = await mediator.Send(command);
 
-        return CustomResults.FromErrOr(result, (isFollowed) => Results.Json(new { isFollowed = isFollowed }));
+        return CustomResults.FromErrOr(result, (data) => Results.Json(
+            new PatchFollowingStateResponse(data.Item1, data.Item2)
+        ));
     }
 }

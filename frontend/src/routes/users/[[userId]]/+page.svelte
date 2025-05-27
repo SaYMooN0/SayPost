@@ -2,88 +2,55 @@
     import AuthView from "../../../components/AuthView.svelte";
     import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
     import { AuthStoreData } from "../../../stores/auth-store.svelte";
-    import ProfileBannerDisplay from "./user_page_components/ProfileBannerDisplay.svelte";
     import type { PageProps } from "./$types";
-    import ProfileBannerEditingDialog from "./user_page_components/ProfileBannerEditingDialog.svelte";
-    import { BannerDesign, DesignVariant } from "./user-profile";
-    import UserStatisticsCard from "./user_page_components/UserStatisticsCard.svelte";
-    import UserPageFollowButton from "./user_page_components/UserPageFollowButton.svelte";
+    import ErrView from "../../../components/err_blocks/ErrView.svelte";
+    import MyProfileBanner from "./user_page_components/profile-banner/MyProfileBanner.svelte";
+    import OtherUserProfileBannerWithFollow from "./user_page_components/profile-banner/OtherUserProfileBannerWithFollow.svelte";
+    import OtherUserProfileBannerUnauthorized from "./user_page_components/profile-banner/OtherUserProfileBannerUnauthorized.svelte";
+    import UserStatisticsCardsContainer from "./user_page_components/UserStatisticsCardsContainer.svelte";
 
     let { data }: PageProps = $props();
-    let pageProfileBanner = $state(
-        data.pageUser?.profileBanner || {
-            scale: 2,
-            design: BannerDesign.Waves,
-            variant: DesignVariant.Var1,
-            colors: ["#000000", "#ffffff"],
-        },
-    );
-    let bannerEditingDialog: ProfileBannerEditingDialog;
+    let statisticsContainerEl: UserStatisticsCardsContainer;
 </script>
 
-{#if data.errors}
+{#if data.errors && data.errors.length > 0}
     <DefaultErrBlock errList={data.errors} />
+{:else if data.pageUser === undefined}
+    <ErrView err={{ message: "Unable to load " }} />
 {:else}
-    <div class="banner">
-        <ProfileBannerDisplay
-            scale={pageProfileBanner.scale}
-            colors={pageProfileBanner.colors}
-            design={pageProfileBanner.design}
-            designVariant={pageProfileBanner.variant}
-        />
-        <div class="banner-item">
-            <AuthView
-                authenticated={bannerAuthenticated}
-                unauthenticated={bannerUnauthenticated}
-            />
-        </div>
-    </div>
-    <div class="statistics-cards">
-        <UserStatisticsCard
-            label={"Posts published"}
-            value={(
-                data.pageUser.statistics?.publishedPostsCount || 0
-            ).toString()}
-        >
-            <label>#</label>
-        </UserStatisticsCard>
-        <p>
-            {JSON.stringify(data.pageUser.statistics, null, 2)}
-        </p>
-    </div>
-{/if}
-{#snippet bannerAuthenticated(authData: AuthStoreData)}
-    {#if data.pageUser}
+    {#snippet bannerAuthenticated(authData: AuthStoreData)}
         {#if authData.UserId == data.pageUser.userId}
-            <button
-                class="edit-banner-btn"
-                onclick={() => bannerEditingDialog.open()}>Edit</button
-            >
-            <ProfileBannerEditingDialog
-                bind:this={bannerEditingDialog}
-                scale={pageProfileBanner.scale}
-                colors={pageProfileBanner.colors}
-                design={pageProfileBanner.design}
-                designVariant={pageProfileBanner.variant}
-                updateValuesOnPage={(newVal) => {
-                    pageProfileBanner = newVal;
+            <MyProfileBanner bannerData={data.pageUser.profileBanner} />
+        {:else}
+            <OtherUserProfileBannerWithFollow
+                userId={data.pageUser.userId}
+                bannerData={data.pageUser.profileBanner}
+                isFollowedByViewer={data.pageUser.isFollowedByViewer}
+                updateFollowersCountOnThePage={(newVal: number) => {
+                    statisticsContainerEl.updateFollowersCount(newVal);
                 }}
             />
-        {:else}
-            <UserPageFollowButton
-                userId={data.pageUser.userId}
-                isFollowedByViewer={data.pageUser.isFollowedByViewer}
-            />
         {/if}
-    {/if}
-{/snippet}
+    {/snippet}
 
-{#snippet bannerUnauthenticated()}
-    <label class="logging-to-follow-msg">Log in to follow users</label>
-{/snippet}
+    {#snippet bannerUnauthenticated()}
+        <OtherUserProfileBannerUnauthorized
+            bannerData={data.pageUser.profileBanner}
+        />
+    {/snippet}
+
+    <AuthView
+        authenticated={bannerAuthenticated}
+        unauthenticated={bannerUnauthenticated}
+    />
+    <UserStatisticsCardsContainer
+        bind:this={statisticsContainerEl}
+        statistics={data.pageUser.statistics}
+    />
+{/if}
 
 <style>
-    .banner {
+    :global(.banner) {
         position: relative;
         width: 100%;
         margin-top: 1rem;
@@ -91,20 +58,13 @@
         aspect-ratio: 5 / 1;
     }
 
-    .banner > :global(svg) {
+    :global(.banner > svg) {
         display: block;
     }
 
-    .banner-item {
+    :global(.banner-item) {
         position: absolute;
         right: 2rem;
         bottom: 2rem;
-    }
-
-    .logging-to-follow-msg {
-        padding: 0.375rem 0.75rem;
-        border-radius: 0.25rem;
-        background-color: var(--back-second);
-        font-weight: 450;
     }
 </style>

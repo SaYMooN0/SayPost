@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import LayoutNotificationsBlock from "./LayoutNotificationsBlock.svelte";
-    import { goto } from "$app/navigation";
 
     let { username, userId }: { username: string; userId: string } = $props<{
         username: string;
@@ -50,7 +49,7 @@
         class="context-menu unselectable"
         class:open={isAccountContextMenuOpen}
     >
-        <div class="menu-action" onclick={() => goto(`/users/${userId}`)}>
+        <a href="/users/{userId}" class="menu-action">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -79,7 +78,7 @@
                 ></path>
             </svg>
             My profile
-        </div>
+        </a>
         <div class="menu-action">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -175,6 +174,7 @@
         color: var(--text-main);
         font-size: 1rem;
         font-weight: 450;
+        text-decoration: none;
         transition: all 0.1s ease-in;
         cursor: pointer;
         box-sizing: border-box;

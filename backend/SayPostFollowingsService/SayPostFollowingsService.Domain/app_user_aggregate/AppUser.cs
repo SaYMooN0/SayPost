@@ -35,8 +35,7 @@ public class AppUser : AggregateRoot<AppUserId>
     }
 
     public bool IsFollowedBy(AppUserId appUserId) => _followerIds.Contains(appUserId);
-
-    public bool AddFollowing(AppUserId followingUserId) =>_followingIds.Add(followingUserId);
-    public bool RemoveFollowing(AppUserId followingUserId) =>_followingIds.Remove(followingUserId);
-
+    public int FollowersCount() => _followerIds.Count;
+    public bool AddFollowing(AppUserId followingUserId) => _followingIds.Add(followingUserId);
+    public bool RemoveFollowing(AppUserId followingUserId) => _followingIds.Remove(followingUserId);
 }

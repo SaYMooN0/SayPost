@@ -4,8 +4,8 @@ const UnspecifiedErrCode = 0;
 export class Err {
     protected _message: string;
     protected _code: number;
-    protected _details: string | null;
-    public constructor(message: string, code: number | null = null, details: string | null = null) {
+    protected _details?: string;
+    public constructor(message: string, code: number | undefined = undefined, details: string | undefined = undefined) {
         this._message = message;
         this._code = code ?? UnspecifiedErrCode;
         this._details = details;
@@ -14,13 +14,13 @@ export class Err {
     public get message(): string {
         return this._message;
     }
-    public get code(): number | null {
+    public get code(): number {
         return this._code;
     }
-    public get details(): string | null {
+    public get details(): string | undefined {
         return this._details;
     }
-  
+
     public static fromPlain(e: any): Err {
         if ("derivedErrType" in e) {
             switch (e.derivedErrType) {
@@ -36,7 +36,12 @@ export class Err {
 }
 export class ErrWithExtraData extends Err {
     private _extraData: Record<string, any>;
-    public constructor(message: string, extraData: Record<string, any>, code: number | null = null, details: string | null = null,) {
+    public constructor(
+        message: string,
+        extraData: Record<string, any>,
+        code: number | undefined = undefined,
+        details: string | undefined = undefined
+    ) {
         super(message, code, details);
         this._extraData = extraData;
     }

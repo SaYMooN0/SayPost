@@ -1,10 +1,10 @@
 import { Err } from "./err";
 
 export type PlainErrType = {
-    message: string;
-    code: number | null;
-    details: string | null;
-    derivedErrType?: string;
+	message: string;
+	code?: number;
+	details?: string;
+	derivedErrType?: string;
 }
 
 export class PlainErrUtils {
@@ -13,7 +13,7 @@ export class PlainErrUtils {
 	}
 
 	static HasSpecifiedCode(err: PlainErrType): boolean {
-		const UnspecifiedErrCode = 0; 
+		const UnspecifiedErrCode = 0;
 		return err.code != null && err.code !== UnspecifiedErrCode;
 	}
 

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { DateUtils } from "../../../../ts/common/utils/date-utils";
     import type { NotificationItem } from "../notifications";
+    import NotificationContentDisplay from "./NotificationContentDisplay.svelte";
 
     let { notifications = $bindable() }: { notifications: NotificationItem[] } =
         $props<{
@@ -15,6 +16,10 @@
         {#each notifications as notification}
             <div class="notification-item">
                 <label class="date">
+                    <NotificationContentDisplay
+                        type={notification.type}
+                        specificData={notification.typeSpecificData}
+                    />
                     {DateUtils.toLocale(notification.dateTime)}
                 </label>
             </div>

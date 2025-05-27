@@ -1,18 +1,18 @@
 <script lang="ts">
-    import BaseDialogWithCloseButton from "../../../../components/dialogs/BaseDialogWithCloseButton.svelte";
+    import BaseDialogWithCloseButton from "../../../../../components/dialogs/BaseDialogWithCloseButton.svelte";
     import {
         BannerDesign,
         DesignVariant,
         type UserProfileBanner,
-    } from "../user-profile";
+    } from "../../user-profile";
     import ProfileBannerDisplay from "./ProfileBannerDisplay.svelte";
-    import NumberSliderInput from "../../../../components/inputs/NumberSliderInput.svelte";
+    import NumberSliderInput from "../../../../../components/inputs/NumberSliderInput.svelte";
     import BannerColorInput from "./banner_editing_dialog_components/BannerColorInput.svelte";
     import DesignVariantInputButton from "./banner_editing_dialog_components/DesignVariantInputButton.svelte";
     import DesignSelectInput from "./banner_editing_dialog_components/DesignSelectInput.svelte";
-    import { ApiMain } from "../../../../ts/backend-services";
-    import type { Err } from "../../../../ts/common/errs/err";
-    import DefaultErrBlock from "../../../../components/err_blocks/DefaultErrBlock.svelte";
+    import { ApiMain } from "../../../../../ts/backend-services";
+    import type { Err } from "../../../../../ts/common/errs/err";
+    import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
     let {
         scale,
         colors,
@@ -44,13 +44,13 @@
         dialogEl.open();
     }
     async function save() {
-        console.log("a-----",{ ...inputs });
         const response = await ApiMain.fetchJsonResponse<UserProfileBanner>(
             `/profile/update-banner/`,
             ApiMain.requestJsonOptions({ ...inputs }, "PATCH"),
         );
         if (response.isSuccess) {
             updateValuesOnPage(response.data);
+            dialogEl.close();
             savingErrs = [];
         } else {
             savingErrs = response.errors;

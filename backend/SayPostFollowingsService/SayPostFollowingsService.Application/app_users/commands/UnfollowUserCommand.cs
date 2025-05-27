@@ -8,10 +8,10 @@ using SharedKernel.common.errs.utils;
 
 namespace SayPostFollowingsService.Application.app_users.commands;
 
-public record class UnfollowUserCommand(AppUserId UserId) : IRequest<ErrOr<bool>>;
+public record class UnfollowUserCommand(AppUserId UserId) : IRequest<ErrOr<(bool, int)>>;
 
 internal class UnfollowUserCommandHandler :
-    IRequestHandler<UnfollowUserCommand, ErrOr<bool>>
+    IRequestHandler<UnfollowUserCommand, ErrOr<(bool, int)>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly ICurrentActorProvider _currentActorProvider;
@@ -24,7 +24,7 @@ internal class UnfollowUserCommandHandler :
     }
 
 
-    public async Task<ErrOr<bool>> Handle(UnfollowUserCommand command, CancellationToken cancellationToken) {
+    public async Task<ErrOr<(bool, int)>> Handle(UnfollowUserCommand command, CancellationToken cancellationToken) {
         AppUser? user = await _appUsersRepository.GetById(command.UserId);
         if (user is null) {
             return ErrFactory.NotFound("Unknown user", $"User with id: {command.UserId} was not found");
@@ -36,6 +36,6 @@ internal class UnfollowUserCommandHandler :
             await _appUsersRepository.Update(user);
         }
 
-        return user.IsFollowedBy(actor);
+        return (user.IsFollowedBy(actor), user.FollowersCount());
     }
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { BannerDesign, DesignVariant } from "../../user-profile";
+    import { BannerDesign, DesignVariant } from "../../../user-profile";
     import ProfileBannerDisplay from "../ProfileBannerDisplay.svelte";
 
     let {

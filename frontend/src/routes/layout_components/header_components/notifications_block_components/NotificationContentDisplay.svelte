@@ -3,6 +3,17 @@
         specificData: any;
         type: string;
     }>();
+    type NotificationData = CommentLeftNotification;
+    type CommentLeftNotification = {
+        type: "CommentLeft";
+        postTitle: string;
+        commentAuthorId: string;
+    }; type PostLikedNotification = {
+        type: "PostLiked";
+        postId: string;
+        userThatLikedId: string;
+    };
+    // PostPublished, UserGotFollower;
 </script>
 
 <p>{JSON.stringify(specificData)}</p>
