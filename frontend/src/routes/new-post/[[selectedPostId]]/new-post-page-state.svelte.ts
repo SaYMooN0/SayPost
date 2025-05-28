@@ -59,7 +59,6 @@ export class NewPostPageState {
         const response = await ApiMain.fetchJsonResponse<DraftPostFullInfo>(
             `/draft-posts/${this.selectedPostId}`, { method: "GET", },
         );
-        console.log("fetched:", response);
         if (response.isSuccess) {
             if (this.selectedPostId) {
                 this.draftPostCache.set(this.selectedPostId, response.data);

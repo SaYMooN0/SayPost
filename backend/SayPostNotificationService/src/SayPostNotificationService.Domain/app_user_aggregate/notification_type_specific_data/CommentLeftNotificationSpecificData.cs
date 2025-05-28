@@ -16,7 +16,7 @@ public class CommentLeftNotificationSpecificData : BaseNotificationSpecificData
 
     public override IEnumerable<object> GetEqualityComponents() => [PostTitle, CommentAuthorId];
     public override Dictionary<string, string> ToDictionary() => new() {
-        ["PostTitle"] = PostTitle,
-        ["CommentAuthorId"] = CommentAuthorId.ToString()
+        ["postTitle"] = PostTitle,
+        ["commentAuthorId"] = CommentAuthorId.ToString()
     };
 }

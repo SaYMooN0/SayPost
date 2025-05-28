@@ -40,7 +40,6 @@
         if (!inputEl) return;
         inputEl.style.height = "auto";
         inputEl.style.height = inputEl.scrollHeight + 4 + "px";
-        console.log("dsa");
     }
     function cancelEditing() {
         commentValue = "";

@@ -16,6 +16,6 @@ public class UserGotFollowerNotificationSpecificData : BaseNotificationSpecificD
     public override IEnumerable<object> GetEqualityComponents() => [FollowerId];
 
     public override Dictionary<string, string> ToDictionary() => new() {
-        ["FollowerId"] = FollowerId.ToString(),
+        ["followerId"] = FollowerId.ToString(),
     };
 }

@@ -22,7 +22,6 @@
         const res = await ApiNotifications.fetchJsonResponse<{
             notifications: NotificationItem[];
         }>("/notifications", { method: "GET" });
-        console.log(res);
         if (res.isSuccess) {
             notifications = res.data.notifications;
             anyUnread = notifications.some((n) => !n.viewed);

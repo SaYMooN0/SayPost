@@ -1,12 +1,71 @@
 <script lang="ts">
+    import type { Action } from "svelte/action";
     import { DateUtils } from "../../../../ts/common/utils/date-utils";
     import type { NotificationItem } from "../notifications";
     import NotificationContentDisplay from "./NotificationContentDisplay.svelte";
+    import { ApiNotifications } from "../../../../ts/backend-services";
 
     let { notifications = $bindable() }: { notifications: NotificationItem[] } =
         $props<{
             notifications: NotificationItem[];
         }>();
+
+    let markAsViewedNotificationsBuffer = new Set<NotificationItem>();
+    let timeout: number | null = null;
+    const observeWhenVisible: Action<HTMLElement, () => void> = (
+        node,
+        callback,
+    ) => {
+        if (typeof callback !== "function") return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    callback();
+                }
+            },
+            { threshold: 0.9 },
+        );
+
+        observer.observe(node);
+
+        return {
+            destroy() {
+                observer.disconnect();
+            },
+        };
+    };
+    function markAsViewedBatched(notification: NotificationItem) {
+        if (notification.viewed) {
+            return;
+        }
+
+        markAsViewedNotificationsBuffer.add(notification);
+
+        if (!timeout) {
+            timeout = setTimeout(async () => {
+                const toUpdate = Array.from(markAsViewedNotificationsBuffer);
+                const idsToUpdate = toUpdate.map((n) => n.id);
+                console.log("marking: ", idsToUpdate);
+                const response = await ApiNotifications.fetchVoidResponse(
+                    "/notifications/view",
+                    ApiNotifications.requestJsonOptions(
+                        {
+                            notificationIds: idsToUpdate,
+                        },
+                        "PATCH",
+                    ),
+                );
+                console.log(response);
+                if (response.isSuccess) {
+                    toUpdate.forEach((n) => (n.viewed = true));
+                }
+
+                markAsViewedNotificationsBuffer.clear();
+                timeout = null;
+            }, 800);
+        }
+    }
 </script>
 
 {#if notifications.length === 0}
@@ -15,13 +74,23 @@
     <div class="notifications-list">
         {#each notifications as notification}
             <div class="notification-item">
-                <label class="date">
-                    <NotificationContentDisplay
-                        type={notification.type}
-                        specificData={notification.typeSpecificData}
+                <NotificationContentDisplay
+                    notification={{
+                        ...notification.typeSpecificData,
+                        type: notification.type,
+                    }}
+                />
+                <div class="bottom-part">
+                    <div
+                        class="not-viewed-dot"
+                        use:observeWhenVisible={() =>
+                            markAsViewedBatched(notification)}
+                        class:visible={!notification.viewed}
                     />
-                    {DateUtils.toLocale(notification.dateTime)}
-                </label>
+                    <label class="date">
+                        {DateUtils.toLocale(notification.dateTime)}
+                    </label>
+                </div>
             </div>
         {/each}
     </div>
@@ -36,10 +105,35 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        gap: 0.25rem;
+        max-height: 16rem;
+        overflow-y: auto;
     }
 
     .notification-item {
         width: 100%;
-        background-color: aliceblue;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        gap: 0.25rem;
+    }
+    .bottom-part {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .not-viewed-dot {
+        margin-left: auto;
+        width: 0.375rem;
+        height: 0.375rem;
+        border-radius: 50%;
+    }
+    .not-viewed-dot.visible {
+        background-color: var(--accent-main);
+    }
+    .bottom-part > .date {
+        align-self: flex-end;
+        font-size: 0.75rem;
+        color: var(--gray);
     }
 </style>

@@ -17,7 +17,7 @@ public class PostLikedNotificationSpecificData : BaseNotificationSpecificData
     public override IEnumerable<object> GetEqualityComponents() => [PostId, UserThatLikedId];
 
     public override Dictionary<string, string> ToDictionary() => new() {
-        ["PostId"] = PostId.ToString(),
-        ["UserThatLikedId"] = UserThatLikedId.ToString()
+        ["postId"] = PostId.ToString(),
+        ["userThatLikedId"] = UserThatLikedId.ToString()
     };
 }

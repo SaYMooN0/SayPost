@@ -23,7 +23,7 @@
             publishingErrs = [
                 new Err(
                     "Please save or cancel all unsaved changes",
-                    null,
+                    undefined,
                     "Title or content is probably in editing state",
                 ),
             ];
@@ -34,7 +34,6 @@
         }>(`/draft-posts/${postId}/publish`, { method: "POST" });
         if (response.isSuccess) {
             publishingErrs = [];
-            console.log(response.data);
             updateAfterPublishing();
         } else {
             publishingErrs = response.errors;

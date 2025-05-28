@@ -17,7 +17,7 @@ public class PostPublishedNotificationSpecificData : BaseNotificationSpecificDat
     public override IEnumerable<object> GetEqualityComponents() => [PostId, PostAuthorId];
 
     public override Dictionary<string, string> ToDictionary() => new() {
-        ["PostId"] = PostId.ToString(),
-        ["PostAuthorId"] = PostAuthorId.ToString()
+        ["postId"] = PostId.ToString(),
+        ["postAuthorId"] = PostAuthorId.ToString()
     };
 }

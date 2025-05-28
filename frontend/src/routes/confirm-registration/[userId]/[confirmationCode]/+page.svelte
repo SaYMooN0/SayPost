@@ -2,7 +2,6 @@
     import { page } from "$app/state";
     import CubeLoader from "../../../../components/loaders/CubeLoader.svelte";
     import { ApiAuth } from "../../../../ts/backend-services";
-    import { Err } from "../../../../ts/common/errs/err";
     import { PlainErrUtils } from "../../../../ts/common/errs/t-plain-err";
 
     let userId: string = page.params.userId;
