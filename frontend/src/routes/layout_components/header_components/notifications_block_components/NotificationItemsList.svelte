@@ -104,36 +104,40 @@
     .notifications-list {
         display: flex;
         flex-direction: column;
-        width: 100%;
         gap: 0.25rem;
+        width: 100%;
         max-height: 16rem;
         overflow-y: auto;
     }
 
     .notification-item {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        box-sizing: border-box;
         gap: 0.25rem;
+        width: 100%;
+        box-sizing: border-box;
     }
+
     .bottom-part {
         display: flex;
         align-items: center;
         gap: 0.25rem;
     }
+
     .not-viewed-dot {
-        margin-left: auto;
         width: 0.375rem;
         height: 0.375rem;
+        margin-left: auto;
         border-radius: 50%;
     }
+
     .not-viewed-dot.visible {
         background-color: var(--accent-main);
     }
+
     .bottom-part > .date {
-        align-self: flex-end;
-        font-size: 0.75rem;
         color: var(--gray);
+        font-size: 0.75rem;
+        align-self: flex-end;
     }
 </style>

@@ -33,12 +33,12 @@
     p {
         margin: 0;
     }
+
     .userlink {
         color: var(--accent-main);
         font-weight: 600;
         text-decoration: underline;
         text-decoration-thickness: 2px;
-
         word-break: normal;
         overflow-wrap: anywhere;
     }

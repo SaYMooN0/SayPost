@@ -64,20 +64,19 @@
         color: var(--back-main);
         font-size: 1rem;
         font-weight: 420;
-        
         box-shadow:
-            rgba(48, 48, 99, 0.25) 0 2px 5px -1px,
-            rgba(12, 9, 18, 0.3) 0 1px 3px -1px;
+            rgb(48 48 99 / 25%) 0 2px 5px -1px,
+            rgb(12 9 18 / 30%) 0 1px 3px -1px;
+        transition: all 0.08s ease-in;
         cursor: pointer;
         outline: none;
-        transition: all 0.08s ease-in;
 
     }
 
     .edit-banner-btn:focus,
     .edit-banner-btn:hover {
-        transform: scale(1.04);
         font-weight: 460;
+        transform: scale(1.04);
 
 
     }
@@ -88,6 +87,7 @@
         color: inherit;
         transition: all 0.12s ease-in-out;
     }
+
     .edit-banner-btn:focus > svg,
     .edit-banner-btn:hover > svg {
         transform: rotate(-10deg) scale(1.05);
