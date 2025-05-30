@@ -1,8 +1,12 @@
 <script lang="ts">
     import type { UserProfileStatistics } from "../user-profile";
 
-    let { statistics }: { statistics: UserProfileStatistics } = $props<{
+    let {
+        statistics,
+        userId,
+    }: { statistics: UserProfileStatistics; userId: string } = $props<{
         statistics: UserProfileStatistics;
+        userId: string;
     }>();
     let followersCountCopy = $state(statistics.followersCount);
     export function updateFollowersCount(newVal: number) {
@@ -11,38 +15,57 @@
 </script>
 
 <div class="statistics-cards">
-    <div class="card">
+    <a
+        href="/users/{userId}/published-posts"
+        class="card"
+        data-sveltekit-preload-data="hover"
+    >
         <p class="value">{statistics.publishedPostsCount}</p>
         <label class="text">
             {statistics.publishedPostsCount != 1 ? "posts" : "post"} published
         </label>
-    </div>
-    <div class="card">
+    </a>
+    <a
+        href="/users/{userId}/followers"
+        class="card"
+        data-sveltekit-preload-data="hover"
+    >
         <p class="value">{followersCountCopy}</p>
         <label class="text">
             {followersCountCopy != 1 ? "followers" : "follower"}
         </label>
-    </div>
-    <div class="card">
+    </a>
+    <a
+        href="/users/{userId}/followings"
+        class="card"
+        data-sveltekit-preload-data="hover"
+    >
         <p class="value">{statistics.followingsCount}</p>
         <label class="text">
             {statistics.followingsCount != 1 ? "followings" : "following"}
         </label>
-    </div>
-    <div class="card">
+    </a>
+    <a
+        href="/users/{userId}/liked-posts"
+        class="card"
+        data-sveltekit-preload-data="hover"
+    >
         <p class="value">{statistics.likedPostsCount}</p>
         <label class="text">
             {statistics.likedPostsCount != 1 ? "liked posts" : "liked post"}
         </label>
-    </div>
-    <div class="card">
+    </a>
+    <a
+        href="/users/{userId}/comments-left"
+        class="card"
+        data-sveltekit-preload-data="hover"
+    >
         <p class="value">{statistics.commentsLeftCount}</p>
         <label class="text">
-            {statistics.commentsLeftCount != 1
-                ? "comments left"
-                : "comment left"}
+            {statistics.commentsLeftCount != 1 ? "comments" : "comment"}
+            left
         </label>
-    </div>
+    </a>
 </div>
 
 <style>
@@ -64,10 +87,12 @@
         width: 12rem;
         height: 5rem;
         border-radius: 0.25rem;
+        text-decoration: none;
         box-shadow:
             rgb(60 64 67 / 30%) 0 1px 2px 0,
             rgb(60 64 67 / 15%) 0 1px 3px 1px;
         transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: pointer;
         overflow: hidden;
     }
 
@@ -76,7 +101,7 @@
             rgb(60 64 67 / 30%) 0 1px 2px 0,
             rgb(60 64 67 / 15%) 0 1px 3px 1px,
             rgb(0 0 0 / 10%) 0 5px 10px;
-        transform:rotateY(-10deg) rotateX(18deg) scale(1.1);
+        transform: scale(1.1);
     }
 
     .card > p {
@@ -84,13 +109,15 @@
         color: var(--accent-main);
         font-size: 2rem;
         font-weight: 550;
-        cursor: default;
+        cursor: inherit;
+
     }
 
     .card > label {
         color: var(--accent-main);
         font-size: 1.25rem;
         font-weight: 450;
-        cursor: default;
+             cursor: inherit;
+
     }
 </style>

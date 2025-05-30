@@ -36,7 +36,10 @@
         };
     };
     function markAsViewedBatched(notification: NotificationItem) {
-        if (notification.viewed) {
+        if (
+            notification.viewed ||
+            markAsViewedNotificationsBuffer.has(notification)
+        ) {
             return;
         }
 

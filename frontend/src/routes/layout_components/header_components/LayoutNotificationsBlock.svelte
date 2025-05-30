@@ -4,7 +4,6 @@
     import { ApiNotifications } from "../../../ts/backend-services";
     import type { NotificationItem } from "./notifications";
     import type { Err } from "../../../ts/common/errs/err";
-    import NotificationsList from "./notifications_block_components/NotificationItemsList.svelte";
     import NotificationItemsList from "./notifications_block_components/NotificationItemsList.svelte";
     import DefaultErrBlock from "../../../components/err_blocks/DefaultErrBlock.svelte";
 

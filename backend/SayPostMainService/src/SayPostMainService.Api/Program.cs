@@ -53,7 +53,7 @@ public class Program
 
         using (var serviceScope = app.Services.CreateScope()) {
             var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
-            db.Database.EnsureCreated();
+                db.Database.EnsureCreated();
             db.SaveChanges();
         }
 

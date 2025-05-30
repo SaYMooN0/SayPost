@@ -46,6 +46,7 @@
     <UserStatisticsCardsContainer
         bind:this={statisticsContainerEl}
         statistics={data.pageUser.statistics}
+        userId={data.pageUser.userId}
     />
 {/if}
 

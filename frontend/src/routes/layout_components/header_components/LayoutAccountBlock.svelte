@@ -10,7 +10,12 @@
     let isAccountContextMenuOpen = $state(false);
     let buttonElement: HTMLElement;
     function handleClickOutside(event: any) {
-        if (!buttonElement.contains(event.target)) {
+        if (!buttonElement.contains(event.target as Node)) {
+            let parent = event.target.parentElement;
+            while (parent) {
+                if (parent === buttonElement) return;
+                parent = parent.parentElement;
+            }
             isAccountContextMenuOpen = false;
         }
     }
@@ -49,7 +54,10 @@
         class="context-menu unselectable"
         class:open={isAccountContextMenuOpen}
     >
-        <a href="/users/{userId}" class="menu-action">
+        <a
+            href="/users/{userId}"
+            class="menu-action"
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
