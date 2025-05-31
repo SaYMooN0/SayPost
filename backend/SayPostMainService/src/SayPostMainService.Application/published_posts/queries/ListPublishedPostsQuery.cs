@@ -38,9 +38,9 @@ internal class ListPostsWithCommentsQueryHandler
             return err;
         }
 
-        var tags = await _publishedPostsRepository.QueryPostsWithFilter(filer.AsSuccess());
+        var posts = await _publishedPostsRepository.ListPostsWithFilterAsNoTracking(filer.AsSuccess());
 
-        return tags.ToImmutableArray();
+        return posts.ToImmutableArray();
     }
 
     private static ErrOr<PostsQueryFilter> CreateFilter(

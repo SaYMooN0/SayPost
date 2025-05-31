@@ -22,8 +22,8 @@ public record class UserFullProfileDataVm(
     int LikedPostsCount
 );
 
-internal class
-    GetUserWithProfileBannerQueryHandler : IRequestHandler<GetUserFullProfileDataQuery, ErrOr<UserFullProfileDataVm>>
+internal class GetUserWithProfileBannerQueryHandler :
+    IRequestHandler<GetUserFullProfileDataQuery, ErrOr<UserFullProfileDataVm>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly ICurrentActorProvider _currentActorProvider;

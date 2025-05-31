@@ -62,5 +62,6 @@ public class Program
 
     private static void MapHandlers(WebApplication app) {
         app.MapRootHandlers();
+        app.MapGroup("/users").MapAppUsersHandlers();
     }
 }

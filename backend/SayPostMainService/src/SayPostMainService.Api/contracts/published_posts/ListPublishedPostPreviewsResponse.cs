@@ -7,7 +7,7 @@ public record class ListPublishedPostPreviewsResponse(
     PublishedPostPreviewResponse[] Posts
 )
 {
-    public static ListPublishedPostPreviewsResponse FromPosts(ImmutableArray<PublishedPost> posts) => new(
+    public static ListPublishedPostPreviewsResponse FromPosts(IReadOnlyCollection<PublishedPost> posts) => new(
         posts
             .Select(PublishedPostPreviewResponse.FromPost)
             .ToArray()

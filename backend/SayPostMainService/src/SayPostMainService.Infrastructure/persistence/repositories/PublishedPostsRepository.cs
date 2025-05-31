@@ -1,8 +1,6 @@
-﻿using System.Collections.Immutable;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SayPostMainService.Domain.common;
 using SayPostMainService.Domain.common.interfaces.repositories;
-using SayPostMainService.Domain.post_comment_aggregate;
 using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;
 
@@ -21,7 +19,7 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<PublishedPost[]> QueryPostsWithFilter(PostsQueryFilter filter) =>
+    public async Task<IReadOnlyCollection<PublishedPost>> ListPostsWithFilterAsNoTracking(PostsQueryFilter filter) =>
         (await _db.PublishedPosts
             .AsNoTracking()
             .ApplyDateFilter(filter.DateFrom, filter.DateTo)
@@ -30,6 +28,12 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
         .ApplyTagFilter(filter.IncludeTags, filter.ExcludeTags)
         .OrderByDescending(p => p.PublicationDate)
         .ToArray();
+
+    public async Task<IReadOnlyCollection<PublishedPost>> ListPostsByUserAsNoTracking(AppUserId userId) =>
+        await _db.PublishedPosts
+            .AsNoTracking()
+            .Where(p => p.AuthorId == userId)
+            .ToArrayAsync();
 
     public async Task<bool> AnyPostWithId(PublishedPostId postId) =>
         await _db.PublishedPosts.AnyAsync(p => p.Id == postId);
@@ -44,6 +48,14 @@ internal class PublishedPostsRepository : IPublishedPostsRepository
 
     public async Task<PublishedPost?> GetById(PublishedPostId postId) =>
         await _db.PublishedPosts.FindAsync(postId);
+
+
+    public async Task<IReadOnlyCollection<PublishedPost>> GetMultipleAsNoTracking(
+        IReadOnlyCollection<PublishedPostId> postIds
+    ) => await _db.PublishedPosts
+        .AsNoTracking()
+        .Where(post => postIds.Contains(post.Id))
+        .ToArrayAsync();
 }
 
 file static class PublishedPostsRepositoryExtensions

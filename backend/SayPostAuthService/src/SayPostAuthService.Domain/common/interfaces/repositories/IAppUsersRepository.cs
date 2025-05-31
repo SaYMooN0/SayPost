@@ -9,4 +9,5 @@ public interface IAppUsersRepository
     Task<bool> AnyUserWithEmail(Email email);
     Task<AppUser?> GetByEmailAsNoTracking(Email email);
     Task<AppUser?> GetByIdAsNoTracking(AppUserId id);
+    Task<Dictionary<AppUserId, string>> GetUsernamesForUsers(AppUserId[] userIds);
 }

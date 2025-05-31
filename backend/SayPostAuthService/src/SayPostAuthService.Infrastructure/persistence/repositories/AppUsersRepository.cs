@@ -32,4 +32,10 @@ internal class AppUsersRepository : IAppUsersRepository
         _db.AppUsers
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Id == id);
+
+    public async Task<Dictionary<AppUserId, string>> GetUsernamesForUsers(AppUserId[] userIds) =>
+        await _db.AppUsers
+            .AsNoTracking()
+            .Where(u => userIds.Contains(u.Id))
+            .ToDictionaryAsync(u => u.Id, u => u.Username);
 }

@@ -15,20 +15,22 @@ internal class PostCommentsRepository : IPostCommentsRepository
 
     public async Task<IReadOnlyCollection<PostComment>> GetCommentsForPostAsNoTracking(
         PublishedPostId postId, CommentsSortOption sortOption
-    ) =>
-        (
-            await _db.PostComments
-                .AsNoTracking()
-                .Where(c => c.PostId == postId)
-                .OrderBySortOption(sortOption)
-                .ToListAsync()
-        )
-        .AsReadOnly();
+    ) => await _db.PostComments
+        .AsNoTracking()
+        .Where(c => c.PostId == postId)
+        .OrderBySortOption(sortOption)
+        .ToArrayAsync();
 
     public async Task Add(PostComment comment) {
         _db.PostComments.Add(comment);
         await _db.SaveChangesAsync();
     }
+
+    public async Task<IReadOnlyCollection<PostComment>> GetCommentsByUserAsNoTracking(AppUserId userId) =>
+        await _db.PostComments
+            .AsNoTracking()
+            .Where(c => c.AuthorId == userId)
+            .ToArrayAsync();
 }
 
 file static class PostCommentsRepositoryExtension

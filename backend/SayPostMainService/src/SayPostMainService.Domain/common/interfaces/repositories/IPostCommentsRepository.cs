@@ -1,4 +1,5 @@
 ﻿using SayPostMainService.Domain.post_comment_aggregate;
+using SayPostMainService.Domain.published_post_aggregate;
 using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Domain.common.interfaces.repositories;
@@ -10,4 +11,5 @@ public interface IPostCommentsRepository
     );
 
     Task Add(PostComment comment);
+    Task<IReadOnlyCollection<PostComment>> GetCommentsByUserAsNoTracking(AppUserId userId);
 }

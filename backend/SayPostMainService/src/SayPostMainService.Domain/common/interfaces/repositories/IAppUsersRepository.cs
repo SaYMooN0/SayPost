@@ -11,4 +11,5 @@ public interface IAppUsersRepository
     Task<AppUser?> GetWithBannerAsNoTracking(AppUserId userId);
     Task<AppUser?> GetWithBanner(AppUserId userId);
     Task<bool> DoesUserExist(AppUserId userId);
+    Task<AppUser?> GetByIdAsNoTracking(AppUserId userId);
 }

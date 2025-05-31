@@ -38,6 +38,10 @@ internal class AppUsersRepository : IAppUsersRepository
             .Include(u => u.ProfileBanner)
             .FirstOrDefaultAsync(u => u.Id == userId);
 
-    public async Task<bool> DoesUserExist(AppUserId userId) =>
-        await _db.AppUsers.AnyAsync(u => u.Id == userId);
+    public async Task<bool> DoesUserExist(AppUserId userId) => await _db.AppUsers
+        .AnyAsync(u => u.Id == userId);
+
+    public async Task<AppUser?> GetByIdAsNoTracking(AppUserId userId) => await _db.AppUsers
+        .AsNoTracking()
+        .FirstOrDefaultAsync(u => u.Id == userId);
 }
