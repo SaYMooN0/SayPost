@@ -4,8 +4,10 @@ using ApiShared.extensions;
 using SayPostMainService.Api.endpoints;
 using SayPostMainService.Application;
 using SayPostMainService.Application.interfaces;
+using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
+using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Api;
 
@@ -53,7 +55,9 @@ public class Program
 
         using (var serviceScope = app.Services.CreateScope()) {
             var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
-                db.Database.EnsureCreated();
+            db.Database.EnsureDeleted();
+            db.Database.EnsureCreated();
+            db.AppUsers.Add(new AppUser(new AppUserId(new Guid("01970865-8808-70fc-829d-bc096bfc27f2"))));
             db.SaveChanges();
         }
 
@@ -61,7 +65,7 @@ public class Program
         app.Run();
     }
 
-    private static void MapHandlers(WebApplication app) {
+    private static void MapHandlers(WebApplication app) {   
         app.MapGroup("/posts").MapPostsHandlers();
         app.MapGroup("/draft-posts").MapDraftPostsHandlers();
         app.MapGroup("/draft-posts/{draftPostId}").MapSpecificDraftPostHandlers();

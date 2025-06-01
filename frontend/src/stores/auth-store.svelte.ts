@@ -85,6 +85,5 @@ export async function logout() {
 	} else {
 		location.reload();
 	}
-
 }
 

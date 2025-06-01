@@ -50,11 +50,11 @@ public class Program
 
         MapHandlers(app);
         
-        using (var serviceScope = app.Services.CreateScope()) {
-            var db = serviceScope.ServiceProvider.GetRequiredService<FollowingDbContext>();
-            db.Database.EnsureCreated();
-            db.SaveChanges();
-        }
+        // using (var serviceScope = app.Services.CreateScope()) {
+        //     var db = serviceScope.ServiceProvider.GetRequiredService<FollowingDbContext>();
+        //     db.Database.EnsureCreated();
+        //     db.SaveChanges();
+        // }
 
         app.UseCors("AllowFrontend");
         app.Run();

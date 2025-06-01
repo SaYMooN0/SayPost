@@ -2,6 +2,7 @@
 
 public abstract class GuidBasedId : ValueObject, IEntityId
 {
+    private GuidBasedId() { }
     public Guid Value { get; }
     protected GuidBasedId(Guid value) => Value = value;
     public override string ToString() => Value.ToString();

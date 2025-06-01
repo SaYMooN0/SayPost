@@ -39,10 +39,10 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0;
-        margin: 0.25rem 0 0 0;
-        box-sizing: border-box;
-        font-weight: 450;
+        margin: 0.25rem 0 0;
         font-size: 2rem;
+        font-weight: 450;
+        box-sizing: border-box;
     }
 
     .back-btn {
@@ -61,7 +61,7 @@
 
     .back-btn:hover > svg {
         color: var(--accent-main);
-        cursor: pointer;
         transform: scale(1.06);
+        cursor: pointer;
     }
 </style>

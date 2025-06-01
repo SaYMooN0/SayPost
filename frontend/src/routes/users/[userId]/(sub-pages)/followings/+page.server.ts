@@ -12,12 +12,12 @@ export const load: PageServerLoad = async ({ params, fetch }):
 
     const response = await ApiMain.serverFetchJsonResponse<{
         users: { id: string }[];
-    }>(fetch, `/users/${userId}/list-follower-ids`, {
+    }>(fetch, `/users/${userId}/list-following-ids`, {
         method: 'GET',
     });
 
     if (!response.isSuccess) {
-        return { title: 'followers', errors: response.errors };
+        return { title: 'followings', errors: response.errors };
     }
 
     const ids = response.data.users.map((u) => u.id);
@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ params, fetch }):
     );
 
     return {
-        title: 'followers',
+        title: 'followings',
         users: response.data.users.map((u) => ({
             id: u.id,
             username: usernameResult[u.id] ?? null,

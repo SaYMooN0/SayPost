@@ -18,7 +18,7 @@ public class EventualConsistencyMiddleware<T> where T : DbContext
         context.Response.OnCompleted(async () => {
             try {
                 await transaction.CommitAsync();
-            } catch (Exception) {
+            } catch (Exception ex) {
                 await transaction.RollbackAsync();
             } finally {
                 await transaction.DisposeAsync();

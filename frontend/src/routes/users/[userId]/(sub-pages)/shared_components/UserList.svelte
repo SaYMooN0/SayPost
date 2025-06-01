@@ -2,9 +2,10 @@
     import UserListGridViewItem from "./user_list_components/UserListGridViewItem.svelte";
     import UserListListViewItem from "./user_list_components/UserListListViewItem.svelte";
 
-    const { users }: { users: { id: string; username: string }[] } = $props<{
-        users: { id: string; username: string }[];
-    }>();
+    const { users }: { users: { id: string; username: string | null }[] } =
+        $props<{
+            users: { id: string; username: string }[];
+        }>();
     let displayList = $state(true);
 </script>
 
