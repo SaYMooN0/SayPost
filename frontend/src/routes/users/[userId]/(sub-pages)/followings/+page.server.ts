@@ -11,29 +11,27 @@ export const load: PageServerLoad = async ({ params, fetch }):
     const { userId } = params;
 
     const response = await ApiMain.serverFetchJsonResponse<{
-        users: { id: string }[];
+        userIds: string[]
     }>(fetch, `/users/${userId}/list-following-ids`, {
         method: 'GET',
     });
 
     if (!response.isSuccess) {
-        return { title: 'followings', errors: response.errors };
+        return { title: 'followers', errors: response.errors };
     }
 
-    const ids = response.data.users.map((u) => u.id);
 
     const usernameResult = await cachedUsersStore.getUsernameForIds(
-        ids,
-        async (missingIds) => await ApiAuth.serverFetchJsonResponse<Record<string, string>>(
-            fetch, '/users/usernames-by-ids', ApiAuth.requestJsonOptions({ userIds: missingIds })
+        response.data.userIds,
+        async (missingIds) => await ApiAuth.serverFetchJsonResponse<{ users: { id: string, username: string }[] }>(
+            fetch, '/users/usernames-by-ids', ApiAuth.requestJsonOptions({ ids: missingIds })
         )
     );
-
     return {
-        title: 'followings',
-        users: response.data.users.map((u) => ({
-            id: u.id,
-            username: usernameResult[u.id] ?? null,
+        title: 'followers',
+        users: response.data.userIds.map((id) => ({
+            id: id,
+            username: usernameResult[id] ?? null,
         })),
     };
 };

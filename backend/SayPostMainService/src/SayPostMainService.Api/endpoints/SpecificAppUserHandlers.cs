@@ -41,7 +41,7 @@ internal static class SpecificAppUserHandlers
         var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result, (userIds) => Results.Json(
-            new { UserIds = userIds }
+            new { UserIds = userIds.Select(u => u.ToString()) }
         ));
     }
 

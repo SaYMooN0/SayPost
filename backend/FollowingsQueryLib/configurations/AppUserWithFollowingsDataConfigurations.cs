@@ -15,16 +15,14 @@ internal class AppUserWithFollowingsDataConfigurations : IEntityTypeConfiguratio
             .Property(x => x.Id)
             .ValueGeneratedNever()
             .HasConversion(id => id.Value, str => new AppUserId(str));
-        
+
         builder
-            .Property<ImmutableHashSet<AppUserId>>("FollowerIds")
-            .HasColumnName("FollowerIds")
+            .Property(x => x.FollowerIds)
             .HasConversion(new AppUserIdHashSetConverter(), new AppUserIdHashSetComparer());
 
-        
+
         builder
-            .Property<ImmutableHashSet<AppUserId>>("FollowingIds")
-            .HasColumnName("FollowingIds")
+            .Property(x => x.FollowingIds)
             .HasConversion(new AppUserIdHashSetConverter(), new AppUserIdHashSetComparer());
     }
 }

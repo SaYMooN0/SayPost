@@ -26,7 +26,7 @@
     }
 
     .page-content {
-        width: 80rem;
+        width: min(80rem, 100%);
         margin: 0 auto;
         box-sizing: border-box;
     }

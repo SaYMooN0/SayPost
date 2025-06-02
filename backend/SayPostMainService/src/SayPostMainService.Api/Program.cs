@@ -53,13 +53,14 @@ public class Program
 
         MapHandlers(app);
 
-        using (var serviceScope = app.Services.CreateScope()) {
-            var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-            db.AppUsers.Add(new AppUser(new AppUserId(new Guid("01970865-8808-70fc-829d-bc096bfc27f2"))));
-            db.SaveChanges();
-        }
+        // using (var serviceScope = app.Services.CreateScope()) {
+        //     var db = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
+        //     db.Database.EnsureDeleted();
+        //     db.Database.EnsureCreated();
+        //     db.AppUsers.Add(new AppUser(new AppUserId(new Guid("01970865-8808-70fc-829d-bc096bfc27f2"))));
+        //     db.AppUsers.Add(new AppUser(new AppUserId(new Guid("01970867-a7ad-76ea-894f-2f6e6b45dc8b"))));
+        //     db.SaveChanges();
+        // }
 
         app.UseCors("AllowFrontend");
         app.Run();

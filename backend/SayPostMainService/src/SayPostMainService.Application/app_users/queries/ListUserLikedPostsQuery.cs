@@ -35,7 +35,7 @@ internal class ListUserLikedPostsQueryHandler :
             );
         }
 
-        var posts = await _publishedPostsRepository.GetMultipleAsNoTracking(user.LikedPostIds);
+        var posts = await _publishedPostsRepository.GetMultipleAsNoTracking(user.LikedPostIds());
         return ErrOr<IReadOnlyCollection<PublishedPost>>.Success(posts);
     }
 }

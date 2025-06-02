@@ -22,6 +22,11 @@ internal static class AppUsersHandlers
         GetUsernamesQuery query = new(request.ParsedIds);
         var result = await mediator.Send(query);
 
-        return Results.Json(result);
+        return Results.Json(new {
+            Users = result.Select(u => new {
+                Id = u.Key.ToString(),
+                Username = u.Value
+            })
+        });
     }
 }

@@ -26,7 +26,7 @@ public class AppUser : AggregateRoot<AppUserId>
 
     public int PublishedPostsCount => _publishedPostIds.Count;
     public int LikedPostsCount => _likedPostIds.Count;
-    public IReadOnlyCollection<PublishedPostId> LikedPostIds => _likedPostIds;
+    public IReadOnlyCollection<PublishedPostId> LikedPostIds() => _likedPostIds;
     public int LeftCommentsCount => _leftCommentIds.Count;
 
     public void AddDraftPost(DraftPostId draftPostId) => _draftPostIds.Add(draftPostId);

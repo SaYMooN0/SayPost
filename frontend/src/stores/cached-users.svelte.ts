@@ -5,7 +5,7 @@ class CachedUsersStore {
 
     async getUsernameForIds(
         userIds: string[],
-        fetchIfNotFound: (missingIds: string[]) => Promise<ServerResponseResult<Record<string, string>>>
+        fetchIfNotFound: (missingIds: string[]) => Promise<ServerResponseResult<{ users: { id: string, username: string }[] }>>
     ): Promise<Record<string, string | null>> {
 
         const result: Record<string, string | null> = {};
@@ -22,13 +22,13 @@ class CachedUsersStore {
         if (missing.length > 0) {
             const fetchResult = await fetchIfNotFound(missing);
             if (fetchResult.isSuccess) {
-                for (const [id, username] of Object.entries(fetchResult.data)) {
-                    this._userMap.set(id, username);
-                    result[id] = username;
+                for (const user of fetchResult.data.users) {
+                    this._userMap.set(user.id, user.username);
+                    result[user.id] = user.username;
                 }
-
+                const fetchedUsersIds = new Set(fetchResult.data.users.map((u) => u.id));
                 for (const id of missing) {
-                    if (!(id in fetchResult.data)) {
+                    if (!fetchedUsersIds.has(id)) {
                         result[id] = null;
                     }
                 }
@@ -38,7 +38,6 @@ class CachedUsersStore {
                 }
             }
         }
-
         return result;
     }
 }

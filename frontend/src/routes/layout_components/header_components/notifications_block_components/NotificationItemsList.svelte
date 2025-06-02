@@ -49,7 +49,6 @@
             timeout = setTimeout(async () => {
                 const toUpdate = Array.from(markAsViewedNotificationsBuffer);
                 const idsToUpdate = toUpdate.map((n) => n.id);
-                console.log("marking: ", idsToUpdate);
                 const response = await ApiNotifications.fetchVoidResponse(
                     "/notifications/view",
                     ApiNotifications.requestJsonOptions(
@@ -59,7 +58,6 @@
                         "PATCH",
                     ),
                 );
-                console.log(response);
                 if (response.isSuccess) {
                     toUpdate.forEach((n) => (n.viewed = true));
                 }
