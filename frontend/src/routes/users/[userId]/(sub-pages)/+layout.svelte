@@ -39,7 +39,7 @@
         align-items: center;
         gap: 0.5rem;
         padding: 0;
-        margin: 0.25rem 0 0;
+        margin: 0.25rem 0 1rem 0;
         font-size: 2rem;
         font-weight: 450;
         box-sizing: border-box;

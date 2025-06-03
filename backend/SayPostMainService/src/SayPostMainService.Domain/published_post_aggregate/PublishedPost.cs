@@ -78,6 +78,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         }
 
         _likedByUserIds.Add(userId);
+        AddDomainEvent(new PostLikedEvent(this.Id, this.AuthorId, userId));
         return ErrOrNothing.Nothing;
     }
 
@@ -87,6 +88,7 @@ public class PublishedPost : AggregateRoot<PublishedPostId>
         }
 
         _likedByUserIds.Remove(userId);
+        AddDomainEvent(new PostUnlikedEvent(this.Id, userId));
         return ErrOrNothing.Nothing;
     }
 }

@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ params, fetch }):
         )
     );
     return {
-        title: 'followers',
+        title: `followers (${response.data.userIds.length})`,
         users: response.data.userIds.map((id) => ({
             id: id,
             username: usernameResult[id] ?? null,

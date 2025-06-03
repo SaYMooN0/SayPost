@@ -1,4 +1,5 @@
 <script lang="ts">
+    import ListIsEmptyComponent from "./ListIsEmptyComponent.svelte";
 
     const { users }: { users: { id: string; username: string | null }[] } =
         $props<{
@@ -8,7 +9,7 @@
 </script>
 
 {#if users.length === 0}
-    <div class="no-users">Hmmm, seems like this list is empty</div>
+    <ListIsEmptyComponent />
 {:else}
     <div class="change-view">
         <svg
@@ -72,7 +73,13 @@
     </div>
     <div class="container {displayList ? 'list' : 'grid'}">
         {#each users as u}
-            <div class="list-item {u.username ? '' : 'unable-to-load'} {displayList ? 'list-view' : 'grid-view'}">
+            <div
+                class="list-item {u.username
+                    ? ''
+                    : 'unable-to-load'} {displayList
+                    ? 'list-view'
+                    : 'grid-view'}"
+            >
                 {#if u.username}
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -103,14 +110,14 @@
                         <path
                             d="M14.9994 15L9 9M9.00064 15L15 9"
                             stroke="currentColor"
-                            stroke-width="1.5"
+                            stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
                         />
                         <path
                             d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12Z"
                             stroke="currentColor"
-                            stroke-width="1.5"
+                            stroke-width="2"
                         />
                     </svg>
                     <label>Unable to load username</label>
@@ -128,16 +135,6 @@
 {/if}
 
 <style>
-    .no-users {
-        width: fit-content;
-        padding: 0.75rem 1.5rem;
-        margin: 4rem auto;
-        border-radius: 0.5rem;
-        background-color: var(--back-second);
-        font-size: 1.75rem;
-        box-sizing: border-box;
-    }
-
     .change-view {
         display: grid;
         gap: 0.25rem;
@@ -166,10 +163,10 @@
     }
 
     .container {
-        margin-top: 1rem;
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        margin-top: 1rem;
     }
 
     .container.grid {
@@ -179,30 +176,41 @@
     .container.list {
         flex-direction: column;
     }
+
     .list-item {
-        display: flex;
-        flex-direction: column;
         align-items: center;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
         box-shadow:
             rgb(60 64 67 / 10%) 0 1px 2px 0,
-            rgba(47, 59, 67, 0.2) 0 1px 2px 1px;
+            rgb(47 59 67 / 20%) 0 1px 2px 1px;
         box-sizing: border-box;
+        interpolate-size: allow-keywords;
     }
-    .list-item.grid-view {
-        flex: 1 1 auto;
-        max-width: 25%;
 
+    .list-item.grid-view {
+        display: flex;
+        flex-direction: column;
+        max-width: 25%;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        flex: 1 1 auto;
     }
+
     .list-item.list-view {
+        display: grid;
+        grid-template-columns: 3rem 1fr auto;
         width: 100%;
+        padding: 0.375rem 2rem;
+        border-radius: 0.25rem;
+        transition: width 0.1s ease-in;
     }
 
     .list-item > svg {
         width: 3rem;
-        height: 3rem;
         color: var(--accent-main);
+    }
+
+    .list-item.grid-view > svg {
+        width: 2rem;
     }
 
     .list-item > label {
@@ -214,6 +222,8 @@
 
     .unable-to-load > svg {
         color: var(--gray);
+        width: 1.5rem;
+        justify-self: center;
     }
 
     .unable-to-load > label {
@@ -235,5 +245,9 @@
 
     .visit-btn:hover {
         background-color: var(--accent-hov);
+    }
+
+    .list-item.list-view > .visit-btn {
+        font-size: 1rem;
     }
 </style>

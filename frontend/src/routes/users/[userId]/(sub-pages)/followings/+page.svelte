@@ -10,7 +10,7 @@
 {#if data.errors && data.errors.length > 0}
     <DefaultErrBlock errList={data.errors} />
 {:else if data.users === undefined}
-    <ErrView err={{ message: "Unable to load users followers" }} />
+    <ErrView err={{ message: "Unable to load user's followings" }} />
 {:else}
     <UserList users={data.users} />
 {/if}

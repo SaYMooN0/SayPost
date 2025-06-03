@@ -295,7 +295,6 @@
         background-color: var(--accent-main);
         color: var(--back-main);
         font-size: 1.375rem;
-        font-weight: 500;
         transition: all 0.08s ease-in;
         cursor: pointer;
     }

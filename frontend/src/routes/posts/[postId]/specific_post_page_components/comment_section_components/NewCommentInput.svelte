@@ -44,6 +44,7 @@
     function cancelEditing() {
         commentValue = "";
         saveErrs = [];
+        inputEl.blur();
     }
     onMount(() => {
         onCommentInput();
@@ -59,7 +60,7 @@
         oninput={() => onCommentInput()}
     />
     <div class="btns-container">
-        <button class="cancel-btn" onclick={cancelEditing}> Cancel </button>
+        <button class="cancel-btn" onclick={cancelEditing}>Cancel</button>
         <button
             class="save-btn"
             disabled={StringUtils.isNullOrWhiteSpace(commentValue)}
