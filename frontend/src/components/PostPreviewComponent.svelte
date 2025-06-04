@@ -86,11 +86,11 @@
     .post-view {
         display: flex;
         flex-direction: column;
+        gap: 0.5rem;
         padding: 0.5rem;
         border: 0.125rem solid var(--accent-main);
         border-radius: 0.5rem;
         box-sizing: border-box;
-        gap: 0.5rem;
     }
 
     .title {
@@ -98,6 +98,7 @@
         overflow-wrap: anywhere;
         text-indent: 0.25em;
         margin: 0;
+        font-weight: 550;
     }
 
     .no-tags {
@@ -136,23 +137,27 @@
         justify-content: space-between;
         align-items: center;
     }
+
     .comments-likes-div {
         display: grid;
         align-items: center;
+        gap: 0.25rem;
         width: 6rem;
         grid-template-columns: min-content 1.25rem 1fr min-content 1.25rem;
-        gap: 0.25rem;
         box-sizing: border-box;
     }
+
     .comments-likes-div label {
-        color: var(--text-main);
         width: fit-content;
+        color: var(--text-main);
         box-sizing: border-box;
     }
+
     .comments-likes-div svg {
         width: 100%;
         color: var(--text-main);
     }
+
     .read-link {
         width: 90%;
         padding: 0.375rem 0;
@@ -171,14 +176,14 @@
     }
 
     .read-link:hover {
+        width: 92%;
         background-color: var(--accent-main);
         color: var(--back-main);
-        width: 92%;
     }
 
     .read-link:active {
         border-radius: 1.5rem;
-        transform: scale(0.98);
         background-color: var(--accent-hov);
+        transform: scale(0.98);
     }
 </style>

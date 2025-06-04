@@ -221,8 +221,8 @@
     }
 
     .unable-to-load > svg {
-        color: var(--gray);
         width: 1.5rem;
+        color: var(--gray);
         justify-self: center;
     }
 

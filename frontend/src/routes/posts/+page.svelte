@@ -59,17 +59,18 @@
 <style>
 	.page {
 		display: grid;
+		gap: 1rem;
 		width: 100%;
 		margin: 0;
 		box-sizing: border-box;
 		grid-template-rows: auto 1fr;
-		gap: 1rem;
 	}
 
 	.page:global(.err-block) {
 		margin-top: 1rem;
 		margin-bottom: 4rem;
 	}
+
 	.posts-container {
 		display: flex;
 		flex-direction: column;

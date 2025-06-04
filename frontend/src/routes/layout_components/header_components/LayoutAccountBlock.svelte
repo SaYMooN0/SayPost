@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import LayoutNotificationsBlock from "./LayoutNotificationsBlock.svelte";
+    import { ApiAuth } from "../../../ts/backend-services";
 
     let { username, userId }: { username: string; userId: string } = $props<{
         username: string;
@@ -17,6 +18,12 @@
                 parent = parent.parentElement;
             }
             isAccountContextMenuOpen = false;
+        }
+    }
+    async function logout() {
+        const response = await ApiAuth.fetchVoidResponse("/logout", { method: "POST" });
+        if (response.isSuccess) {
+            window.location.reload();
         }
     }
     onMount(() => {
@@ -87,7 +94,7 @@
             </svg>
             My profile
         </a>
-        <div class="menu-action">
+        <div class="menu-action" onclick={()=>logout()}>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
