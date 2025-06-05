@@ -5,7 +5,7 @@ public class ErrListOr<T>
     private readonly T _successValue;
     private readonly ErrList _errList;
 
-    public ErrListOr() {
+    private ErrListOr() {
         _successValue = default;
         _errList = new ErrList();
     }

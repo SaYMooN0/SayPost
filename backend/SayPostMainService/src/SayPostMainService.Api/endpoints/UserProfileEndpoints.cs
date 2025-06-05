@@ -16,6 +16,8 @@ internal static class UserProfileEndpoints
         endpoints
             .MapPatch("/update-banner", UpdateUserProfileBanner)
             .WithRequestValidation<UpdateProfileBannerRequest>();
+
+        // endpoints.MapGet("/statistics-visibility", GetUsersStatisticsCardsVisibility);
         return endpoints;
     }
 

@@ -49,12 +49,12 @@
 
     .comment {
         width: 100%;
+        padding-left: 0.125rem;
+        margin-bottom: 0.5rem;
         margin-left: 0.5rem;
+        font-size: 1.25rem;
         box-sizing: border-box;
         border-left: 0.125rem solid var(--gray);
         text-indent: 0.25em;
-        padding-left: 0.125rem;
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
     }
 </style>

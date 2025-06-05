@@ -11,6 +11,12 @@
 
     let { data }: PageProps = $props();
     let statisticsContainerEl: UserStatisticsCardsContainer;
+    function isViewersPage(viewerData: AuthStoreData): boolean {
+        if (data.pageUser === undefined) {
+            return false;
+        }
+        return data.pageUser.userId == viewerData.UserId;
+    }
 </script>
 
 {#if data.errors && data.errors.length > 0}
@@ -19,7 +25,7 @@
     <ErrView err={{ message: "Unable to load " }} />
 {:else}
     {#snippet bannerAuthenticated(authData: AuthStoreData)}
-        {#if authData.UserId == data.pageUser.userId}
+        {#if isViewersPage(authData)}
             <MyProfileBanner bannerData={data.pageUser.profileBanner} />
         {:else}
             <OtherUserProfileBannerWithFollow
@@ -47,6 +53,7 @@
         bind:this={statisticsContainerEl}
         statistics={data.pageUser.statistics}
         userId={data.pageUser.userId}
+        {isViewersPage}
     />
 {/if}
 

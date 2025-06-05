@@ -23,20 +23,20 @@
             errList.push(
                 new Err(
                     "Email is required",
-                    null,
+                    undefined,
                     "Fill the email input field",
                 ),
             );
         } else if (!email.includes("@")) {
             errList.push(
-                new Err("Invalid email", null, "Email must contain '@'"),
+                new Err("Invalid email", undefined, "Email must contain '@'"),
             );
         }
         if (StringUtils.isNullOrWhiteSpace(password)) {
             errList.push(
                 new Err(
                     "Password is required",
-                    null,
+                    undefined,
                     "Fill the password field",
                 ),
             );
@@ -50,6 +50,7 @@
         );
         if (response.isSuccess) {
             closeDialog();
+            window.location.reload();
         } else {
             errList = response.errors;
         }

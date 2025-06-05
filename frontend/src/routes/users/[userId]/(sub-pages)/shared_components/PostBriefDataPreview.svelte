@@ -38,9 +38,9 @@
     .post {
         display: flex;
         flex-direction: column;
+        padding: 0.25rem 0.5rem;
         border: 0.125rem solid var(--back-second);
         border-radius: 0.5rem;
-        padding: 0.25rem 0.5rem;
         box-sizing: border-box;
     }
 
@@ -57,11 +57,13 @@
         font-style: italic;
         font-weight: 450;
     }
+
     .author > a {
         color: var(--accent-main);
-        text-decoration: none;
         font-weight: 500;
+        text-decoration: none;
     }
+
     .author > a:hover {
         text-decoration: underline;
         text-decoration-thickness: 0.125rem;
@@ -75,12 +77,12 @@
         width: fit-content;
         padding: 0.25rem 1rem;
         margin: 0 0.25rem 0.25rem auto;
+        border-radius: 0.25rem;
         background-color: var(--accent-main);
         color: var(--back-main);
-        border-radius: 0.25rem;
-        transition: all 0.12s ease;
-        text-decoration: none;
         font-size: 1.25rem;
+        text-decoration: none;
+        transition: all 0.12s ease;
     }
 
     .read-btn:hover {

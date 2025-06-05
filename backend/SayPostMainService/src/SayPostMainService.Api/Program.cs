@@ -8,7 +8,6 @@ using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Infrastructure;
 using SayPostMainService.Infrastructure.persistence;
 using SharedKernel.common.domain.ids;
-
 namespace SayPostMainService.Api;
 
 public class Program
@@ -33,7 +32,7 @@ public class Program
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped<ICurrentActorProvider, HttpContextCurrentUserProvider>();
         builder.Services
-            .AddApplication(builder.Configuration)
+            .AddApplication()
             .AddInfrastructure(builder.Configuration)
             .ConfigureHttpJsonOptions(options => {
                 options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
