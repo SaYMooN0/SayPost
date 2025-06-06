@@ -1,4 +1,4 @@
-namespace SayPostMainService.Api.contracts.app_users;
+namespace SayPostMainService.Api.contracts.app_users.statistics;
 
 public record class ListUserLikedPostsResponse(PostBriefData[] Posts);
 

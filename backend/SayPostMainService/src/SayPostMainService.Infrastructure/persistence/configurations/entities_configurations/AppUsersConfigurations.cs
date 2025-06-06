@@ -41,5 +41,24 @@ internal class AppUsersConfigurations : IEntityTypeConfiguration<AppUser>
             .HasOne(x => x.ProfileBanner)
             .WithOne()
             .HasForeignKey<UserProfileBanner>("UserId");
+
+        builder
+            .ComplexProperty<StatisticsVisibilitySettings>("StatisticsVisibilitySettings", sa =>
+            {
+                sa.Property(s => s.PublishedPostsOnlyForFollowers)
+                    .HasColumnName("StatsVis_PublishedPostsOnlyForFollowers");
+
+                sa.Property(s => s.FollowersOnlyForFollowers)
+                    .HasColumnName("StatsVis_FollowersOnlyForFollowers");
+
+                sa.Property(s => s.FollowingOnlyForFollowers)
+                    .HasColumnName("StatsVis_FollowingOnlyForFollowers");
+
+                sa.Property(s => s.LikedPostsOnlyForFollowers)
+                    .HasColumnName("StatsVis_LikedPostsOnlyForFollowers");
+
+                sa.Property(s => s.LeftCommentsOnlyForFollowers)
+                    .HasColumnName("StatsVis_LeftCommentsOnlyForFollowers");
+            });
     }
 }

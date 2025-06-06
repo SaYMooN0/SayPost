@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using SharedKernel.common.domain;
 using SharedKernel.common.domain.ids;
+using SharedKernel.common.errs;
 
 namespace FollowingsQueryLib.entities;
 
@@ -12,4 +13,6 @@ public class AppUserWithFollowingsData : AggregateRoot<AppUserId>
     public bool IsFollowedBy(AppUserId followerId) => FollowerIds.Contains(followerId);
     public int FollowersCount => FollowerIds.Count;
     public int FollowingsCount => FollowingIds.Count;
+
+    public ErrOr<IReadOnlyCollection<AppUserId>> FollowingIdsForStatistics(AppUserId? viewerId) { }
 }

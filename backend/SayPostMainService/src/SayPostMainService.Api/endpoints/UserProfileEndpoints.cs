@@ -2,7 +2,6 @@
 using ApiShared.extensions;
 using MediatR;
 using SayPostMainService.Api.contracts.app_users;
-using SayPostMainService.Api.extensions;
 using SayPostMainService.Application.app_users.commands;
 using SharedKernel.common.domain.ids;
 
@@ -17,7 +16,9 @@ internal static class UserProfileEndpoints
             .MapPatch("/update-banner", UpdateUserProfileBanner)
             .WithRequestValidation<UpdateProfileBannerRequest>();
 
-        // endpoints.MapGet("/statistics-visibility", GetUsersStatisticsCardsVisibility);
+        // endpoints.MapGet("/statistics-visibility", GetUsersStatisticsVisibility);
+        // endpoints.MapPost("/update-statistics-visibility", UpdateStatisticsVisibility)
+        //     .WithRequestValidation<>();
         return endpoints;
     }
 

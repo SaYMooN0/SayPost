@@ -27,12 +27,15 @@ export enum DesignVariant {
 }
 
 export type UserProfileStatistics = {
-    publishedPostsCount: number;
-    followersCount: number;
-    followingsCount: number;
-    commentsLeftCount: number;
-    likedPostsCount: number;
+    publishedPosts: StatisticsValue;
+    followers: StatisticsValue;
+    followings: StatisticsValue;
+    commentsLeft: StatisticsValue;
+    likedPosts: StatisticsValue;
 }
+export type StatisticsValue =
+    | { isHidden: false; value: number }
+    | { isHidden: true }
 
 export namespace BannerDesign {
     export function colorsInBannerDesignCount(design: BannerDesign): number {

@@ -18,47 +18,112 @@
         userId: string;
         isViewersPage: (viewerData: AuthStoreData) => boolean;
     }>();
-    let followersCountCopy = $state(statistics.followersCount);
-    export function updateFollowersCount(newVal: number) {
-        followersCountCopy = newVal;
-    }
+    export async function updateStatisticsState() {}
     let visibilityEditingDialog: EditStatisticsCardVisibilityDialog;
 </script>
 
 <div class="statistics-cards">
     <AuthView authenticated={editVisibilityButton} />
+    {#if statistics.publishedPosts.isHidden}
+        <StatisticsCard
+            card={{
+                isHidden: true,
+                cardName: "published posts",
+            }}
+        />
+    {:else}
+        <StatisticsCard
+            card={{
+                isHidden: false,
+                link: `/users/${userId}/published-posts`,
+                value: statistics.publishedPosts.toString(),
+                labelText:
+                    statistics.publishedPosts.value === 1
+                        ? "post published"
+                        : "posts published",
+            }}
+        />
+    {/if}
+    {#if statistics.followers.isHidden}
+        <StatisticsCard
+            card={{
+                isHidden: true,
+                cardName: "followers",
+            }}
+        />
+    {:else}
+        <StatisticsCard
+            card={{
+                isHidden: false,
+                link: `/users/${userId}/followers`,
+                value: statistics.followers.toString(),
+                labelText:
+                    statistics.followers.value === 1 ? "follower" : "followers",
+            }}
+        />
+    {/if}
 
-    <StatisticsCard
-        link="/users/{userId}/published-posts"
-        value={statistics.publishedPostsCount.toString()}
-        labelText={statistics.publishedPostsCount != 1
-            ? "posts published"
-            : "post published"}
-    />
-    <StatisticsCard
-        link="/users/{userId}/followers"
-        value={followersCountCopy.toString()}
-        labelText={followersCountCopy != 1 ? "followers" : "follower"}
-    />
-    <StatisticsCard
-        link="/users/{userId}/followings"
-        value={statistics.followingsCount.toString()}
-        labelText={statistics.followingsCount != 1 ? "followings" : "following"}
-    />
-    <StatisticsCard
-        link="/users/{userId}/liked-posts"
-        value={statistics.likedPostsCount.toString()}
-        labelText={statistics.likedPostsCount != 1
-            ? "liked posts"
-            : "liked post"}
-    />
-    <StatisticsCard
-        link="/users/{userId}/comments-left"
-        value={statistics.commentsLeftCount.toString()}
-        labelText={statistics.commentsLeftCount != 1
-            ? "comments left"
-            : "comment left"}
-    />
+    {#if statistics.followings.isHidden}
+        <StatisticsCard
+            card={{
+                isHidden: true,
+                cardName: "followings",
+            }}
+        />
+    {:else}
+        <StatisticsCard
+            card={{
+                isHidden: false,
+                link: `/users/${userId}/followings`,
+                value: statistics.followings.toString(),
+                labelText:
+                    statistics.followings.value === 1
+                        ? "following"
+                        : "followings",
+            }}
+        />
+    {/if}
+
+    {#if statistics.likedPosts.isHidden}
+        <StatisticsCard
+            card={{
+                isHidden: true,
+                cardName: "liked posts",
+            }}
+        />
+    {:else}
+        <StatisticsCard
+            card={{
+                isHidden: false,
+                link: `/users/${userId}/liked-posts`,
+                value: statistics.likedPosts.toString(),
+                labelText:
+                    statistics.likedPosts.value === 1
+                        ? "liked post"
+                        : "liked posts",
+            }}
+        />
+    {/if}
+    {#if statistics.commentsLeft.isHidden}
+        <StatisticsCard
+            card={{
+                isHidden: true,
+                cardName: "comments left",
+            }}
+        />
+    {:else}
+        <StatisticsCard
+            card={{
+                isHidden: false,
+                link: `/users/${userId}/comments-left`,
+                value: statistics.commentsLeft.toString(),
+                labelText:
+                    statistics.commentsLeft.value === 1
+                        ? "comment left"
+                        : "comments left",
+            }}
+        />
+    {/if}
     {#snippet editVisibilityButton(authData: AuthStoreData)}
         {#if isViewersPage(authData)}
             <EditStatisticsCardVisibilityDialog

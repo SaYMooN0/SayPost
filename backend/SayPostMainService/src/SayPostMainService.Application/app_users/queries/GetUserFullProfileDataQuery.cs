@@ -14,22 +14,17 @@ public record class GetUserFullProfileDataQuery(AppUserId UserId) : IRequest<Err
 public record class UserFullProfileDataVm(
     string UserId,
     bool IsFollowedByViewer,
-    UserProfileBanner ProfileBanner,
-    int PublishedPostsCount,
-    int FollowersCount,
-    int FollowingsCount,
-    int CommentsCount,
-    int LikedPostsCount
+    UserProfileBanner ProfileBanner
 );
 
-internal class GetUserWithProfileBannerQueryHandler :
+internal class GetUserFullProfileDataQueryHandler :
     IRequestHandler<GetUserFullProfileDataQuery, ErrOr<UserFullProfileDataVm>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
     private readonly ICurrentActorProvider _currentActorProvider;
     private readonly IUserFollowingsReadRepository _userFollowingsReadRepository;
 
-    public GetUserWithProfileBannerQueryHandler(
+    public GetUserFullProfileDataQueryHandler(
         IAppUsersRepository appUsersRepository,
         ICurrentActorProvider currentActorProvider,
         IUserFollowingsReadRepository userFollowingsReadRepository
@@ -54,21 +49,16 @@ internal class GetUserWithProfileBannerQueryHandler :
             );
         }
 
-        bool osFollowedByViewer = false;
+        bool doesViewerFollow = false;
         var viewerIdRes = _currentActorProvider.UserId;
         if (viewerIdRes.IsSuccess(out var viewerId) && viewerId != query.UserId) {
-            osFollowedByViewer = followingsData.IsFollowedBy(viewerId);
+            doesViewerFollow = followingsData.IsFollowedBy(viewerId);
         }
 
         return new UserFullProfileDataVm(
             user.Id.ToString(),
-            osFollowedByViewer,
-            user.ProfileBanner,
-            user.PublishedPostsCount,
-            followingsData.FollowersCount,
-            followingsData.FollowingsCount,
-            user.LeftCommentsCount,
-            user.LikedPostsCount
+            doesViewerFollow,
+            user.ProfileBanner
         );
     }
 }

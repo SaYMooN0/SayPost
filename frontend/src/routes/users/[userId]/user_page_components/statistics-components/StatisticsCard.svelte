@@ -1,23 +1,46 @@
 <script lang="ts">
     const {
-        link,
-        value,
-        labelText,
-    }: { link: string; value: string; labelText: string } = $props<{
-        link: string;
-        value: string;
-        labelText: string;
+        card,
+    }: {
+        card:
+            | {
+                  isHidden: false;
+                  link: string;
+                  value: string;
+                  labelText: string;
+              }
+            | { isHidden: true; cardName: string };
+    } = $props<{
+        card:
+            | {
+                  isHidden: false;
+                  link: string;
+                  value: string;
+                  labelText: string;
+              }
+            | { isHidden: true; cardName: string };
     }>();
 </script>
 
-<a href={link} class="card" data-sveltekit-preload-data="hover">
-    <p class="value">{value}</p>
-    <label class="text">{labelText} </label>
-</a>
+{#if card.isHidden}
+    <div class="card card-hidden">
+        <label>
+            To see user's {card.cardName} you need to follow this user
+        </label>
+    </div>
+{:else}
+    <a
+        href={card.link}
+        class="card card-not-hidden"
+        data-sveltekit-preload-data="hover"
+    >
+        <p class="value">{card.value}</p>
+        <label class="text">{card.labelText} </label>
+    </a>
+{/if}
 
 <style>
     .card {
-        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -34,7 +57,7 @@
         overflow: hidden;
     }
 
-    .card:hover {
+    .card-not-hidden:hover {
         box-shadow:
             rgb(60 64 67 / 30%) 0 1px 2px 0,
             rgb(60 64 67 / 15%) 0 1px 3px 1px,
@@ -42,7 +65,7 @@
         transform: scale(1.1);
     }
 
-    .card > p {
+    .card-not-hidden > p {
         margin: 0;
         color: var(--accent-main);
         font-size: 2rem;
@@ -50,7 +73,7 @@
         cursor: inherit;
     }
 
-    .card > label {
+    .card-not-hidden > label {
         color: var(--accent-main);
         font-size: 1.25rem;
         font-weight: 450;

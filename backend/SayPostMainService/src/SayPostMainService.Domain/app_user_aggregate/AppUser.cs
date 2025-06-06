@@ -14,6 +14,7 @@ public class AppUser : AggregateRoot<AppUserId>
     private HashSet<PublishedPostId> _likedPostIds { get; }
     private HashSet<PostCommentId> _leftCommentIds { get; }
     public UserProfileBanner ProfileBanner { get; }
+    public StatisticsVisibilitySettings StatisticsVisibilitySettings { get; private set; }
 
     public AppUser(AppUserId id) {
         Id = id;
@@ -22,6 +23,7 @@ public class AppUser : AggregateRoot<AppUserId>
         _likedPostIds = [];
         _leftCommentIds = [];
         ProfileBanner = UserProfileBanner.CreateNew();
+        StatisticsVisibilitySettings = StatisticsVisibilitySettings.Default;
     }
 
     public int PublishedPostsCount => _publishedPostIds.Count;
@@ -42,4 +44,11 @@ public class AppUser : AggregateRoot<AppUserId>
     public ErrOrNothing UpdateProfileBanner(
         float scale, BannerDesign design, BannerDesignVariant designVariant, HexColor[] colors
     ) => ProfileBanner.Update(scale, design, designVariant, colors);
+
+    public void UpdateStatisticsVisibilitySettings(StatisticsVisibilitySettings newVal) {
+        StatisticsVisibilitySettings = newVal;
+    }
+
+    
+
 }
