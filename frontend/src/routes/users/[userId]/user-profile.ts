@@ -63,3 +63,10 @@ export namespace BannerDesign {
         return result;
     }
 }
+export type StatisticsVisibility = {
+    publishedPostsOnlyForFollowers: boolean;
+    followersOnlyForFollowers: boolean;
+    followingOnlyForFollowers: boolean;
+    likedPostsOnlyForFollowers: boolean;
+    commentsLeftOnlyForFollowers: boolean;
+};

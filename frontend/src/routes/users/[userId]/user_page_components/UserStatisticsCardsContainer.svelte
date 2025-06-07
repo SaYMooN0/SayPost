@@ -2,8 +2,12 @@
     import AuthView from "../../../../components/AuthView.svelte";
     import { AuthStoreData } from "../../../../stores/auth-store.svelte";
     import type { UserProfileStatistics } from "../user-profile";
+    import StatisticsCommentsLeftCard from "./statistics-components/cards/StatisticsCommentsLeftCard.svelte";
+    import StatisticsFollowersCard from "./statistics-components/cards/StatisticsFollowersCard.svelte";
+    import StatisticsFollowingsCard from "./statistics-components/cards/StatisticsFollowingsCard.svelte";
+    import StatisticsLikedPostsCard from "./statistics-components/cards/StatisticsLikedPostsCard.svelte";
+    import StatisticsPublishedPostsCard from "./statistics-components/cards/StatisticsPublishedPostsCard.svelte";
     import EditStatisticsCardVisibilityDialog from "./statistics-components/EditStatisticsCardVisibilityDialog.svelte";
-    import StatisticsCard from "./statistics-components/StatisticsCard.svelte";
 
     let {
         statistics,
@@ -24,106 +28,11 @@
 
 <div class="statistics-cards">
     <AuthView authenticated={editVisibilityButton} />
-    {#if statistics.publishedPosts.isHidden}
-        <StatisticsCard
-            card={{
-                isHidden: true,
-                cardName: "published posts",
-            }}
-        />
-    {:else}
-        <StatisticsCard
-            card={{
-                isHidden: false,
-                link: `/users/${userId}/published-posts`,
-                value: statistics.publishedPosts.toString(),
-                labelText:
-                    statistics.publishedPosts.value === 1
-                        ? "post published"
-                        : "posts published",
-            }}
-        />
-    {/if}
-    {#if statistics.followers.isHidden}
-        <StatisticsCard
-            card={{
-                isHidden: true,
-                cardName: "followers",
-            }}
-        />
-    {:else}
-        <StatisticsCard
-            card={{
-                isHidden: false,
-                link: `/users/${userId}/followers`,
-                value: statistics.followers.toString(),
-                labelText:
-                    statistics.followers.value === 1 ? "follower" : "followers",
-            }}
-        />
-    {/if}
-
-    {#if statistics.followings.isHidden}
-        <StatisticsCard
-            card={{
-                isHidden: true,
-                cardName: "followings",
-            }}
-        />
-    {:else}
-        <StatisticsCard
-            card={{
-                isHidden: false,
-                link: `/users/${userId}/followings`,
-                value: statistics.followings.toString(),
-                labelText:
-                    statistics.followings.value === 1
-                        ? "following"
-                        : "followings",
-            }}
-        />
-    {/if}
-
-    {#if statistics.likedPosts.isHidden}
-        <StatisticsCard
-            card={{
-                isHidden: true,
-                cardName: "liked posts",
-            }}
-        />
-    {:else}
-        <StatisticsCard
-            card={{
-                isHidden: false,
-                link: `/users/${userId}/liked-posts`,
-                value: statistics.likedPosts.toString(),
-                labelText:
-                    statistics.likedPosts.value === 1
-                        ? "liked post"
-                        : "liked posts",
-            }}
-        />
-    {/if}
-    {#if statistics.commentsLeft.isHidden}
-        <StatisticsCard
-            card={{
-                isHidden: true,
-                cardName: "comments left",
-            }}
-        />
-    {:else}
-        <StatisticsCard
-            card={{
-                isHidden: false,
-                link: `/users/${userId}/comments-left`,
-                value: statistics.commentsLeft.toString(),
-                labelText:
-                    statistics.commentsLeft.value === 1
-                        ? "comment left"
-                        : "comments left",
-            }}
-        />
-    {/if}
+    <StatisticsPublishedPostsCard cardValue={statistics.publishedPosts} userId={userId} />
+    <StatisticsFollowersCard cardValue={statistics.followers} userId={userId} />
+    <StatisticsFollowingsCard cardValue={statistics.followings} userId={userId} />
+    <StatisticsLikedPostsCard cardValue={statistics.likedPosts} userId={userId} />
+    <StatisticsCommentsLeftCard cardValue={statistics.commentsLeft} userId={userId} />
     {#snippet editVisibilityButton(authData: AuthStoreData)}
         {#if isViewersPage(authData)}
             <EditStatisticsCardVisibilityDialog

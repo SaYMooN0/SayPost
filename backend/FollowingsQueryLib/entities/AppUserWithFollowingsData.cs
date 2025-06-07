@@ -13,6 +13,4 @@ public class AppUserWithFollowingsData : AggregateRoot<AppUserId>
     public bool IsFollowedBy(AppUserId followerId) => FollowerIds.Contains(followerId);
     public int FollowersCount => FollowerIds.Count;
     public int FollowingsCount => FollowingIds.Count;
-
-    public ErrOr<IReadOnlyCollection<AppUserId>> FollowingIdsForStatistics(AppUserId? viewerId) { }
 }

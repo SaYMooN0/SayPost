@@ -3,42 +3,49 @@
     import DefaultErrBlock from "../../../../../components/err_blocks/DefaultErrBlock.svelte";
     import { ApiMain } from "../../../../../ts/backend-services";
     import type { Err } from "../../../../../ts/common/errs/err";
+    import type { StatisticsVisibility } from "../../user-profile";
     import VisibilityEditingDialogFieldInput from "./VisibilityEditingDialogFieldInput.svelte";
 
-    let publishedPostsVisibleToAll = $state(true);
-    let followersVisibleToAll = $state(true);
-    let followingVisibleToAll = $state(true);
-    let likedPostsVisibleToAll = $state(true);
-    let commentsLeftVisibleToAll = $state(true);
+    let publishedPostsOnlyForFollowers = $state(false);
+    let followersOnlyForFollowers = $state(false);
+    let followingOnlyForFollowers = $state(false);
+    let likedPostsOnlyForFollowers = $state(false);
+    let commentsLeftOnlyForFollowers = $state(false);
     let fetchingErrs = $state<Err[]>([]);
     let savingErrs = $state<Err[]>([]);
     let baseDialog: BaseDialogWithCloseButton;
     export async function open() {
         savingErrs = [];
-        const response = await ApiMain.fetchJsonResponse<{
-            publishedPostsVisibleToAll: boolean;
-            followersVisibleToAll: boolean;
-            followingVisibleToAll: boolean;
-            likedPostsVisibleToAll: boolean;
-            commentsLeftVisibleToAll: boolean;
-        }>("/profile/statistics-visibility", {
-            method: "GET",
-        });
+        const response = await ApiMain.fetchJsonResponse<StatisticsVisibility>(
+            "/profile/statistics-visibility",
+            {
+                method: "GET",
+            },
+        );
         if (response.isSuccess) {
             fetchingErrs = [];
-            publishedPostsVisibleToAll =
-                response.data.publishedPostsVisibleToAll;
-            followersVisibleToAll = response.data.followersVisibleToAll;
-            followingVisibleToAll = response.data.followingVisibleToAll;
-            likedPostsVisibleToAll = response.data.likedPostsVisibleToAll;
-            commentsLeftVisibleToAll = response.data.commentsLeftVisibleToAll;
+            publishedPostsOnlyForFollowers =
+                response.data.publishedPostsOnlyForFollowers;
+            followersOnlyForFollowers = response.data.followersOnlyForFollowers;
+            followingOnlyForFollowers = response.data.followingOnlyForFollowers;
+            likedPostsOnlyForFollowers =
+                response.data.likedPostsOnlyForFollowers;
+            commentsLeftOnlyForFollowers =
+                response.data.commentsLeftOnlyForFollowers;
         } else {
             fetchingErrs = response.errors;
         }
         baseDialog.open();
     }
     async function save() {
-        baseDialog.close();
+        const response = await ApiMain.fetchJsonResponse<StatisticsVisibility>(
+            `/profile/update-statistics-visibility`,
+            ApiMain.requestJsonOptions({}, "PATCH"),
+        );
+        if (response.isSuccess) {
+        } else {
+            savingErrs = response.errors;
+        }
     }
 </script>
 
@@ -51,26 +58,26 @@
     {:else}
         <VisibilityEditingDialogFieldInput
             label="My published posts"
-            bind:isVisibleToAll={publishedPostsVisibleToAll}
+            bind:isVisibleToAll={publishedPostsOnlyForFollowers}
         />
         <VisibilityEditingDialogFieldInput
             label="My followers"
-            bind:isVisibleToAll={followersVisibleToAll}
+            bind:isVisibleToAll={followersOnlyForFollowers}
         />
         <VisibilityEditingDialogFieldInput
             label="My following"
-            bind:isVisibleToAll={followingVisibleToAll}
+            bind:isVisibleToAll={followingOnlyForFollowers}
         />
         <VisibilityEditingDialogFieldInput
             label="My liked posts"
-            bind:isVisibleToAll={likedPostsVisibleToAll}
+            bind:isVisibleToAll={likedPostsOnlyForFollowers}
         />
         <VisibilityEditingDialogFieldInput
             label="My comments"
-            bind:isVisibleToAll={commentsLeftVisibleToAll}
+            bind:isVisibleToAll={commentsLeftOnlyForFollowers}
         />
         <DefaultErrBlock errList={savingErrs} />
-        <button onclick={() => save()} class="save-btn"> Save </button>
+        <button onclick={() => save()} class="save-btn">Save</button>
     {/if}
 </BaseDialogWithCloseButton>
 
