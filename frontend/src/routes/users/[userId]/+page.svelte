@@ -32,9 +32,8 @@
                 userId={data.pageUser.userId}
                 bannerData={data.pageUser.profileBanner}
                 isFollowedByViewer={data.pageUser.isFollowedByViewer}
-                updateFollowersCountOnThePage={(newVal: number) => {
-                    statisticsContainerEl.updateFollowersCount(newVal);
-                }}
+                updateUserStatistics={() =>
+                    statisticsContainerEl.updateStatisticsState()}
             />
         {/if}
     {/snippet}
@@ -51,7 +50,6 @@
     />
     <UserStatisticsCardsContainer
         bind:this={statisticsContainerEl}
-        statistics={data.pageUser.statistics}
         userId={data.pageUser.userId}
         {isViewersPage}
     />

@@ -32,7 +32,19 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - authservice
+      - mainservice
+      - followingsservice
+      - notificationservice
   authservice:
     build:
       context: ./backend
@@ -47,14 +59,15 @@ services:
     environment:
       - ServiceName=SayPostAuthService
       - ConnectionStrings__AuthServiceDb=Host=postgres;Port=5432;User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=saypost_auth_service_db;SslMode=Disable;Include Error Detail=true
-      - RabbitMq__Host=${RABBITMQ_HOST}
-      - RabbitMq__Username=${RABBITMQ_USER}
-      - RabbitMq__Password=${RABBITMQ_PASSWORD}
+      - MessageBroker__HostName=${RABBITMQ_HOST}
+      - MessageBroker__Port=5672
+      - MessageBroker__UserName=${RABBITMQ_USER}
+      - MessageBroker__Password=${RABBITMQ_PASSWORD}
+      - MessageBroker__QueueName=${RABBITMQ_QUEUE_NOTIFICATION}
+      - MessageBroker__ExchangeName=${RABBITMQ_EXCHANGE}
       - JwtTokenConfig__Issuer=${JWT_ISSUER}
       - JwtTokenConfig__Audience=${JWT_AUDIENCE}
       - JwtTokenConfig__SecretKey=${JWT_SECRET}
-      - MessageBroker__QueueName=${RABBITMQ_QUEUE_AUTH}
-      - MessageBroker__ExchangeName=${RABBITMQ_EXCHANGE}
 
   mainservice:
     build:
@@ -112,17 +125,18 @@ services:
         condition: service_healthy
     environment:
         - ServiceName=SayPostNotificationsService
-      - ConnectionStrings__NotificationServiceDb=Host=postgres;Port=5432;User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=saypost_notification_service_db;SslMode=Disable;Include Error Detail=true
-      - ConnectionStrings__FollowingServiceDb=Host=postgres;Port=5432;User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=saypost_following_service_db;SslMode=Disable;Include Error Detail=true
-      - MessageBroker__HostName=${RABBITMQ_HOST}
-      - MessageBroker__Port=5672
-      - MessageBroker__UserName=${RABBITMQ_USER}
-      - MessageBroker__Password=${RABBITMQ_PASSWORD}
-      - JwtTokenConfig__Issuer=${JWT_ISSUER}
-      - JwtTokenConfig__Audience=${JWT_AUDIENCE}
-      - JwtTokenConfig__SecretKey=${JWT_SECRET}
-      - MessageBroker__QueueName=${RABBITMQ_QUEUE_NOTIFICATION}
-      - MessageBroker__ExchangeName=${RABBITMQ_EXCHANGE}
+        - ConnectionStrings__NotificationServiceDb=Host=postgres;Port=5432;User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=saypost_notification_service_db;SslMode=Disable;Include Error Detail=true
+        - ConnectionStrings__FollowingServiceDb=Host=postgres;Port=5432;User Id=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};Database=saypost_following_service_db;SslMode=Disable;Include Error Detail=true
+        - MessageBroker__HostName=${RABBITMQ_HOST}
+        - MessageBroker__Port=5672
+        - MessageBroker__UserName=${RABBITMQ_USER}
+        - MessageBroker__Password=${RABBITMQ_PASSWORD}
+        - MessageBroker__QueueName=${RABBITMQ_QUEUE_NOTIFICATION}
+        - MessageBroker__ExchangeName=${RABBITMQ_EXCHANGE}
+        - JwtTokenConfig__Issuer=${JWT_ISSUER}
+        - JwtTokenConfig__Audience=${JWT_AUDIENCE}
+        - JwtTokenConfig__SecretKey=${JWT_SECRET}
+
 
 volumes:
   pgdata:

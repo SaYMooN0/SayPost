@@ -1,0 +1,1 @@
+import"./CWj6FrbW.js";import{p as s,c,r,t as i,a as o}from"./TlERTnYi.js";import{d as p,t as m,s as n,a as _}from"./CeeueTis.js";var k=(t,e)=>e.onClick(),v=m('<label class="unselectable svelte-vkixjs"> </label>');function x(t,e){s(e,!0);var a=v();a.__click=[k,e];var l=c(a,!0);r(a),i(()=>n(l,e.text)),_(t,a),o()}p(["click"]);export{x as G};

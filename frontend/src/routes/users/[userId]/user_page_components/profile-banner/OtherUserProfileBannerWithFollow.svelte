@@ -7,17 +7,17 @@
         bannerData,
         isFollowedByViewer,
         userId,
-        updateFollowersCountOnThePage,
+        updateUserStatistics,
     }: {
         bannerData: UserProfileBanner;
         isFollowedByViewer: boolean;
         userId: string;
-        updateFollowersCountOnThePage: (newVal: number) => void;
+        updateUserStatistics: () => void;
     } = $props<{
         bannerData: UserProfileBanner;
         isFollowedByViewer: boolean;
         userId: string;
-        updateFollowersCountOnThePage: (newVal: number) => void;
+        updateUserStatistics: () => void;
     }>();
 
     async function toggleFollow() {
@@ -25,13 +25,12 @@
             `/users/${userId}/` + (isFollowedByViewer ? "unfollow" : "follow");
         const response = await ApiFollowings.fetchJsonResponse<{
             newIsFollowedByViewer: boolean;
-            newFollowersCount: number;
         }>(url, {
             method: "PATCH",
         });
         if (response.isSuccess) {
             isFollowedByViewer = response.data.newIsFollowedByViewer;
-            updateFollowersCountOnThePage(response.data.newFollowersCount);
+            updateUserStatistics();
         } else {
             console.error(response.errors);
         }

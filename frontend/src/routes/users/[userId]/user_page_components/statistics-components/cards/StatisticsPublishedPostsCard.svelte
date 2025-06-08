@@ -9,7 +9,6 @@
         userId: string;
     }>();
 </script>
-
 {#if cardValue.isHidden}
     <StatisticsCard
         card={{

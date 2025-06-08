@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using SayPostMainService.Application.interfaces;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.app_user_aggregate.profile_banner;
 using SayPostMainService.Domain.common.interfaces.repositories;
@@ -9,7 +10,6 @@ using SharedKernel.common.errs.utils;
 namespace SayPostMainService.Application.app_users.commands;
 
 public record class UpdateUserProfileBannerCommand(
-    AppUserId UserId,
     float Scale,
     BannerDesign Design,
     BannerDesignVariant Variant,
@@ -20,20 +20,23 @@ internal class UpdateUserProfileBannerCommandHandler :
     IRequestHandler<UpdateUserProfileBannerCommand, ErrOr<UserProfileBanner>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
-
+private readonly ICurrentActorProvider _currentActorProvider;
     public UpdateUserProfileBannerCommandHandler(
-        IAppUsersRepository appUsersRepository
-    ) {
+        IAppUsersRepository appUsersRepository, ICurrentActorProvider currentActorProvider
+        ) {
         _appUsersRepository = appUsersRepository;
+        _currentActorProvider = currentActorProvider;
     }
 
 
     public async Task<ErrOr<UserProfileBanner>> Handle(
         UpdateUserProfileBannerCommand command, CancellationToken cancellationToken
     ) {
-        AppUser? user = await _appUsersRepository.GetWithBanner(command.UserId);
+        var userId = _currentActorProvider.UserId.AsSuccess();
+        
+        AppUser? user = await _appUsersRepository.GetWithBanner(userId);
         if (user is null) {
-            return ErrFactory.NotFound("Unknown user", $"User with id: {command.UserId} was not found");
+            return ErrFactory.NotFound("Unknown user", $"User with id: {userId} was not found");
         }
 
         var result = user.UpdateProfileBanner(command.Scale, command.Design, command.Variant, command.Colors);

@@ -1,10 +1,10 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapterAuto from '@sveltejs/adapter-auto';
+import adapterNode from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-/** @type {import('@sveltejs/kit').Config} */
+const isProd = process.env.NODE_ENV === 'production';
+console.log("isprod", isProd);
 const config = {
-	// Consult https://svelte.dev/docs/kit/integrations
-	// for more information about preprocessors
 	preprocess: [vitePreprocess({ script: true })],
 	compilerOptions: {
 		warningFilter: (warning) => {
@@ -18,15 +18,12 @@ const config = {
 				'a11y_no_static_element_interactions',
 				'a11y_no_noninteractive_element_interactions',
 				'element_invalid_self_closing_tag'
-			]
-			return !ignore.includes(warning.code)
+			];
+			return !ignore.includes(warning.code);
 		},
 	},
 	kit: {
-		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter()
+		adapter: isProd ? adapterNode() : adapterAuto(),
 	}
 };
 

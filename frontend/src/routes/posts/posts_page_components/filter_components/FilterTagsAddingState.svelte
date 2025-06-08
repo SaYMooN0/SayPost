@@ -114,7 +114,8 @@
     }
 
     .adding-state:focus-within,
-    .adding-state:hover {
+    .adding-state:hover,
+    .adding-state:has(:global(.err-block)) {
         border-color: var(--accent-main);
     }
 
@@ -130,7 +131,8 @@
         height: 2rem;
     }
 
-    .adding-state:has(.tags-grid) .searched-tags {
+    .adding-state:has(.tags-grid) .searched-tags,
+    .adding-state:has(:global(.err-block)) .searched-tags {
         display: grid;
         gap: 0.125rem;
         height: fit-content;

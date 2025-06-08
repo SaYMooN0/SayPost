@@ -1,4 +1,5 @@
 using MediatR;
+using SayPostMainService.Application.interfaces;
 using SayPostMainService.Domain.app_user_aggregate;
 using SayPostMainService.Domain.common.interfaces.repositories;
 using SharedKernel.common.domain.ids;
@@ -8,33 +9,33 @@ using SharedKernel.common.errs.utils;
 namespace SayPostMainService.Application.app_users.commands;
 
 public record class UpdateUserStatisticsVisibilityCommand(
-    AppUserId UserId,
     StatisticsVisibilitySettings NewSettings
 ) : IRequest<ErrOr<StatisticsVisibilitySettings>>;
-
-public record UserProfileStatisticsVisibilitySettings(
-);
 
 internal class UpdateUserStatisticsVisibilityCommandHandler :
     IRequestHandler<UpdateUserStatisticsVisibilityCommand, ErrOr<StatisticsVisibilitySettings>>
 {
     private readonly IAppUsersRepository _appUsersRepository;
+    private readonly ICurrentActorProvider _currentActorProvider;
 
     public UpdateUserStatisticsVisibilityCommandHandler(
-        IAppUsersRepository appUsersRepository
+        IAppUsersRepository appUsersRepository,
+        ICurrentActorProvider currentActorProvider
     ) {
         _appUsersRepository = appUsersRepository;
+        _currentActorProvider = currentActorProvider;
     }
 
 
     public async Task<ErrOr<StatisticsVisibilitySettings>> Handle(
         UpdateUserStatisticsVisibilityCommand command, CancellationToken cancellationToken
     ) {
-        AppUser? user = await _appUsersRepository.GetById(command.UserId);
+        var userId = _currentActorProvider.UserId.AsSuccess();
+        AppUser? user = await _appUsersRepository.GetById(userId);
         if (user is null) {
             return ErrFactory.NotFound(
                 "Cannot update user statistics visibility settings because user not found",
-                $"User with id: {command.UserId} was not found"
+                $"User with id: {userId} was not found"
             );
         }
 

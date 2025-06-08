@@ -2,7 +2,6 @@ export type UserProfile = {
     userId: string;
     isFollowedByViewer: boolean;
     profileBanner: UserProfileBanner;
-    statistics: UserProfileStatistics;
 }
 export type UserProfileBanner = {
     scale: number;

@@ -4,6 +4,7 @@ using MediatR;
 using SayPostMainService.Api.contracts.app_users.statistics;
 using SayPostMainService.Api.contracts.published_posts;
 using SayPostMainService.Application.app_users.queries;
+using SayPostMainService.Application.app_users.queries.specific_statistics_fields;
 using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Api.endpoints;
@@ -29,7 +30,7 @@ internal static class AppUserStatisticsHandlers
         GetUserProfileStatisticsQuery query = new(userId);
         var result = await mediator.Send(query);
 
-        return CustomResults.FromErrOr(result, (vm) => Results.Json(UserProfileStatisticsResponse.FromVm(vm)));
+        return CustomResults.FromErrOr(result, (vm) => Results.Json(data: UserProfileStatisticsResponse.FromVm(vm)));
     }
 
     private static async Task<IResult> ListUserFollowerIds(

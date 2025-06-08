@@ -55,11 +55,11 @@ class BackendService {
     }
     public async fetchVoidResponse(url: string, options: RequestInit): Promise<ResponseVoidResult> {
         try {
+
             const response = await fetch(this._baseUrl + url, {
                 ...options,
                 credentials: 'include'
             });
-
             if (response.ok) {
                 return { isSuccess: true };
             }
@@ -68,6 +68,7 @@ class BackendService {
             return { isSuccess: false, errors };
 
         } catch (e: any) {
+
             return {
                 isSuccess: false,
                 errors: [new Err("Unknown error", -1, "Error: " + e.message)]
@@ -84,6 +85,7 @@ class BackendService {
                 ...options,
                 credentials: 'include'
             });
+
             if (response.ok) {
                 const text = await response.text();
                 const data = BackendService.parseWithDates<T>(text);

@@ -1,0 +1,1 @@
+import"./CWj6FrbW.js";import"./69_IOA4Y.js";import{t as m,a as i}from"./CeeueTis.js";var e=m('<div class="list-empty-msg svelte-vapu65">Hmmm, seems like this list is empty</div>');function r(t){var s=e();i(t,s)}export{r as L};

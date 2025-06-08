@@ -1,6 +1,7 @@
 <script lang="ts">
     import AuthView from "../../../../components/AuthView.svelte";
     import { AuthStoreData } from "../../../../stores/auth-store.svelte";
+    import { ApiMain } from "../../../../ts/backend-services";
     import type { UserProfileStatistics } from "../user-profile";
     import StatisticsCommentsLeftCard from "./statistics-components/cards/StatisticsCommentsLeftCard.svelte";
     import StatisticsFollowersCard from "./statistics-components/cards/StatisticsFollowersCard.svelte";
@@ -10,7 +11,6 @@
     import EditStatisticsCardVisibilityDialog from "./statistics-components/EditStatisticsCardVisibilityDialog.svelte";
 
     let {
-        statistics,
         userId,
         isViewersPage,
     }: {
@@ -18,21 +18,48 @@
         userId: string;
         isViewersPage: (viewerData: AuthStoreData) => boolean;
     } = $props<{
-        statistics: UserProfileStatistics;
         userId: string;
         isViewersPage: (viewerData: AuthStoreData) => boolean;
     }>();
-    export async function updateStatisticsState() {}
+    let statistics: UserProfileStatistics = $state<UserProfileStatistics>({
+        publishedPosts: { isHidden: true },
+        followers: { isHidden: true },
+        followings: { isHidden: true },
+        likedPosts: { isHidden: true },
+        commentsLeft: { isHidden: true },
+    });
+    export async function updateStatisticsState() {
+        const response =
+            await ApiMain.serverFetchJsonResponse<UserProfileStatistics>(
+                fetch,
+                `/users/${userId}/statistics`,
+                {
+                    method: "GET",
+                },
+            );
+        if (response.isSuccess) {
+            console.log(response.data);
+            statistics = response.data;
+        }
+    }
     let visibilityEditingDialog: EditStatisticsCardVisibilityDialog;
 </script>
 
 <div class="statistics-cards">
+    {#await updateStatisticsState() then _}
+        <StatisticsPublishedPostsCard
+            cardValue={statistics.publishedPosts}
+            {userId}
+        />
+        <StatisticsFollowersCard cardValue={statistics.followers} {userId} />
+        <StatisticsFollowingsCard cardValue={statistics.followings} {userId} />
+        <StatisticsLikedPostsCard cardValue={statistics.likedPosts} {userId} />
+        <StatisticsCommentsLeftCard
+            cardValue={statistics.commentsLeft}
+            {userId}
+        />
+    {/await}
     <AuthView authenticated={editVisibilityButton} />
-    <StatisticsPublishedPostsCard cardValue={statistics.publishedPosts} userId={userId} />
-    <StatisticsFollowersCard cardValue={statistics.followers} userId={userId} />
-    <StatisticsFollowingsCard cardValue={statistics.followings} userId={userId} />
-    <StatisticsLikedPostsCard cardValue={statistics.likedPosts} userId={userId} />
-    <StatisticsCommentsLeftCard cardValue={statistics.commentsLeft} userId={userId} />
     {#snippet editVisibilityButton(authData: AuthStoreData)}
         {#if isViewersPage(authData)}
             <EditStatisticsCardVisibilityDialog

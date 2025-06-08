@@ -72,6 +72,7 @@ public class Program
         app.MapGroup("/post-tags").MapPostTagsHandlers();
         app.MapGroup("/posts/{postId}").MapSpecificPostHandlers();
         app.MapGroup("/users/{userId}").MapSpecificAppUserHandlers();
+        app.MapGroup("/users/{userId}/statistics").MapAppUserStatisticsHandlers();
         app.MapGroup("/profile").MapUserProfileEndpoints();
     }
 }

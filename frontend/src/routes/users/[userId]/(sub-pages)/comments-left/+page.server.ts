@@ -28,14 +28,9 @@ export const load: PageServerLoad = async ({ params, fetch }):
         }[]
     }>(fetch, `/users/${userId}/list-left-comments`, { method: 'GET', });
 
-    console.log("----", response);
-    console.log(response.isSuccess);
-
-
     if (!response.isSuccess) {
         return { title: 'left comments', errors: response.errors };
     }
-
 
     const usernameResult = await cachedUsersStore.getUsernameForIds(
         response.data.posts.map((p) => p.postAuthorId),

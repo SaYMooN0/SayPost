@@ -18,9 +18,7 @@
         savingErrs = [];
         const response = await ApiMain.fetchJsonResponse<StatisticsVisibility>(
             "/profile/statistics-visibility",
-            {
-                method: "GET",
-            },
+            { method: "GET" }
         );
         if (response.isSuccess) {
             fetchingErrs = [];
