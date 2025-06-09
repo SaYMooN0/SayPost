@@ -14,17 +14,16 @@
     <StatisticsCard
         card={{
             isHidden: true,
-            cardName: "published posts",
+            cardName: "followers",
         }}
     />
 {:else}
     <StatisticsCard
         card={{
             isHidden: false,
-            link: `/users/${userId}/published-posts`,
+            link: `/users/${userId}/followers`,
             value: cardValue.value.toString(),
-            labelText:
-                cardValue.value === 1 ? "post published" : "posts published",
+            labelText: cardValue.value === 1 ? "follower" : "followers",
         }}
     />
 {/if}

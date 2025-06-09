@@ -1,29 +1,29 @@
 <script lang="ts">
     let {
-        isVisibleToAll = $bindable(true),
+        onlyForFollowers = $bindable(false),
         label,
-    }: { isVisibleToAll: boolean; label: string } = $props<{
-        isVisibleToAll: boolean;
+    }: { onlyForFollowers: boolean; label: string } = $props<{
+        onlyForFollowers: boolean;
         label: string;
     }>();
 </script>
 
 <div class="input-container">
     <label>{label}</label>
-    <div class="btns">
+    <div class="btns unselectable">
         <button
             class="everyone-btn"
-            class:selected={isVisibleToAll}
-            onclick={() => (isVisibleToAll = true)}
+            class:selected={!onlyForFollowers}
+            onclick={() => (onlyForFollowers = false)}
         >
             Everyone
         </button>
         <button
-            class="only-me-btn"
-            class:selected={!isVisibleToAll}
-            onclick={() => (isVisibleToAll = false)}
+            class="only-followers-btn"
+            class:selected={onlyForFollowers}
+            onclick={() => (onlyForFollowers = true)}
         >
-            Only me
+            Only followers
         </button>
     </div>
 </div>
@@ -39,7 +39,7 @@
     .btns {
         display: inline-grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.25rem;
+        gap: 0.5rem;
     }
 
     .btns button {
@@ -48,7 +48,13 @@
         border-radius: 0.25rem;
         background-color: var(--back-main);
         color: var(--gray);
-        transition: all 0.12s ease-in;
+        font-weight: 450;
+        cursor: pointer;
+    }
+
+    .btns button:not(.selected):hover {
+        border-color: var(--accent-main);
+        color: var(--accent-main);
     }
 
     .btns button.selected {

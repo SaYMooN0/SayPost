@@ -24,9 +24,11 @@
 
 {#if card.isHidden}
     <div class="card card-hidden">
-        <label>
+        <div class="hidden-card-blur">
             To see user's {card.cardName} you need to follow this user
-        </label>
+        </div>
+        <p class="value unselectable">{123}</p>
+        <label class="text unselectable">{card.cardName} </label>
     </div>
 {:else}
     <a
@@ -45,8 +47,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 12rem;
-        height: 5rem;
+        width: 13rem;
+        height: 6rem;
         border-radius: 0.25rem;
         text-decoration: none;
         box-shadow:
@@ -65,18 +67,42 @@
         transform: scale(1.1);
     }
 
-    .card-not-hidden > p {
+    .card > p {
         margin: 0;
         color: var(--accent-main);
-        font-size: 2rem;
+        font-size: 2.25rem;
         font-weight: 550;
         cursor: inherit;
     }
 
-    .card-not-hidden > label {
+    .card > label {
         color: var(--accent-main);
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 450;
         cursor: inherit;
+    }
+
+    .card-hidden {
+        position: relative;
+    }
+
+    .hidden-card-blur {
+        position: absolute;
+        z-index: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 0.25rem;
+        background: rgb(225 205 255 / 10%);
+        color: var(--text-main);
+        font-size: 1.125rem;
+        text-align: center;
+        cursor: default;
+        backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        box-sizing: border-box;
+        text-wrap: pretty;
     }
 </style>

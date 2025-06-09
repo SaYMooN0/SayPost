@@ -2,7 +2,7 @@ using SayPostMainService.Domain.app_user_aggregate;
 
 namespace SayPostMainService.Api.contracts.app_users.statistics.visibility;
 
-public class UserProfileStatisticsVisibilityResponse(
+public record class UserProfileStatisticsVisibilityResponse(
     bool PublishedPostsOnlyForFollowers,
     bool FollowersOnlyForFollowers,
     bool FollowingOnlyForFollowers,

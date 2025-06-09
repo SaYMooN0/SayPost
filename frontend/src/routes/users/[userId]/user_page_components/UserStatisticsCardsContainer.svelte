@@ -38,7 +38,6 @@
                 },
             );
         if (response.isSuccess) {
-            console.log(response.data);
             statistics = response.data;
         }
     }
@@ -47,6 +46,9 @@
 
 <div class="statistics-cards">
     {#await updateStatisticsState() then _}
+        <EditStatisticsCardVisibilityDialog
+            bind:this={visibilityEditingDialog}
+        />
         <StatisticsPublishedPostsCard
             cardValue={statistics.publishedPosts}
             {userId}
@@ -62,9 +64,6 @@
     <AuthView authenticated={editVisibilityButton} />
     {#snippet editVisibilityButton(authData: AuthStoreData)}
         {#if isViewersPage(authData)}
-            <EditStatisticsCardVisibilityDialog
-                bind:this={visibilityEditingDialog}
-            />
             <svg
                 class="edit-visibility-btn"
                 onclick={() => visibilityEditingDialog.open()}

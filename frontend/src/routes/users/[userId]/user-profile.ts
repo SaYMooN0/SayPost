@@ -67,5 +67,5 @@ export type StatisticsVisibility = {
     followersOnlyForFollowers: boolean;
     followingOnlyForFollowers: boolean;
     likedPostsOnlyForFollowers: boolean;
-    commentsLeftOnlyForFollowers: boolean;
+    leftCommentsOnlyForFollowers: boolean;
 };

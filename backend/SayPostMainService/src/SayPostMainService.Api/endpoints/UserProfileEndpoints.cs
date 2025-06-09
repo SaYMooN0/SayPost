@@ -4,6 +4,7 @@ using MediatR;
 using SayPostMainService.Api.contracts.app_users;
 using SayPostMainService.Api.contracts.app_users.statistics.visibility;
 using SayPostMainService.Application.app_users.commands;
+using SayPostMainService.Application.app_users.queries;
 using SharedKernel.common.domain.ids;
 
 namespace SayPostMainService.Api.endpoints;
@@ -41,15 +42,11 @@ internal static class UserProfileEndpoints
     private static async Task<IResult> GetUsersStatisticsVisibility(
         HttpContext httpContext, ISender mediator
     ) {
-        var request = httpContext.GetValidatedRequest<UpdateProfileBannerRequest>();
-
-        UpdateUserProfileBannerCommand command = new(
-            request.Scale, request.Design, request.DesignVariant, request.ParsedColors
-        );
-        var result = await mediator.Send(command);
+        GetStatisticsVisibilitySettingsQuery query = new();
+        var result = await mediator.Send(query);
 
         return CustomResults.FromErrOr(result,
-            (banner) => Results.Json(UserProfileBannerResponse.FromProfileBanner(banner))
+            (settings) => Results.Json(UserProfileStatisticsVisibilityResponse.Create(settings))
         );
     }
 
@@ -62,7 +59,7 @@ internal static class UserProfileEndpoints
         var result = await mediator.Send(command);
 
         return CustomResults.FromErrOr(result,
-            (banner) => Results.Json(UserProfileBannerResponse.FromProfileBanner(banner))
+            (settings) => Results.Json(UserProfileStatisticsVisibilityResponse.Create(settings))
         );
     }
 }
